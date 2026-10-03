@@ -1,0 +1,35 @@
+tag,result,value,unit
+A1,Working load on the collar with a 100 kg person held: 0.99 kN; R1 static load 2.5 kN (2.5 times the working load),0.9911,kN
+A2,"Peak load if the person drops onto the rope when the feet are freed (rigid body, 1 m of rope): 30 mm slack 2.6 kN, 50 mm slack 2.9 kN, 100 mm slack 3.4 kN; the drill takes all slack in first, so the drop stays under 30 mm and the peak (about 2.6 kN) close to the R1 load, inside the strength margins of section C",2.562,kN
+B1,"200 mm trunk: load line 273 mm from the trunk axis, lever height 160 mm, friction needed 0.58 against 0.9 assumed, locking factor 1.54; at 2.5 kN the bars press 4.3 kN (2.5 kN a pad) and the chain carries 3.3 kN",1.539,
+B2,"300 mm trunk: load line 331 mm from the trunk axis, lever height 160 mm, friction needed 0.48 against 0.9 assumed, locking factor 1.86; at 2.5 kN the bars press 5.2 kN (3.0 kN a pad) and the chain carries 4.2 kN",1.864,
+B3,"450 mm trunk: load line 418 mm from the trunk axis, lever height 160 mm, friction needed 0.38 against 0.9 assumed, locking factor 2.35; at 2.5 kN the bars press 6.5 kN (3.8 kN a pad) and the chain carries 5.5 kN",2.351,
+B4,"Smallest locking factor 1.54 (200 mm trunk); the grip rises in step with the load, so the factor is the same at any load. Friction from the chain's full wrap round the trunk is extra and not counted",1.539,
+B5,"Settling at 2.5 kN: pads squash 3.1 mm at 1.9 MPa, chain seats 2.9 mm; the frame drops about 10 mm as it cocks (R1 allows 20 mm of slip)",10.27,mm
+C1,"Bearing bar (RHS 50 x 25 x 2.5): 0.48 kN m at the spine, 171 MPa, factor 2.1 on yield at the R1 load (5.3 at the working load)",2.082,
+C2,"Bar to spine fillet welds (4 mm, all round): 82 MPa against 290 MPa allowed for E7018, factor 3.5",3.536,
+C3,"Spine arm: 8 MPa in bending beside the lightening hole; load eye 13 mm thick with doublers, bearing 19 MPa under the carabiner bar, tear-out strength 75 kN (30 times the R1 load)",29.82,
+C4,"Chain cleat at 5.5 kN chain tension: web ligament beside a slot 113 MPa (factor 3.1); twist between the two slots 0.16 kN m, 54 MPa in the cheeked top (factor 3.8)",3.136,
+C5,Chain: 5.5 kN at most at the R1 load against a working load limit of 11.2 kN and a minimum breaking force of 45 kN (factor 8.1); 2.2 kN at the working load,8.109,
+C6,"Rope: EN 1891 type A, at least 22 kN, about 14 kN at the figure-eight loop: factor 5.7 at the R1 load and 14 at the working load; carabiners 25 kN, factor 10 and 25",14.43,
+D1,"Hand force on the brake strand holding 100 kg: descender ratio 6.6, brake carabiner 1.87, hand 80 N (R5 allows 150 N); without the brake carabiner 150 N",80.22,N
+D2,"A 25 m lowering at a steady 0.3 m/s takes 83 s and turns 24.8 kJ into heat: 85 % in the descender, 7 % in the brake carabiner, 8 % at the hand; the descender would warm by at most 44 K if it kept it all",24.76,kJ
+E1,"Rope: 25 m of lowering, 1 m from the descender to the person at the start, 1.5 m for the figure-eight loop and stopper knot, 0.5 m round the brake carabiner: 28.0 m of the 30 m",28,m
+E2,"Fit: 200 mm trunk: loop 769 mm (43 links), bars touch the trunk 58 mm along the pad, spine 23 mm clear of the bark; 300 mm trunk: loop 1086 mm (61 links), bars touch the trunk 87 mm along the pad, spine 31 mm clear of the bark; 450 mm trunk: loop 1563 mm (87 links), bars touch the trunk 130 mm along the pad, spine 43 mm clear of the bark; the 110-link chain leaves at least 10 links of tail on a 450 mm trunk",,
+E3,"Rigging time once the rescuer is in position (estimate): Clip the frame to the trunk with the chain round it, link into slot, keeper and pin on 60 s; Clip the descender to the load eye and reeve the rope; brake strand over the brake carabiner 40 s; Lower the bag on its rope end to the ground (helpers take the brake strand slack) 20 s; Fit the evacuation triangle round the hips and the chest sling 120 s; Clip the rope's loop and both slings into the victim carabiner and take in all slack 30 s; total 4.5 min",4.5,min
+F1,"Mass: collar frame 2.55 kg (steel 2.26 kg), chain set 1.88 kg, descender 0.53 kg, carabiners 0.26 kg, rope 2.34 kg, triangle and sling 0.87 kg, bag 0.45 kg",8.881,kg
+F2,Whole kit 8.9 kg carried up the trunk (R7 asks for under 5 kg),8.881,kg
+F3,"Options: rope, bag, triangle and sling hauled up on a 4 mm tag line by the helpers leaves 5.5 kg carried (tag line and pouch 0.3 kg included); an aluminium frame (6082-T6, 40 % thicker) saves about 1.2 kg; both together 4.4 kg",5.521,kg
+G1,"Bark pressure at the R1 load: pads 1.9 MPa (0.7 MPa working), sleeved chain 0.58 MPa, bare chain links 8 MPa on a 3 mm line; the outer coconut stem is far stronger in crushing, so no cut is expected under the pads or the sleeve. Bare links outside the sleeve may mark the bark (to confirm by test)",1.885,MPa
+H1,Kit cost from the BOM: USD 758. Value-engineering target: USD 900. Estimated cost of the constructable design: USD 758 (USD 142 under the target),757.6,USD
+H2,"R9 per-kit parts cost: USD 758, over the R9 target by USD 658; the largest lines are auto-locking rope descender with anti-panic function USD 280, evacuation triangle USD 140, lowering rope USD 105, rope and carry bag USD 45",657.6,USD
+R,R1: Met on paper (friction to confirm). Locking factor 1.54 at the smallest trunk; settles about 10 mm,,
+R,R2: At risk. The single top chain cannot hold an upward pull; the drill keeps the collar above the person's attachment,,
+R,R3: Met. Chain and V fit 200 to 450 mm trunks with no tools,,
+R,"R4: At risk (estimate). About 4.5 min once in position, a thin margin on a rough estimate",,
+R,R5: Met on paper (estimate). Hand force about 80 N with the brake carabiner,,
+R,"R6: Met. 30 m rope, 28.0 m needed",,
+R,R7: Not met. Kit 8.9 kg carried,,
+R,"R8: Met on paper (to confirm). Pads 1.9 MPa, sleeve 0.58 MPa at the R1 load",,
+R,R9: Not met. USD 758 a kit,,
+R,R10: Cannot be shown on paper. Needs the training trial at TRL 4,,
