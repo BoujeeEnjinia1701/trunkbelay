@@ -1,65 +1,5 @@
 # Review note: TrunkBelay
 
-## Session 2026-10-03: round 2 requirement decisions applied
-
-Amish, 2026-10-03: "i approve all of the 47 recommendations provided by you. Execute them." For TrunkBelay these are portfolio decisions 41 to 44, the recommendations on O1 to O4, each decided exactly as worded: 41 A (keep the drill rule that sets the collar 300 mm or more above the victim's attachment; B, the double-acting collar, is the fallback if the TRL 4 drill shows a rescuer cannot reach above the attachment), 42 B (pack the victim set pre-rigged on the victim carabiner), 43 C (haul line plus aluminium 6082-T6 frame), 44 A (keep the auto-locking descender and triangle; savings through group purchase and one kit per climber group). Record: `docs/decisions/0003-requirement-decisions-round2.md` (TKB-DDR-003).
-
-### What changed
-
-- `cad/src/model.py`: frame material aluminium 6082-T6 (`frame_material`); bearing bars RHS 70 x 30 x 5 (was 50 x 25 x 2.5 steel), 4 mm end caps, eye doubler rings 6 mm (was 4), cleat cheeks 8 mm (was 6); spine kept at 5 mm because a chain link must span it; tag line and shoulder pouch in the mass table and the kit pictures; `CARRIED` and `carried_mass()` for R7; new check bars to doubler rings. 213 of 213 constructability checks pass. STEP and STL files re-exported.
-- `docs/04-calcs/sizing.py`, `results.csv`, `01-sizing.md` (TKB-CAL-001 v0.2): frame strength in the heat-affected zone of the TIG welds (125 MPa), rigging time with the haul and pre-rigged set, carried mass, cost.
-- `bom/bom.csv`: lines 1 to 5 in aluminium with AC TIG welding and no galvanising; lines 7 to 10, 16, 18 and 21 notes; new line 22 (tag line, 30 m of 4 mm cord) and 23 (10 l shoulder pouch). Prices are estimates derived from the steel lines.
-- `docs/05-build-plan.md` (TKB-BLD-001 v0.2): aluminium parts, TIG welding and its limits, no galvanising, keeper 28 mm wide, pin 28 mm grip, tag line and pouch, step 10 packs the victim set pre-rigged, first checks for R2 (misuse test), R4 (with the reach check that triggers the fallback) and R7 (pouch under 5 kg), safety stop S1 and tools.
-- `cad/src/build_plan_media.py`: making sketches TKB-DWG-101 to 105 and 107 texts, joint 2 and steps 1 to 3 and 10 captions; overview and step 10 show the pouch and tag line. All build plan pictures regenerated.
-- `cad/src/sheets.py`: TKB-DWG-001 Rev P2 regenerated. `cad/src/concept_media.py`: key figures; hero, exploded, flow, concept blueprint, `media/model.glb` (linear deflection 1.0, angular 0.35) and viewer regenerated. `cad/src/product_model.py`: frame look changed from galvanised steel to mill-finish aluminium.
-- `docs/03-requirements.md` (TKB-REQ-001 v0.3), `docs/02-concept.md` (TKB-PRC-001 v0.4), `README.md`, `docs/06-design-decisions.md` (TKB-DEC-001 v0.2), `project.yaml` (comment and `trl_evidence`; `budget_usd` unchanged at USD 900).
-
-### How decision 43 was sized
-
-The option was costed with every steel part 40 % thicker in aluminium. TIG welding halves the strength of 6082-T6 beside the weld (125 MPa against 260 MPa), and every highly loaded section of this frame lies beside a weld. A 40 % thicker bar (RHS 50 x 25 x 3.5) would carry 135 MPa at its weld at the R1 load, a factor of 0.92: it would yield below 2.5 kN. The bars were therefore sized to keep the steel design's factor of about 2 (RHS 70 x 30 x 5, factor 2.0), held to 30 mm deep to clear the spare eye ring and 70 mm high to clear the chain's fixed-end tail. The aluminium weldment is 1.37 kg against 2.22 kg in steel, a saving of 0.85 kg rather than the 1.2 kg first estimated.
-
-### Requirement status, before and after
-
-| Req. | Before | After |
-| --- | --- | --- |
-| R1 | Met on paper, friction to confirm | Met on paper, friction to confirm; **aluminium cleat web factor 1.1** on its heat-affected proof strength at the R1 load (2.8 at the working load; 3.1 in steel): new question O5 |
-| R2 | At risk | At risk on paper, controlled by the drill rule (41 A); upward case a misuse test only |
-| R4 | At risk, 4.5 min | Met on paper (estimate), 4.2 min |
-| R7 | Not met, 8.9 kg | **Met on paper, 4.74 kg carried**, a 257 g margin; whole kit 8.5 kg |
-| R9 | Not met, USD 758 | Not met, USD 802; accepted by Amish (44 A) |
-
-R3, R5, R6, R8 and R10 unchanged.
-
-### Cost
-
-Value-engineering target: USD 900. Estimated cost of the constructable design: USD 802 (USD 98 under the target), up from USD 758: aluminium parts and TIG welding about USD 29 more than the steel parts, welding and galvanising; tag line and pouch about USD 16 (estimates). `budget_usd` unchanged.
-
-### Decisions proposed and awaiting Amish
-
-**O5, R1 (strength margin of the aluminium cleat).** State: the 5 mm aluminium cleat web carries 113 MPa at the R1 load; beside the cheek welds that is a factor of 1.1 (2.3 on unwelded metal, 2.8 at the working load), against 3.1 for the steel cleat. The web cannot be thickened, and the steel chain will wear the aluminium slot edges.
-- A. Steel cleat insert: the slotted top of the spine made as a separate 5 mm S355 galvanised plate, bolted to the aluminium spine between the cheeks with two M8 stainless bolts and the lock pin. Factor back to about 3.1, wear-resistant slots; about 0.1 kg and USD 5 more (4.84 kg carried, R7 still met).
-- B. Keep the welded aluminium cleat; the TRL 4 proof test shows it; inspect the slots for wear before every use. No cost or mass.
-- C. Heat-treat the welded frame back to T6: factor about 2.3, slots still aluminium; about USD 30, risk of distortion.
-- **Recommendation: A**, because the cleat holds a person.
-
-Fallback held from 41: if the TRL 4 drill shows a rescuer cannot reach above the attachment, the double-acting collar comes back to Amish.
-
-### Re-render
-
-The hero geometry changed (bars 70 x 30 instead of 50 x 25, thicker eye rings and cheeks) and the frame finish changed from galvanised steel to bare aluminium, so `media/render-hero.png`, the other photoreal renders, `media/card.png` and `media/social-preview.png` need redoing on Amish's Mac from `cad/src/product_model.py`. They are not made here.
-
-### Safety
-
-- The collar holds only a downward pull on paper. The drill rule (collar 300 mm or more above the victim's attachment) is the only thing that prevents an upward pull; it stays in safety stop S6, the precis, the README and every drill.
-- The auto-locking descender and the evacuation triangle stay (44 A): no saving is taken against the security of an unconscious person.
-- The pre-rigged victim set is checked before every use: gate screwed shut, loops not twisted, crotch loop free.
-- The aluminium frame needs an aluminium-qualified welder; welds only where drawn, never heated to straighten; dye-penetrant check after welding (S1). Its cleat has less margin than the steel one (O5).
-- Nobody is lowered with the kit before the 2.5 kN proof test on cut trunk sections and a dummy drill at low height. It is not certified equipment.
-
-### Recommended next step
-
-Amish decides O5. The design then stands at TRL 3; TRL 4 starts only when Amish chooses.
-
 ## Session 2026-09-30: scaffolded
 
 ### What was done
@@ -185,3 +125,43 @@ Amish decides O1 to O4. The design then looks ready for TRL 4 once Amish chooses
 ## 2026-10-03: photoreal renders
 
 Rendered with Blender Cycles on Amish's Mac from `cad/src/product_model.py`; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` made with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes and `render.py --check` has no FAIL.
+
+## 2026-10-03: Amish's requirement decisions carried out
+
+Amish Chadha, 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." For TrunkBelay these are decisions 16A (R2), 17B (R4), 18C (R7) and 19A (R9), each the recommended option, recorded in TKB-DDR-003. Not committed or pushed (batch run).
+
+### Changes
+
+- 16A, R2: no hardware change. The drill rule (collar at least 300 mm above the victim's attachment) stays in safety stop S6 and Step 10 of the build plan; the double-acting collar is recorded as the fallback. The TRL 4 first check now treats the upward pull as a misuse test and checks that a rescuer can reach above the attachment.
+- 17B, R4: the victim set is packed pre-rigged: the rope's figure-eight loop, the triangle's two waist loops and one end of the chest sling on the victim carabiner, so two clips are left at height. `victim_kit()` in `cad/src/model.py` draws it, with three new checks.
+- 18C, R7: the collar frame is 6082-T6 aluminium, TIG welded with ER5356, not galvanised, sized on the welded (heat-affected) strength: bars RHS 50 x 40 x 3; cheeks 8 mm; spine 5 mm with its top raised to 185 mm so the cleat web is 35 mm deep; doubler rings kept 4 mm so the quick link still passes; spare eye moved to 85 mm back, clear of the deeper bars; the adjustable chain tail runs out 75 mm before it hangs, clear of the bar; ball-lock pin grip 27 mm; pad screws into countersunk stainless rivet nuts. The helpers haul the rope bag up on 55 m of 4 mm tag line doubled through a micro pulley on the rescuer's harness. Five new frame checks; 218 of 218 constructability checks pass. STEP and STL regenerated.
+- 19A, R9: the auto-locking descender and evacuation triangle stay; R9 restated in `docs/03-requirements.md` (TKB-REQ-001 v0.3, Amish quoted) as parts under USD 850 per kit at single-kit prices, with group purchase sought.
+- `bom/bom.csv`: lines 1 to 5, 7 and 10 changed for aluminium, rivet nuts and the 27 mm pin; lines 22 (tag line) and 23 (micro pulley) added; each with a price basis.
+- `docs/04-calcs/sizing.py`, `01-sizing.md` (TKB-CAL-001 v0.2) and `results.csv` re-run; `docs/01-problem.md` v0.3 (cost and carry constraints), `docs/02-concept.md` v0.4, README, `project.yaml` (evidence; `budget_usd` unchanged).
+- `docs/05-build-plan.md` v0.2: aluminium making and welding text, new section 3.14 (tag line and micro pulley), Step 10 (pre-rigged set and the order at height), first checks, safety stops S1 and S6, tools and skills.
+- Pictures: general arrangement TKB-DWG-001 Rev P2; making sketches TKB-DWG-101 to 109; overview (now 18 groups, with the tag line); joints 1 to 8; steps 1 to 10; concept media (hero, exploded, blueprint key figures, `model.glb`, viewer).
+- Register `docs/06-design-decisions.md` v0.2: O1 to O4 moved to Decisions made; Open decisions now "None"; four items added to confirm. Decision record `docs/decisions/0003-amish-requirement-decisions.md` (TKB-DDR-003).
+- Appearance model `cad/src/product_model.py`: bare aluminium frame colour and names, label moved clear of the moved spare eye; scenes re-exported to `/home/claude/renders/trunkbelay`.
+
+### New results
+
+- R2: at risk for an upward pull, as before; avoided by the drill rule (16A).
+- R4: about 4.5 minutes once in position (target under 5): the pre-rigged set saves 45 s and the tag-line haul adds 45 s. Still at risk on a rough estimate; timed at TRL 4.
+- R7: 4.55 kg carried up the trunk (target under 5 kg): met on paper. The helpers haul 3.7 kg; the whole kit is 8.3 kg. The decision estimate was about 4.4 kg; the difference is the doubled tag line (0.60 kg) that lets the helpers haul from the ground.
+- R9: USD 826 a kit against the restated USD 850 (USD 24 under). Value-engineering target: USD 900. Estimated cost of the constructable design: USD 826 (USD 74 under the target). The changes cost USD 68 against the decision estimate of about USD 50 (aluminium frame about USD 29 net of galvanising, tag line and pulley USD 39).
+- Frame strength at the R1 load of 2.5 kN, on the welded proof strength of 6082-T6 (125 MPa): bars 1.60, cleat web 1.55, cleat twist 2.0; welds 5.3 on the weld metal; the steel frame had 2.1 to 3.8 on yield. R1 (locking factor 1.54), R3, R5, R6 and R8 are unchanged.
+
+### For Amish
+
+- Nothing new to decide. Open decisions are "None"; R2 and R4 are settled by the TRL 4 drill and timed trial.
+- The photoreal renders (`media/render-*.png`), card and social preview still show the galvanised steel frame; re-render on the Mac from the re-exported scenes.
+
+### Safety
+
+- The aluminium frame has smaller strength margins than the steel one, and aluminium beside a weld is about half as strong as the plate: no added or repair welds, every weld inspected (S1), and the TRL 4 proof test must look for permanent set in the frame.
+- The collar holds only a downward pull: the 300 mm drill rule is a safety rule, not a preference (S6). Nobody stands under the bag while it is hauled up.
+- The kit is not certified equipment, and nobody is lowered with it before the proof test and a dummy drill at low height.
+
+## 2026-10-04: photoreal renders redone after the round-2 and round-3 decisions
+
+Views: hero, exploded, detail; cards regenerated; image_qc passes and `render.py --check` has no FAIL.

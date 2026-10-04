@@ -1,6 +1,7 @@
-"""TrunkBelay product appearance model (build123d), TRL 3, constructable design (TKB-DDR-002; aluminium frame, TKB-DDR-003).
+"""TrunkBelay product appearance model (build123d), TRL 3, constructable design (TKB-DDR-002), aluminium frame (TKB-DDR-003).
 
-Finished-product look for photoreal renders, built from the constructable model: every component of
+Finished-product look for photoreal renders, built from the constructable model (bare aluminium frame since
+TKB-DDR-003): every component of
 cad/src/model.py build_components() is used as it is (spine with its slots and eyes, the two bearing
 bars, eye doubler rings, cleat cheeks, rubber pads and screws, keeper and lock pin, the 110-link chain
 with its master link, the sleeve, the tether quick link, both carabiners, the descender and the rope),
@@ -44,8 +45,8 @@ RENDER_VIEWS = [
              "standing in the slots of the spine top, the cheeks, the keeper over both slots and the ball-lock pin"},
 ]
 
-C_GALV = "#A9B0B8"      # galvanised steel (quick link)
-C_MILL = "#C9CDD2"      # mill-finish aluminium 6082-T6 frame (TKB-DDR-003)
+C_GALV = "#A9B0B8"      # zinc-plated and stainless steel fittings
+C_AL6082 = "#D3D7DB"    # bare 6082-T6 aluminium frame, wire-brushed (TKB-DDR-003)
 C_ACCENT = "#0F766E"    # teal paint stripe on the keeper and pin lanyard
 C_RUBBER = "#1F2328"
 C_CHAIN = "#5B6168"
@@ -59,10 +60,10 @@ C_CLAY = "#B9B4AC"
 
 # model key: (display name, colour, material, group, BOM line, explode offset)
 LOOK = {
-    "spine": ("Spine plate, aluminium", C_MILL, "metal", "shell", 1, (150, 0, 0)),
-    "bars": ("Bearing bars, aluminium", C_MILL, "metal", "shell", 2, (-60, 0, -200)),
-    "doublers": ("Eye doubler rings, aluminium", C_MILL, "metal", "shell", 3, (150, 0, -150)),
-    "cheeks": ("Cleat cheeks, aluminium", C_MILL, "metal", "shell", 4, (150, 0, 150)),
+    "spine": ("Spine plate, aluminium 6082-T6", C_AL6082, "metal", "shell", 1, (150, 0, 0)),
+    "bars": ("Bearing bars, aluminium 50 x 40 x 3", C_AL6082, "metal", "shell", 2, (-60, 0, -200)),
+    "doublers": ("Eye doubler rings, aluminium", C_AL6082, "metal", "shell", 3, (150, 0, -150)),
+    "cheeks": ("Cleat cheeks, aluminium 8 mm", C_AL6082, "metal", "shell", 4, (150, 0, 150)),
     "pads": ("Rubber bark pads", C_RUBBER, "rubber", "shell", 6, (-200, 0, -200)),
     "pad_screws": ("Pad screws, stainless", C_GALV, "metal", "shell", 7, (-200, 0, -200)),
     "keeper": ("Keeper, painted steel", C_ACCENT, "painted", "shell", 9, (150, 0, 300)),
@@ -71,7 +72,7 @@ LOOK = {
     "chain_tail_a": ("Chain fixed end", C_CHAIN, "metal", "shell", 11, (150, 150, 0)),
     "chain_tail_b": ("Chain adjustable end with master link", C_CHAIN, "metal", "shell", 11, (150, -200, 0)),
     "sleeve": ("Chain sleeve, tubular webbing", C_SLEEVE, "fabric", "shell", 15, (-400, 0, 200)),
-    "maillon": ("Tether quick link, galvanised", C_GALV, "metal", "shell", 14, (150, 200, -250)),
+    "maillon": ("Tether quick link, zinc plated", C_GALV, "metal", "shell", 14, (150, 200, -250)),
     "carab_main": ("Load carabiner, aluminium", C_ALU, "metal", "internal", 16, (350, 0, -250)),
     "carab_brake": ("Brake carabiner, aluminium", C_ALU, "metal", "internal", 16, (200, 0, -350)),
     "descender": ("Auto-locking descender", C_DESC, "painted", "internal", 17, (500, 0, -350)),
@@ -86,8 +87,8 @@ def _rope(C):
 def _label(D):
     """Safe working load label on the spine's +Y face, between the eyes and the lightening hole."""
     P = M.PARAMS
-    x = D["x_s"] + 112
-    return Pos(x, -P["spine_t"] / 2 - 0.4, 62) * Box(44, 0.8, 16)
+    x = D["x_s"] + 120
+    return Pos(x, -P["spine_t"] / 2 - 0.4, 66) * Box(40, 0.8, 16)
 
 
 def _trunk(D):

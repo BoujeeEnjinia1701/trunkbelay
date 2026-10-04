@@ -16,7 +16,7 @@ revisions:
 - version: "0.2"
   date: '2026-10-03'
   author: Amish Chadha
-  change: Round 2 decisions (TKB-DDR-003); aluminium 6082-T6 frame, TIG welded and not galvanised; tag line and shoulder pouch; victim set packed pre-rigged
+  change: Amish's decisions carried out (TKB-DDR-003); aluminium frame, tag line and micro pulley, pre-rigged victim set, drill rule
 ---
 
 # TrunkBelay prototype build plan
@@ -29,32 +29,35 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order.*
 
-The prototype is a rescue kit that lets one climber anchor and lower another who is stranded on a coconut palm. Figure 1 shows its groups of parts in the order you make or fit them. The collar frame is one TIG-welded aluminium 6082-T6 piece: a 5 mm spine plate with two rubber-faced bearing bars in a V at its foot, two chain slots in its top stiffened by a cheek plate on each face, and a load eye and a spare eye at its outer end. A 6 mm grade 80 chain wraps the trunk once and is held in the slots by a sheet-steel keeper and a ball-lock pin. An auto-locking descender, three carabiners, 30 m of rope, an evacuation triangle, a chest sling, a rope bag, a 4 mm tag line and a shoulder pouch complete the kit. The frame parts are cut, drilled and TIG welded from plate and box section and left bare; the pads are cut from rubber sheet; the keeper is cut and bent from sheet; everything else is bought. The parts cost about USD 802 from the bill of materials (estimate).
+The prototype is a rescue kit that lets one climber anchor and lower another who is stranded on a coconut palm. Figure 1 shows its 18 groups of parts in the order you make or fit them. The collar frame is one TIG-welded aluminium piece (6082-T6): a 5 mm spine plate with two rubber-faced bearing bars in a V at its foot, two chain slots in its top stiffened by a cheek plate on each face, and a load eye and a spare eye at its outer end. A 6 mm grade 80 chain wraps the trunk once and is held in the slots by a sheet-steel keeper and a ball-lock pin. An auto-locking descender, three carabiners, 30 m of rope, an evacuation triangle, a chest sling, a rope bag and a 4 mm tag line with a micro pulley complete the kit. The rescuer climbs with the collar, the chain, the descender and two carabiners, about 4.6 kg; the helpers on the ground haul the bag with the rope and the pre-rigged victim set up on the tag line. The frame parts are profile cut, drilled and TIG welded from aluminium plate and box section and are not galvanised; the pads are cut from rubber sheet; the keeper is cut and bent from steel sheet; everything else is bought. The parts cost about USD 826 from the bill of materials.
 
-> **Safety:** TrunkBelay holds a person at height. The build involves cutting, drilling, AC TIG welding of aluminium (ultraviolet light, ozone and fumes) and deburring. Nothing in this plan puts a person on the kit. The first assembly is done on a 300 mm wooden test post at the bench. Nobody is lowered with it, and it is not taken up a palm, until the collar has been proof-tested at 2.5 kN on cut trunk sections and the drill has been run with a dummy at low height (the safety stops in section 6); that is TRL 4 work.
+> **Safety:** TrunkBelay holds a person at height. The build involves profile cutting, drilling, TIG welding of aluminium (strong ultraviolet light and fumes; the weld zone is weaker than the parent metal) and grinding. Nothing in this plan puts a person on the kit. The first assembly is done on a 300 mm wooden test post at the bench. Nobody is lowered with it, and it is not taken up a palm, until the collar has been proof-tested at 2.5 kN on cut trunk sections and the drill has been run with a dummy at low height (the safety stops in section 6); that is TRL 4 work.
 
 ## 2. What changed to make it buildable
 
-The concept showed what the kit does; its parts had no thicknesses, joints or fixings. Each change keeps what the kit does and is recorded in decision record TKB-DDR-002, decided by Amish under his pre-approvals of 2026-10-03. Amish's round 2 decisions of the same day (TKB-DDR-003) then changed the frame material to aluminium 6082-T6, TIG welded and not galvanised, added a tag line and shoulder pouch so the helpers keep the rope bag on the ground, and packed the victim set pre-rigged; Table 1 shows the design as it now stands.
+The concept showed what the kit does; its parts had no thicknesses, joints or fixings. Each change keeps what the kit does and is recorded in decision record TKB-DDR-002, decided by Amish under his pre-approvals of 2026-10-03. The last four rows carry out Amish's decisions on the requirements (TKB-DDR-003).
 
 *Table 1. Changes from the concept.*
 
 | Component | The concept had | The buildable design has | Why |
 | --- | --- | --- | --- |
-| Bark bearing | A padded curved plate | Two aluminium box bars, 70 x 30 x 5, in a 120 deg V, each with a 10 mm rubber pad (Figures 6 and 10) | Fits every trunk from 200 to 450 mm on two lines |
-| Frame | Not defined | One 5 mm aluminium spine plate carrying the bars, the chain slots and both eyes (Figure 2) | One plate ties every load together |
-| Cleat | A slotted cleat | Two 7.5 mm slots in the spine top with a notched 8 mm cheek on each face (Figure 12) | The chain pulls across the plate; the cheeks stop it twisting |
+| Bark bearing | A padded curved plate | Two aluminium box bars, 50 x 40 x 3 mm, in a 120 deg V, each with a 10 mm rubber pad (Figures 6 and 10) | Fits every trunk from 200 to 450 mm on two lines |
+| Frame | Not defined | One 5 mm spine plate carrying the bars, the chain slots and both eyes (Figure 2) | One plate ties every load together |
+| Cleat | A slotted cleat | Two 7.5 mm slots, 35 mm deep, in the spine top with a notched 8 mm cheek on each face (Figure 12) | The chain pulls across the plate; the cheeks stop it twisting |
 | Lock | Not defined | A bent sheet keeper over both slots, held by a ball-lock pin (Figure 12) | A link cannot lift out of its slot |
 | Fixed chain end | Not defined | In the front slot, its tail tied to the spare eye with a quick link (Figure 16) | The chain cannot be dropped at height |
-| Eyes | "On the collar" | 22 mm holes with a 6 mm ring welded each side, edges rounded (Figure 4) | A carabiner never bears on a thin plate edge |
+| Eyes | "On the collar" | 22 mm holes with a 4 mm ring welded each side, edges rounded (Figure 4) | A carabiner never bears on a thin plate edge |
 | Lever | Not defined | Load eye 150 mm out from the frame's front edge; chain 160 mm above its foot | Makes the collar grip harder as the load rises |
 | Chain padding | The plate | 600 mm of tubular webbing on the chain at the back of the trunk (Figure 15) | Spreads the chain's pressure on the bark |
 | Brake | A friction device | Auto-locking descender, brake strand turned over a second carabiner (Figure 17) | Halves the hand force; holds if the rescuer lets go |
-| Carrying | A bag carried up the trunk | The rescuer carries the collar, descender and a 4 mm tag line in a shoulder pouch; the rope bag stays with the helpers and the rope's end comes up on the tag line with the victim set pre-rigged (Figure 28) | 4.74 kg carried, inside the 5 kg of R7 |
+| Frame metal | Welded steel, galvanised | 6082-T6 aluminium, TIG welded, not galvanised; bars 50 x 40 x 3, cheeks 8 mm, spine top 10 mm higher, spare eye 15 mm further back | The rescuer carries under 5 kg (R7); sized on the weaker metal beside the welds |
+| Getting the kit up | Everything carried up the trunk | The helpers haul the rope bag up on a 4 mm tag line through a micro pulley on the rescuer's harness (Figure 28) | Takes 3.7 kg off the climb (R7) |
+| Victim set | Packed loose | Packed pre-rigged: rope loop, triangle waist loops and one end of the chest sling already on the victim carabiner (Figure 28) | Saves about 45 s at height (R4) |
+| Collar position | Drill as modelled | Drill rule kept: the collar at least 300 mm above the point where the rope meets the victim (S6) | The collar holds only a downward pull (R2) |
 
 ## 3. Making the components
 
-Make and check each component before the assembly step that needs it. Sizes are in millimetres. "Front" means toward the trunk; "back" means away from it, toward the load eye. Workshop tolerance is 0.5 mm unless a step says otherwise. The frame is aluminium 6082-T6. Weld it with AC TIG and ER5356 filler; fillets are 4 mm unless stated. Before welding, clean each joint with a stainless steel brush kept for aluminium and wipe it with solvent. Welding halves the strength of 6082-T6 beside the weld, and the sizes in the calculation note allow for that: weld only where this plan says, never add weld to repair or straighten a part, and never heat the frame. Dress every weld that a chain link, rope or carabiner could touch smooth and round with a file or a carbide burr (not a grinding disc loaded with steel). Mark every piece with paint marker.
+Make and check each component before the assembly step that needs it. Sizes are in millimetres. "Front" means toward the trunk; "back" means away from it, toward the load eye. Workshop tolerance is 0.5 mm unless a step says otherwise. TIG weld (AC) with ER5356 filler; fillets are 5 mm unless stated. Clean every joint with a stainless brush and solvent just before welding. Aluminium beside a weld is about half as strong as the plate, and the sizes allow for that: never add a weld the plan does not show, and never repair a cracked weld; make a new part. Grind every weld that a chain link, rope or carabiner could touch smooth and round. Mark every piece with paint marker.
 
 ### 3.1 Spine plate
 
@@ -62,16 +65,16 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 2. Spine plate making sketch (TKB-DWG-101).*
 
-**What it is and what it is made from.** The backbone of the collar frame. One piece of 5 mm aluminium 6082-T6 plate.
+**What it is and what it is made from.** The backbone of the collar frame. One piece of 5 mm 6082-T6 aluminium plate.
 
 **How to make it.**
 
-1. Have the outline cut (waterjet or laser): 175 long along the bottom, 175 high at the front edge, 55 high at the back end, the top level for 60 back from the front edge and then sloping down to the back end.
-2. Have these holes cut with it: the load eye, 22, centred 150 back from the front edge and 28 up from the bottom; the spare eye, 22, at 70 back and 28 up; a 36 lightening hole at 85 back and 90 up.
-3. Have the two chain slots cut down from the top edge: each 7.5 wide and 25 deep, centred 15 and 43 back from the front edge. They must be square and clean; file off every burr.
+1. Have the outline profile cut (waterjet, or plasma with the edges filed back 1 mm): 175 long along the bottom, 185 high at the front edge, 55 high at the back end, the top level for 60 back from the front edge and then sloping down to the back end.
+2. Have these holes cut with it: the load eye, 22, centred 150 back from the front edge and 28 up from the bottom; the spare eye, 22, at 85 back and 28 up; a 36 lightening hole at 85 back and 90 up.
+3. Have the two chain slots cut down from the top edge: each 7.5 wide and 35 deep, centred 15 and 43 back from the front edge. They must be square and clean; file off every burr.
 4. Do not drill the pin hole yet; it is drilled through the cheeks and the plate together (section 3.4).
 
-**How it fits the parts next to it.** The bearing bars are welded to both faces of its foot, the eye rings round its eyes and the cheeks on both faces of its top (Figure 8). The plate must stay 5 mm, even in aluminium: a chain link has to reach right through a slot so that the next link bears on the far face, and a link with a 6.3 mm wire leaves only 5.4 mm.
+**How it fits the parts next to it.** The bearing bars are welded to both faces of its foot, the eye rings round its eyes and the cheeks on both faces of its top (Figure 8). The plate must stay 5 mm: a chain link has to reach right through a slot so that the next link bears on the far face.
 
 **Check.** A 7 mm bar slides down each slot to the bottom; a 22 mm bar passes each eye.
 
@@ -81,16 +84,16 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 3. Eye doubler ring making sketch (TKB-DWG-102).*
 
-**What it is and what it is made from.** Four rings that thicken both eyes so a carabiner bears on a wide, rounded edge. 6 mm aluminium 6082-T6, 50 outside, 22 bore.
+**What it is and what it is made from.** Four rings that thicken both eyes so a carabiner bears on a wide, rounded edge. 4 mm 6082-T6 aluminium, 50 outside, 22 bore. Keep them 4 mm: the 8 mm quick link has to pass round the spare eye.
 
 **How to make it.**
 
-1. Cut four rings from 6 mm plate (waterjet or laser), or turn them from 50 mm 6082-T6 round bar.
+1. Cut four rings from 4 mm aluminium plate. Do not use steel washers.
 2. Push a 22 mm pin through an eye, slide a ring on each side and clamp them flat to the plate.
-3. TIG weld round the outside of each ring with a 4 mm fillet. Keep weld out of the bore.
+3. TIG weld round the outside of each ring with a 3 mm fillet. Keep weld out of the bore.
 4. After welding, round both bore edges of each eye to a 2 mm radius with a file or rotary burr.
 
-**How it fits the parts next to it.** Ring, plate and ring make an eye 17 thick with one smooth bore. The load carabiner (Figure 4) and the brake carabiner and quick link (Figure 16) bear on the bottom of these bores.
+**How it fits the parts next to it.** Ring, plate and ring make an eye 13 thick with one smooth bore. The load carabiner (Figure 4) and the brake carabiner and quick link (Figure 16) bear on the bottom of these bores.
 
 ![Figure 4. The load eye, cut open, with its carabiner](05-build-plan/joint-02.png)
 
@@ -104,16 +107,16 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 5. Bearing bar making sketch (TKB-DWG-103).*
 
-**What it is and what it is made from.** The two short bars that press on the bark, one a mirror image of the other. Aluminium 6082-T6 rectangular tube 70 x 30 x 5 mm. The section is larger than the steel bar it replaces because the weld at the spine halves the strength of the aluminium where the bending is greatest (TKB-CAL-001, C1).
+**What it is and what it is made from.** The two short bars that press on the bark, one a mirror image of the other. Aluminium box section, 6082-T6, 50 x 40 x 3 mm.
 
 **How to make it.**
 
-1. Cut two lengths so that the 70 mm face that will carry the pad (the front face) is 175 long. Cut the inner end at 30 deg from square, so it lies flat against the spine when the bar points 60 deg away from it; make the second bar the mirror image.
-2. Drill two 6.5 holes through the front face only, 53 and 138 from the inner end and 25 up from the bottom edge.
-3. TIG weld a 4 mm cap plate on the outer end, all round.
-4. Drill a 6 mm drain hole in the bottom face near each end, so rain water runs out.
+1. Cut two lengths so that the 50 mm face that will carry the pad (the front face) is 175 long. Cut the inner end at 30 deg from square, so it lies flat against the spine when the bar points 60 deg away from it; make the second bar the mirror image.
+2. Drill two 9.0 holes through the front face only, on its centre line, 53 and 138 from the inner end, and countersink them lightly for the rivet nuts' heads.
+3. TIG weld a 3 mm aluminium cap plate on the outer end, all round. No vent hole is needed: the frame is not galvanised.
+4. After the frame is welded (section 3.5), set an M6 countersunk-head stainless rivet nut in each hole, flush with the face, with barrier paste on its body.
 
-**How it fits the parts next to it.** The bars stand with their 70 mm faces upright and their bottoms level with the bottom of the spine. Their inner ends lie flat on the two faces of the spine at its foot, front faces toward the trunk, so the two front faces make a 120 deg V; if extended, they would meet 8 in front of the spine's front edge. A 4 mm TIG fillet runs all round each bar end on the spine face (Figure 6). The pads cover the bottom 50 mm of each front face.
+**How it fits the parts next to it.** The bars stand with their 50 mm faces upright and their bottoms level with the bottom of the spine. Their inner ends lie flat on the two faces of the spine at its foot, front faces toward the trunk, so the two front faces make a 120 deg V; if extended, they would meet 8 in front of the spine's front edge. A 5 mm fillet runs all round each bar end on the spine face (Figure 6). The back of each bar ends about 12 short of the spare eye's rings, which leaves room for both welds.
 
 ![Figure 6. The bearing bars on the spine foot, with the pads](05-build-plan/joint-01.png)
 
@@ -127,14 +130,14 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 7. Cleat cheek making sketch (TKB-DWG-104).*
 
-**What it is and what it is made from.** Two small plates that stiffen the slotted top of the spine. 8 mm aluminium 6082-T6 plate, 60 long and 45 high.
+**What it is and what it is made from.** Two small plates that stiffen the slotted top of the spine. 8 mm 6082-T6 aluminium plate, 60 long and 55 high.
 
 **How to make it.**
 
-1. Cut two plates 60 x 45.
-2. Cut two notches in each from the top edge, 22 wide and 27 deep, centred 15 and 43 from the front end.
+1. Cut two plates 60 x 55.
+2. Cut two notches in each from the top edge, 22 wide and 37 deep, centred 15 and 43 from the front end.
 3. Clamp one on each face of the spine top, top edges flush with the spine top and front ends flush with its front edge, notches round the slots.
-4. TIG weld along the bottom edge and the back end of each cheek only. Keep the notches and the top edge clean.
+4. Weld along the bottom edge and the back end of each cheek only. Keep the notches and the top edge clean.
 5. Drill an 8.5 hole through cheek, spine and cheek together, 29 back from the front edge and 139 up from the bottom of the frame.
 
 **How it fits the parts next to it.** Inside each notch, 7.25 of the 5 mm spine shows on each side of the slot. That is where the chain links bear (Figure 12). The keeper's legs slide over the cheeks between the notches and the lock pin goes through the hole.
@@ -147,19 +150,19 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 8. Collar frame weldment making sketch (TKB-DWG-105).*
 
-**What it is and what it is made from.** The spine, bars, eye rings and cheeks TIG welded into one aluminium piece and left bare. Aluminium 6082-T6 does not need galvanising outdoors; it is not painted.
+**What it is and what it is made from.** The spine, bars, eye rings and cheeks TIG welded into one aluminium piece. It is left bare: 6082 does not rust.
 
 **How to make it.**
 
-1. Weld the bars to the spine foot in a jig that holds their front faces at 120 deg and their bottoms level with the spine's bottom edge (section 3.3).
+1. TIG weld the bars to the spine foot in a jig that holds their front faces at 120 deg and their bottoms level with the spine's bottom edge (section 3.3).
 2. Weld the eye rings (section 3.2), then the cheeks, and drill the pin hole (section 3.4).
-3. Dress the welds and remove any spatter, especially on the bar faces, in the slots and in the eyes; deburr every edge a chain link can touch.
-4. Run a 7 mm bar down both slots and the 8 mm pin through the pin hole by hand.
-5. Stamp "SWL 100 kg ONE PERSON", the frame number and the year on the spine, away from the welds.
+3. Clean the bar faces, the slots and the eyes with a stainless wire brush; file any weld bead that a chain link, rope or carabiner could touch smooth and round.
+4. Run a 7 mm bar down both slots and an 8 mm pin through the pin hole by hand.
+5. Stamp "SWL 100 kg ONE PERSON", the frame number and the year on the spine.
 
 **How it fits the parts next to it.** It carries everything else: the pads on its bars, the chain in its slots, the keeper and pin on its top, the quick link and brake carabiner in its spare eye and the load carabiner in its load eye.
 
-**Check.** No crack, porosity at the surface, undercut or missing weld; slots and pin hole clear; the weldment weighs about 1.4 kg. Inspect the slot edges for burrs and, at every later inspection, for wear by the steel chain.
+**Check.** No crack, undercut, porosity or missing weld (a dye penetrant check on the bar welds is worth the small cost); slots and pin hole clear; the frame weighs about 1.0 kg.
 
 ### 3.6 Rubber bark pads
 
@@ -173,8 +176,8 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 1. Cut two pads 155 x 50.
 2. Drill two 6.5 holes on each pad's centre line, 35 from each end, and counterbore them 13 across and 4 deep from the face that will touch the bark.
-3. Abrade the bar's front face, degrease it, spread contact adhesive on the pad and on the face, let it go tacky and press the pad on, its inner end 15 from where the two front faces would meet, its holes over the bar's holes.
-4. Fit an M6 x 30 countersunk stainless screw through each hole, with anti-seize on the thread, and a washer and nyloc nut inside the bar (reach in from the inner end before the bar is welded, or use stainless rivet nuts in the bar face instead).
+3. Spread contact adhesive on the pad and on the bar's front face, let it go tacky and press the pad on, its inner end 15 from where the two front faces would meet, its holes over the bar's holes.
+4. Fit an M6 x 30 countersunk stainless screw through each hole into the rivet nut in the bar face, with threadlocker on the thread.
 
 **How it fits the parts next to it.** The screw heads sit 3 below the rubber face, so only rubber touches the bark (Figure 10).
 
@@ -194,22 +197,22 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 **How to make it.**
 
-1. Cut a cross from 3 mm sheet: a bridge 56 long and 28 wide, with a leg 6 wide and 43 long from the middle of each long side.
-2. Bend both legs down 90 deg in a vice so they stand 22 apart inside, a sliding fit over the two 8 mm cheeks and the 5 mm spine.
-3. Drill an 8.5 hole through both legs, 39 below the top face of the bridge.
+1. Cut a cross from 3 mm steel sheet: a bridge 56 long and 27 wide, with a leg 6 wide and 53 long from the middle of each long side.
+2. Bend both legs down 90 deg in a vice so they stand 21 apart inside.
+3. Drill an 8.5 hole through both legs, 49 below the top face of the bridge.
 4. Have it zinc plated. Tie the lock pin's lanyard to one leg.
 
 **How it fits the parts next to it.** The legs slide down over the two cheeks between the notches; the bridge lies on the cleat top across both slot mouths; the lock pin passes through the legs, the cheeks and the spine (Figure 12).
 
 ![Figure 12. The chain cleat with both chain links, keeper and pin](05-build-plan/joint-03.png)
 
-*Figure 12. Joint 3: the chain cleat. Each standing link fills a 7.5 mm slot; the flat links on either side bear on the 5 mm aluminium spine inside the cheek notches; the keeper and pin hold both links down. This web has the least margin in the frame (TKB-CAL-001, C4).*
+*Figure 12. Joint 3: the chain cleat. Each standing link fills a 7.5 mm slot; the flat links on either side bear on the 5 mm spine inside the notches of the 8 mm cheeks; the keeper and pin hold both links down.*
 
 **Check.** The keeper drops on and off by hand; with it on, the pin goes through and clicks.
 
 ### 3.8 Lock pin (bought)
 
-Buy an 8 mm stainless ball-lock pin with a 28 mm grip, a button head and a 300 mm stainless lanyard. Check that it locks through the keeper, cheeks and spine and cannot be pulled out without pressing the button. Tie the lanyard to the keeper.
+Buy an 8 mm stainless ball-lock pin with a 27 mm grip, a button head and a 300 mm stainless lanyard. Check that it locks through the keeper, cheeks and spine and cannot be pulled out without pressing the button. Tie the lanyard to the keeper.
 
 ### 3.9 Chain set
 
@@ -272,13 +275,18 @@ The load carabiner hangs in the load eye with the descender on it. The rope's vi
 
 *Figure 17. Joint 7: the load strand runs straight down to the victim; the brake strand turns over the brake carabiner and runs down to the bag on the ground.*
 
-### 3.13 Evacuation triangle, chest sling, bag, tag line and pouch (bought)
+### 3.13 Evacuation triangle, chest sling and bag (bought)
 
 - One evacuation triangle, EN 1498 class B or equal.
 - One 120 cm sewn sling, 22 kN, used as the chest sling.
-- One 35 l rope bag with shoulder straps and a clip loop. It stays with the helpers on the ground.
-- 30 m of 4 mm polyamide accessory cord as the tag line. Tie a small loop in each end.
-- One 10 l drawstring shoulder pouch for the collar, the descender, the load and brake carabiners and the tag line.
+- One 35 l rope bag with shoulder straps and a clip loop.
+
+### 3.14 Tag line and micro pulley (bought)
+
+- 55 m of 4 mm polyester accessory cord, both ends sealed with a hot knife. Tie a small figure-eight loop in one end (the bag end).
+- One micro pulley for 4 to 8 mm cord, on a small screw-gate carabiner.
+
+The pulley clips to the rescuer's harness. The cord runs through it, and both ends stay on the ground: one tied to the bag's clip loop, the other in the helpers' hands. As the rescuer climbs, the two legs of cord grow; at the top the helpers pull their end and the bag rises to the rescuer (Figure 28).
 
 ## 4. Putting it together
 
@@ -290,7 +298,7 @@ Assemble at the bench with the frame on a 300 mm wooden post standing upright in
 
 *Figure 18. Step 1: bearing bars to the spine foot.*
 
-Clamp the spine upright in the jig and the two bars against its faces, front faces at 120 deg and bottoms level with the spine. Tack, check the angle, then TIG weld all round each bar end with 4 mm fillets.
+Clamp the spine upright in the jig and the two bars against its faces, front faces at 120 deg and bottoms level with the spine. Tack, check the angle, then TIG weld all round each bar end with 5 mm fillets.
 
 ### Step 2: weld the eye rings
 
@@ -298,15 +306,15 @@ Clamp the spine upright in the jig and the two bars against its faces, front fac
 
 *Figure 19. Step 2: four doubler rings, two at each eye.*
 
-Line the rings up on a 22 mm pin through each eye and TIG weld round the outside with 4 mm fillets.
+Line the rings up on a 22 mm pin through each eye and TIG weld round the outside with 3 mm fillets.
 
-### Step 3: weld the cheeks, drill the pin hole
+### Step 3: weld the cheeks, drill the pin hole, set the rivet nuts
 
 ![Figure 20. Step 3](05-build-plan/step-03.png)
 
 *Figure 20. Step 3: cheeks on both faces of the spine top.*
 
-Weld the cheeks flush with the spine top and front edge, drill the 8.5 pin hole through all three plates and clean up (section 3.5). The frame is not galvanised. **Hold point:** inspect the welds and clear the slots and pin hole before going on.
+Weld the cheeks flush with the spine top and front edge, drill the 8.5 pin hole through all three plates, clean up (section 3.5) and set the four rivet nuts in the bar faces (section 3.3). **Hold point:** inspect the welds and clear the slots and pin hole before going on.
 
 ### Step 4: bond and screw the pads
 
@@ -314,7 +322,7 @@ Weld the cheeks flush with the spine top and front edge, drill the 8.5 pin hole 
 
 *Figure 21. Step 4: a rubber pad on each bar's front face.*
 
-Bond each pad with contact adhesive, then fit its two countersunk screws, washers and nyloc nuts. Leave the adhesive 24 hours before any load.
+Bond each pad with contact adhesive, then fit its two countersunk screws into the rivet nuts. Leave the adhesive 24 hours before any load.
 
 ### Step 5: fit the fixed end and its tether
 
@@ -360,13 +368,15 @@ Clip the load carabiner through the load eye, gate away from the trunk, and scre
 
 Reeve the rope through the descender as its maker shows, with the figure-eight loop on the load side. Clip the brake carabiner into the spare eye beside the quick link and lay the brake strand over it.
 
-### Step 10: pre-rig the victim set and pack
+### Step 10: make up the pre-rigged victim set and pack
 
 ![Figure 28. Step 10](05-build-plan/step-10.png)
 
-*Figure 28. Step 10: the victim set pre-rigged on the victim carabiner, the rope bag it is packed in, and the shoulder pouch with the tag line.*
+*Figure 28. Step 10: the pre-rigged victim set (the rope's loop, the triangle's two waist loops and one end of the chest sling on the victim carabiner), the bag they are packed in, and the tag line with its micro pulley.*
 
-Pack the victim set pre-rigged on the victim carabiner (TKB-DDR-003, decision 42 B). Clip the rope's figure-eight loop, the triangle's two side loops and one end of the chest sling into the victim carabiner and screw it shut; the triangle's crotch loop is left free, so at height the rescuer passes the triangle round the hips and the sling round the chest and makes that one clip. Flake the rope into the rope bag, victim end last, and lay the pre-rigged victim set on top, folded so it comes out ready to fit. The rope bag stays with the helpers. Pack the collar with the descender clipped on, the brake carabiner and the coiled tag line in the shoulder pouch, which the rescuer carries.
+Clip the victim carabiner into the rope's figure-eight loop. Clip in the triangle's two waist loops and one end of the chest sling, and screw the gate shut. At height only two clips are left to make: the triangle's crotch loop and the sling's free end. Flake the rope into the bag, victim end on top, then lay the pre-rigged set on top of it, folded so it comes out ready to fit. Tie the tag line's loop to the bag's clip loop. The collar, chain, descender and the load and brake carabiners go on the rescuer's harness; the micro pulley goes on with the tag line through it.
+
+In use, the order at height is: fix the collar; the helpers haul the bag up and the rescuer clips it to the spare eye; reeve the rope; lower the bag on its rope end; fit the triangle and sling; make the last two clips and take in all slack. The collar is always placed at least 300 mm above the point where the rope meets the victim.
 
 ## 5. First checks
 
@@ -378,11 +388,11 @@ These are the first checks for the TRL 4 build. The plan lists them; a TRL 4 tes
 | --- | --- | --- | --- |
 | Fit on the range | R3 | Fit the collar to 200, 300 and 450 mm posts or trunks, no tools | Both pads touch, the painted link drops in, keeper and pin go on each time |
 | Static hold | R1 | On a cut, wet trunk section in a proof rig, hang 2.5 kN from the load eye for 3 minutes | Slip of 20 mm or less, no damage to frame or chain |
-| Upward pull (misuse test) | R2 | With the collar below a 100 kg test mass, lower the mass past the collar (rig only, no person). This case is excluded by the drill rule; the test shows what happens if the rule is broken | Result recorded; the drill rule stands whatever the result (TKB-DDR-003, decision 41 A) |
-| Rigging time | R4 | Timed drill at 3 m with a dummy, trained climber, including the tag-line haul and the pre-rigged victim set; note whether the rescuer could reach to set the collar 300 mm or more above the attachment | Collar fixed and dummy clipped in within 5 minutes; if the rescuer cannot reach above the attachment, the double-acting collar is the fallback (TKB-DDR-003, decision 41) |
+| Upward pull | R2 | Misuse test only: with the collar below a 100 kg test mass, lower the mass past the collar (rig only, no person); in the timed drill, check the rescuer can reach to set the collar at least 300 mm above the attachment | Recorded; if a rescuer cannot reach above the attachment, the double-acting collar (the recorded fallback) is built |
+| Rigging time | R4 | Timed drill at 3 m with a dummy, trained climber, the bag hauled on the tag line and the victim set pre-rigged | Collar fixed and dummy clipped in within 5 minutes |
 | Lowering | R5 | Lower a 100 kg test mass 10 m, measuring speed and brake hand force | Speed held under 0.5 m/s, hand force under 150 N |
 | Rope | R6 | Measure the rope | 30 m, knots tied and dressed |
-| Mass | R7 | Weigh the packed shoulder pouch (what the rescuer carries) and the rope bag | Pouch under 5 kg |
+| Mass | R7 | Weigh what the rescuer carries up (collar, chain, descender, two carabiners, micro pulley and the tag line) and the hauled bag | Carried mass under 5 kg |
 | Bark | R8 | Inspect the trunk section after the hold and lowering tests | No cut deeper than 5 mm |
 | Drill | R10 | Supervised drill after a half-day session, with the training partner | Each trainee completes it |
 
@@ -390,17 +400,17 @@ These are the first checks for the TRL 4 build. The plan lists them; a TRL 4 tes
 
 Work stops at each of these points until what is listed is true.
 
-- **S1, after welding:** every weld inspected by eye and with dye penetrant; no crack, surface porosity, undercut or missing fillet; slots and eyes free of spatter and burrs.
+- **S1, after welding:** every weld inspected; no crack, undercut, porosity or missing fillet; no repair weld on a crack; slots and eyes clean and smooth.
 - **S2, before any load:** pads bonded for 24 hours; slots, pin hole and eyes clear; chain certificate checked; every carabiner and quick link gate screwed shut.
 - **S3, before the proof test:** the proof rig holds the trunk section and the load independently of the collar, and nobody stands under or beside the load.
 - **S4, before a person goes near the kit at height:** the collar has held 2.5 kN for 3 minutes on a wet cut trunk section with 20 mm of slip or less, and the frame shows no permanent bend.
 - **S5, before any drill with a person:** the drill has been run with a 100 kg dummy at 3 m height, with a separate backup rope on the dummy, and the rescuers have been trained; emergency services are always called first in a real rescue.
-- **S6, before every use:** keeper on and pin clicked; the painted link or the right link in the rear slot; all slack taken in before the victim's feet are freed, so the victim never drops onto the collar; the collar at least 300 mm above the point where the rope meets the victim.
+- **S6, before every use:** keeper on and pin clicked; the painted link or the right link in the rear slot; all slack taken in before the victim's feet are freed, so the victim never drops onto the collar; the collar at least 300 mm above the point where the rope meets the victim (the collar holds only a downward pull); nobody stands under the bag while it is hauled up.
 
 ## 7. Tools, skills and workspace
 
-- **Tools:** waterjet or laser cutting (bought in), drill press with 6, 6.5, 8, 8.5 and 22 mm bits and a 13 mm counterbore, files and carbide burrs, a stainless brush kept for aluminium, an AC TIG welder with ER5356 filler, clamps and a simple angle jig, dye penetrant kit, vice, hot knife, spanners, contact adhesive and spreader, paint marker, letter stamps.
-- **Skills:** a welder qualified on aluminium, able to make sound 4 mm TIG fillets on 5 mm plate and box section; someone trained in rope rescue to reeve and check the descender, and to run the drills.
+- **Tools:** profile cutting (bought in), drill press with 6.5, 8, 8.5 and 22 mm bits and a 13 mm counterbore, files and a rotary burr, stainless wire brush, AC TIG welder with ER5356 filler, clamps and a simple angle jig, vice, hot knife, spanners, contact adhesive and spreader, barrier paste, paint marker, letter stamps.
+- **Skills:** a welder able to make sound TIG fillets on thin aluminium box section; someone trained in rope rescue to reeve and check the descender, and to run the drills.
 - **Workspace:** a fabrication bench with ventilation and screens for TIG welding, and a 300 mm wooden post held upright for assembly and fit checks.
 
 ## 8. Where the numbers come from
@@ -410,4 +420,4 @@ Work stops at each of these points until what is listed is true.
 - Calculations: `docs/04-calcs/01-sizing.md` (TKB-CAL-001) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
 - Pictures: `cad/src/build_plan_media.py`.
-- Decisions: `docs/decisions/0001-trl2-review-decisions.md`, `docs/decisions/0002-design-for-construction.md`, `docs/decisions/0003-requirement-decisions-round2.md` and `docs/06-design-decisions.md`.
+- Decisions: `docs/decisions/0001-trl2-review-decisions.md`, `docs/decisions/0002-design-for-construction.md`, `docs/decisions/0003-amish-requirement-decisions.md` and `docs/06-design-decisions.md`.

@@ -88,43 +88,37 @@ out("B5", f"Settling at {W_proof} kN: pads squash {squash:.1f} mm at {p_pad:.1f}
           f"the frame drops about {settle:.0f} mm as it cocks (R1 allows 20 mm of slip)", settle, "mm")
 
 # ------------------------------------------------------------------ C. strength at the R1 load
-# Frame: aluminium 6082-T6, TIG welded (TKB-DDR-003, decision 43 C). Parent metal 0.2 % proof 260 MPa; in the
-# heat-affected zone of a TIG weld (about 30 mm each side for parts up to 6 mm thick, EN 1999-1-1) 125 MPa.
-# Every frame check below is taken in the heat-affected zone, because every highly loaded section is within
-# 30 mm of a weld; ER5356 weld metal (210 MPa characteristic) is stronger than the zone beside it.
-f_parent, f_haz = 260.0, 125.0
-fy = f_haz
+# frame in 6082-T6 aluminium, TIG welded (TKB-DDR-003). Every frame check uses the heat-affected-zone strength
+# (EN 1999-1-1: 0.2 % proof 125 MPa, ultimate 185 MPa), which is conservative away from the welds
+fy = 125.0                           # HAZ 0.2 % proof strength, MPa
+fu_haz = 185.0
+f_weld = 210.0                       # weld metal, ER5356 filler on 6082, MPa
 # bearing bars: cantilever from the spine, pad force at the contact point
 h_b, d_b, t_b = P["bar"]
 Z_bar = (h_b * d_b ** 3 - (h_b - 2 * t_b) * (d_b - 2 * t_b) ** 3) / (6 * d_b)
 worst = max(grip.values(), key=lambda v: v["F_pad"] * v["u"])
 M_bar = worst["F_pad"] * 1000 * (worst["u"] - P["spine_t"] / 2 / math.cos(math.radians(30)))
 s_bar = M_bar / Z_bar
-out("C1", f"Bearing bar (6082-T6 RHS {h_b:.0f} x {d_b:.0f} x {t_b:.0f}): {M_bar / 1e6:.2f} kN m at the spine weld, {s_bar:.0f} MPa, "
-          f"factor {fy / s_bar:.1f} on the heat-affected proof strength of {fy:.0f} MPa at the R1 load "
-          f"({fy / s_bar * W_proof / W_work:.1f} at the working load)", fy / s_bar, "")
-# the 40 % thicker steel section first costed (RHS 50 x 25 x 3.5) for comparison
-Z_40 = (50 * 25 ** 3 - 43 * 18 ** 3) / (6 * 25)
-out("C1a", f"For comparison, the bar first costed for the aluminium option (RHS 50 x 25 x 3.5, the steel bar 40 % thicker) "
-           f"would carry {M_bar / Z_40:.0f} MPa, factor {fy / (M_bar / Z_40):.2f} in the heat-affected zone at the R1 load; "
-           f"hence the larger section", fy / (M_bar / Z_40), "")
-# weld of each bar to the spine face: outline (bar depth / cos 30 deg + 5) x bar height, 4 mm fillets (throat 2.8 mm)
-throat, wd, wb = 2.8, d_b / math.cos(math.radians(30)) + 5.0, h_b
+out("C1", f"Bearing bar (aluminium RHS {h_b:.0f} x {d_b:.0f} x {t_b:.0f}): {M_bar / 1e6:.2f} kN m at the spine, {s_bar:.0f} MPa, factor "
+          f"{fy / s_bar:.2f} on the welded (HAZ) proof strength at the R1 load ({fy / s_bar * W_proof / W_work:.1f} at the working load) "
+          f"and {fu_haz / s_bar:.1f} on the HAZ ultimate strength", fy / s_bar, "")
+# weld of each bar to the spine face: outline about (depth / cos 30 deg + 5) x 50 mm, 5 mm fillets (throat 3.5 mm)
+throat, wd, wb = 3.5, d_b / math.cos(math.radians(30)) + 5, h_b
 S_w = throat * (wd ** 2 / 3 + wb * wd)
 s_w = M_bar / S_w
-out("C2", f"Bar to spine fillet welds (4 mm, all round): {s_w:.0f} MPa against {fy:.0f} MPa in the heat-affected zone beside them "
-          f"(ER5356 weld metal 210 MPa), factor {fy / s_w:.1f}", fy / s_w, "")
+out("C2", f"Bar to spine fillet welds (5 mm, all round, ER5356): {s_w:.0f} MPa against {f_weld:.0f} MPa weld metal strength, "
+          f"factor {f_weld / s_w:.1f}", f_weld / s_w, "")
 # spine arm: load on the eye, section through the spare eye and lightening hole region
 x0 = P["spine_set"]
 ex, ez = P["eye_main"]
 lx, lz, ld = P["light_hole"]
 x_cut = lx + ld / 2 + 5
-z_edge = 55 + (175 - x_cut) / 115 * 120
+z_edge = 55 + (175 - x_cut) / 115 * (P["spine_pts"][-1][1] - 55)
 Z_sp = P["spine_t"] * z_edge ** 2 / 6
 s_sp = W_proof * 1000 * (ex - x_cut) / Z_sp
 t_eye = P["spine_t"] + 2 * P["doubler"][1]
 s_bear = W_proof * 1000 / (P["carab"][0] * t_eye)
-tear = 2 * (P["spine_pts"][1][0] - ex - P["eye_d"] / 2) * t_eye * 0.577 * fy / 1000
+tear = 2 * (P["spine_pts"][1][0] - ex - P["eye_d"] / 2) * t_eye * 0.577 * fu_haz / 1000
 out("C3", f"Spine arm: {s_sp:.0f} MPa in bending beside the lightening hole; load eye {t_eye:.0f} mm thick with doublers, bearing "
           f"{s_bear:.0f} MPa under the carabiner bar, tear-out strength {tear:.0f} kN ({tear / W_proof:.0f} times the R1 load)",
     tear / W_proof, "")
@@ -139,10 +133,10 @@ t_tot = P["spine_t"] + 2 * P["cheek"][1]
 J = P["cheek"][0] * t_tot ** 3 / 3 * 0.5                         # halved for the notches
 tw = T_max * 1000 * (P["slots"][1] - P["slots"][0])
 tau = tw * t_tot / J
-out("C4", f"Chain cleat at {T_max:.1f} kN chain tension: {P['spine_t']:.0f} mm web ligament beside a slot {s_lig:.0f} MPa "
-          f"(factor {fy / s_lig:.1f} in the heat-affected zone, {f_parent / s_lig:.1f} on the parent metal; "
-          f"{fy / s_lig * W_proof / W_work:.1f} at the working load); twist between the two slots {tw / 1e6:.2f} kN m, {tau:.0f} MPa "
-          f"in the cheeked top (factor {0.577 * fy / tau:.1f}). The web cannot be thickened: a link must span it. Open question O5",
+out("C4", f"Chain cleat at {T_max:.1f} kN chain tension: web ligament beside a slot, {P['spine_pts'][-1][1] - P['slot_bottom']:.0f} mm "
+          f"deep, {s_lig:.0f} MPa (factor {fy / s_lig:.2f} on HAZ proof); twist between the two slots {tw / 1e6:.2f} kN m, "
+          f"{tau:.0f} MPa in the top with {P['cheek'][1]:.0f} mm cheeks (factor {0.577 * fy / tau:.1f}); the steel links bear on "
+          f"the aluminium web at about {T_max / 2 * 1000 / (P['wire'] * P['spine_t']):.0f} MPa (wear to confirm)",
     fy / s_lig, "")
 chain_mbl, chain_wll = 45.0, 11.2
 out("C5", f"Chain: {T_max:.1f} kN at most at the R1 load against a working load limit of {chain_wll} kN and a minimum breaking "
@@ -185,14 +179,14 @@ for d in (200.0, 300.0, 450.0):
     fits.append(f"{d:.0f} mm trunk: loop {L:.0f} mm ({math.ceil(L / P['pitch'])} links), bars touch the trunk {grip[d]['u']:.0f} mm "
                 f"along the pad, spine {grip[d]['gap']:.0f} mm clear of the bark")
 out("E2", "Fit: " + "; ".join(fits) + f"; the 110-link chain leaves at least 10 links of tail on a 450 mm trunk", None)
-# TKB-DDR-003: the helpers keep the rope bag on the ground and the rescuer hauls the rope's loop end up on a
-# 4 mm tag line (decision 43 C, about 45 s); the victim set comes up pre-rigged on the victim carabiner
-# (decision 42 B, about 45 s saved on fitting); the bag no longer has to be lowered.
 steps = [("Clip the frame to the trunk with the chain round it, link into slot, keeper and pin on", 60),
-         ("Haul the rope's loop end and the pre-rigged victim set up on the tag line", 45),
+         ("Helpers haul the rope bag up on the tag line through the micro pulley on the rescuer's harness; the rescuer "
+          "clips it to the spare eye", 45),
          ("Clip the descender to the load eye and reeve the rope; brake strand over the brake carabiner", 40),
-         ("Fit the pre-rigged evacuation triangle round the hips and the chest sling", 75),
-         ("Make the one clip at height (the triangle's crotch loop) and take in all slack", 30)]
+         ("Lower the bag on its rope end to the ground (helpers take the brake strand slack)", 20),
+         ("Fit the pre-rigged evacuation triangle round the hips and the chest sling (waist loops, sling and rope loop "
+          "already on the victim carabiner)", 90),
+         ("Clip the crotch loop and the chest sling's free end into the victim carabiner and take in all slack", 15)]
 t_rig = sum(t for _, t in steps)
 out("E3", "Rigging time once the rescuer is in position (estimate): "
           + "; ".join(f"{s} {t} s" for s, t in steps) + f"; total {t_rig / 60:.1f} min", t_rig / 60, "min")
@@ -200,22 +194,23 @@ out("E3", "Rigging time once the rescuer is in position (estimate): "
 # ------------------------------------------------------------------ F. mass (R7)
 C = M.build_components(P)
 mass = M.mass_table(P, C)
-frame = sum(mass[k] for k in ("spine", "bars", "doublers", "cheeks", "keeper", "pad_screws", "pads", "pin"))
-weldment = sum(mass[k] for k in ("spine", "bars", "doublers", "cheeks"))
+frame_keys = ("spine", "bars", "doublers", "cheeks")
+frame = sum(mass[k] for k in frame_keys + ("keeper", "pad_screws", "pads", "pin"))
 chain = mass["chain"] + mass["master_links"] + mass["sleeve"] + mass["maillon"]
 collar = frame + chain
 kit = sum(mass.values())
 carried = M.carried_mass(mass)
-out("F1", f"Mass: collar frame {frame:.2f} kg (aluminium weldment {weldment:.2f} kg), chain set {chain:.2f} kg, descender "
-          f"{mass['descender']:.2f} kg, carabiners {mass['carabiners']:.2f} kg, rope {mass['rope']:.2f} kg, triangle and sling "
-          f"{mass['triangle'] + mass['chest_sling']:.2f} kg, bag {mass['bag']:.2f} kg, tag line {mass['tag_line']:.2f} kg, "
-          f"pouch {mass['pouch']:.2f} kg", kit, "kg")
-out("F2", f"Carried up the trunk by the rescuer: {carried:.2f} kg (collar, descender, load and brake carabiners, tag line and "
-          f"pouch); R7 asks for under 5 kg, a margin of {(5 - carried) * 1000:.0f} g. The rope bag, rope and victim set "
-          f"({kit - carried:.1f} kg) stay with the helpers and are hauled up on the tag line. Whole kit {kit:.1f} kg", carried, "kg")
-steel_weldment = 2.22                 # kg, the galvanised steel weldment of TKB-DDR-002 (TKB-CAL-001 v0.1, F1)
-out("F3", f"The aluminium weldment ({weldment:.2f} kg) saves {steel_weldment - weldment:.2f} kg on the steel one; the bars are "
-          f"{mass['bars']:.2f} kg of it, because they are sized for the heat-affected zone [C1]", weldment, "kg")
+hauled = kit - carried
+out("F1", f"Mass: collar frame {frame:.2f} kg (aluminium weldment {sum(mass[k] for k in frame_keys):.2f} kg), chain set {chain:.2f} kg, "
+          f"descender {mass['descender']:.2f} kg, carabiners {mass['carabiners']:.2f} kg, rope {mass['rope']:.2f} kg, triangle and sling "
+          f"{mass['triangle'] + mass['chest_sling']:.2f} kg, bag {mass['bag']:.2f} kg, tag line {mass['tag_line']:.2f} kg "
+          f"({P['tag_line'][1]:.0f} m of {P['tag_line'][0]:.0f} mm cord) and micro pulley {mass['micro_pulley']:.2f} kg", kit, "kg")
+out("F2", f"Whole kit {kit:.1f} kg; the helpers haul {hauled:.1f} kg up in the bag (rope, pre-rigged victim set with its carabiner, "
+          f"bag), so the rescuer carries {carried:.2f} kg up the trunk: collar, chain set, descender, load and brake carabiners, "
+          f"micro pulley and the tag line hanging from it (R7 asks for under 5 kg)", carried, "kg")
+steel_equiv = sum(mass[k] for k in frame_keys) * M.DENSITY["steel"] / M.DENSITY["aluminium"]
+out("F3", f"The aluminium weldment saves about {steel_equiv - sum(mass[k] for k in frame_keys):.1f} kg against the same parts "
+          f"in steel; the tag line counts its full {P['tag_line'][1]:.0f} m because both legs hang from the rescuer at the top", carried, "kg")
 
 # ------------------------------------------------------------------ G. bark (R8)
 p_work = p_pad * W_work / W_proof
@@ -232,27 +227,28 @@ rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
 cost = sum(float(r["qty"]) * float(r["unit_cost_usd"]) for r in rows)
 pm = yaml.safe_load((ROOT / "project.yaml").read_text())
 target = float(pm["budget_usd"])
-big = sorted(((float(r["qty"]) * float(r["unit_cost_usd"]), r["spec"].split(":")[0].split(",")[0]) for r in rows), reverse=True)[:4]
+big = sorted(((float(r["qty"]) * float(r["unit_cost_usd"]), r["spec"].split(":")[0].split(",")[0].split(" (")[0]) for r in rows), reverse=True)[:4]
 out("H1", f"Kit cost from the BOM: USD {cost:,.0f}. Value-engineering target: USD {target:,.0f}. Estimated cost of the constructable "
           f"design: USD {cost:,.0f} (USD {abs(target - cost):,.0f} {'under' if cost <= target else 'over'} the target)", cost, "USD")
-out("H2", f"R9 per-kit parts cost: USD {cost:,.0f}, over the R9 target by USD {cost - 100:,.0f}; the largest lines are "
-          + ", ".join(f"{n if n[1:2].isupper() else n.lower()} USD {c:,.0f}" for c, n in big), cost - 100, "USD")
+r9 = 850.0                          # R9 as restated by Amish's decision 19A (TKB-REQ-001 v0.3)
+out("H2", f"R9 per-kit parts cost at single-kit prices: USD {cost:,.0f} against the restated R9 target of USD {r9:,.0f} "
+          f"(USD {abs(r9 - cost):,.0f} {'under' if cost <= r9 else 'over'}); the largest lines are "
+          + ", ".join(f"{n.lower()} USD {c:,.0f}" for c, n in big)
+          + "; group purchase by the training partner and one kit per climber group are not counted", cost, "USD")
 
 # ------------------------------------------------------------------ results table
 results = [
-    ("R1", "Met on paper (friction to confirm; cleat margin reduced, O5)",
-     f"Locking factor {lock_min:.2f} at the smallest trunk; settles about {settle:.0f} mm; aluminium cleat web factor "
-     f"{fy / s_lig:.1f} in the heat-affected zone at the R1 load"),
-    ("R2", "At risk (controlled by the drill rule, decision 41 A)",
-     "The single top chain cannot hold an upward pull; the drill keeps the collar 300 mm or more above the person's "
-     "attachment; upward case tested only as misuse at TRL 4; double-acting collar is the fallback"),
+    ("R1", "Met on paper (friction to confirm)", f"Locking factor {lock_min:.2f} at the smallest trunk; settles about {settle:.0f} mm"),
+    ("R2", "At risk for an upward pull; drill rule kept (decision 16A)",
+     "The single top chain cannot hold an upward pull; the drill keeps the collar at least 300 mm above the person's attachment; "
+     "double-acting collar is the recorded fallback"),
     ("R3", "Met", "Chain and V fit 200 to 450 mm trunks with no tools"),
-    ("R4", "Met on paper (estimate, to time at TRL 4)", f"About {t_rig / 60:.1f} min once in position"),
+    ("R4", "At risk (estimate)", f"About {t_rig / 60:.1f} min once in position: the pre-rigged victim set saves 45 s and the tag-line haul adds 45 s"),
     ("R5", "Met on paper (estimate)", f"Hand force about {F_hand:.0f} N with the brake carabiner"),
     ("R6", "Met", f"30 m rope, {rope_need:.1f} m needed"),
-    ("R7", "Met on paper (thin margin)", f"{carried:.2f} kg carried by the rescuer; rope bag and victim set hauled up on the tag line"),
+    ("R7", "Met on paper", f"{carried:.2f} kg carried up the trunk; the {hauled:.1f} kg bag is hauled up by the helpers"),
     ("R8", "Met on paper (to confirm)", f"Pads {p_pad:.1f} MPa, sleeve {p_chain:.2f} MPa at the R1 load"),
-    ("R9", "Not met (accepted, decision 44 A)", f"USD {cost:,.0f} a kit; savings sought through group purchase and one kit per climber group"),
+    ("R9", "Met on paper (restated target)", f"USD {cost:,.0f} a kit at single-kit prices against USD {r9:,.0f}"),
     ("R10", "Cannot be shown on paper", "Needs the training trial at TRL 4"),
 ]
 for rid, st, note in results:

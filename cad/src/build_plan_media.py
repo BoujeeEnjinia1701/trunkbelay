@@ -32,7 +32,7 @@ _C = None
 COL = {"spine": "#0F766E", "bars": "#64748B", "doublers": "#1D4ED8", "cheeks": "#7C3AED", "pads": "#111827",
        "pad_screws": "#9CA3AF", "keeper": "#B45309", "pin": "#DC2626", "chain": "#57534E", "sleeve": "#EAB308",
        "maillon": "#A16207", "carab": "#C2410C", "descender": "#15803D", "rope": "#0E7490", "triangle": "#F97316",
-       "sling": "#2563EB", "bag": "#475569", "trunk": "#D6C7A1", "pouch": "#6D28D9"}
+       "sling": "#2563EB", "bag": "#475569", "trunk": "#D6C7A1", "tag": "#BE185D"}
 
 
 def comps():
@@ -164,11 +164,11 @@ def overview():
         part("Victim carabiner", K_["carab_victim"], COL["carab"], (0, 0, 0)),
         part("Evacuation triangle", K_["triangle"], COL["triangle"], (0, 0, 0)),
         part("Chest sling", K_["chest_sling"], COL["sling"], (0, 0, 0)),
-        part("Rope and carry bag (stays on the ground)", K_["bag"], COL["bag"], (0, 0, 0)),
-        part("Shoulder pouch and 4 mm tag line", K_["pouch"] + K_["tag_line"], COL["pouch"], (0, 0, 0)),
+        part("Rope and carry bag", K_["bag"], COL["bag"], (0, 0, 0)),
+        part("Tag line, 4 mm, and micro pulley", K_["tag_line"] + K_["micro_pulley"], COL["tag"], (0, 0, 0)),
     ]
     return bv.overview(parts, OUT / "overview.png", "TrunkBelay: the kit pulled apart, in build order",
-                       "Numbered in build order; made parts first, then the bought chain, rigging and rescue gear",
+                       "Numbered in build order; made aluminium frame parts first, then the bought chain, rigging, rescue gear and tag line",
                        elev=22, azim=-55, size=(11, 8), key=True)
 
 
@@ -190,74 +190,74 @@ def sheets(which=None):
     S = {}
     S[101] = lambda: sheet(101, c["spine"], "Spine plate", COL["spine"],
         [grey("bars", c["bars"]), grey("cheeks", c["cheeks"]), grey("doublers", c["doublers"])],
-        "spine plate (make 1)", "Aluminium 6082-T6 plate 5 mm",
-        ["One piece of 5 mm 6082-T6 plate, waterjet or laser cut. Outline:",
-         "  front edge (the edge toward the trunk): 175 long at the",
-         "  bottom, 175 high at the front; 55 high at the back end; the",
-         "  top runs 60 back from the front edge, then slopes down.",
-         "Holes: load eye 22 at 150 back, 28 up; spare eye 22 at 70",
+        "spine plate (make 1)", "6082-T6 aluminium plate 5 mm",
+        ["One piece of 5 mm 6082-T6 aluminium plate, profile cut.",
+         "  Outline from the front edge (the edge toward the trunk):",
+         "  175 long at the bottom, 185 high at the front; 55 high at",
+         "  the back end; the top runs 60 back, then slopes down.",
+         "Holes: load eye 22 at 150 back, 28 up; spare eye 22 at 85",
          "  back, 28 up; lightening hole 36 at 85 back, 90 up.",
-         "Chain slots: two, 7.5 wide, 25 deep from the top edge,",
+         "Chain slots: two, 7.5 wide, 35 deep from the top edge,"
          "  centred 15 and 43 back from the front edge. Cut them",
          "  square and file every edge smooth; no burr may touch chain.",
          "Lock pin hole 8.5 at 29 back, 139 up (drill after the cheeks",
          "  are welded on, through all three plates).",
-         "Do not thicken the plate: a link must span it (5 mm only).",
+         "Do not thicken the plate: a link must span it (6 mm at most).",
          "Round the eye edges to 2 mm radius after the rings go on."],
         inset=(20, -60))
     S[102] = lambda: sheet(102, one_ring(), "Eye doubler ring", COL["doublers"],
-        [grey("spine", c["spine"])], "eye doubler ring (make 4)", "Aluminium 6082-T6 plate 6 mm",
-        ["Make four. 6 mm 6082-T6, 50 outside diameter, 22 bore.",
-         "Cut from plate (waterjet or laser), or turn from round bar.",
+        [grey("spine", c["spine"])], "eye doubler ring (make 4)", "6082-T6 aluminium plate 4 mm",
+        ["Make four. 4 mm 6082-T6 aluminium, 50 outside, 22 bore.",
+         "Cut from plate offcuts; do not use steel washers.",
          "One ring each side of each eye, the bores in line with the",
          "  22 eye hole within 0.5 mm (use a 22 pin to line them up).",
-         "TIG weld all round the outside, 4 mm fillet; none in the bore.",
+         "TIG weld all round the outside, 3 mm fillet, ER5356 filler;",
+         "  no weld in the bore. Keep 4 mm: the quick link must pass.",
          "After welding, round the bore edges to 2 mm radius, so a",
          "  carabiner bears on a smooth curve, never a sharp edge.",
-         "Finished eye: 17 thick (6 + 5 + 6)."],
+         "Finished eye: 13 thick (4 + 5 + 4)."],
         inset=(20, -60))
     S[103] = lambda: sheet(103, c["bars"], "Bearing bar", COL["bars"],
         [grey("spine", c["spine"]), grey("pads", c["pads"])], "bearing bar (make 2, opposite hands)",
-        "Aluminium 6082-T6 rectangular tube 70 x 30 x 5 mm",
-        ["Make two, one a mirror image of the other. RHS 70 x 30 x 5,",
-         "  the 70 face upright; the 30 depth runs away from the trunk.",
-         "Length 175 along the trunk-side face; the inner end is cut",
-         "  at 30 deg so it lies flat on the spine face.",
-         "TIG weld a 4 mm cap on the outer end. Drill a 6 drain hole in",
-         "  the bottom face near each end (rain water must run out).",
-         "Drill two 6.5 holes through the trunk-side face only, 53 and",
-         "  138 from the inner end, 25 up from the bottom, for the screws.",
+        "6082-T6 aluminium rectangular hollow section 50 x 40 x 3 mm",
+        ["Make two, one a mirror image of the other. Aluminium RHS",
+         "  50 x 40 x 3, the 50 face vertical; the 40 depth runs away",
+         "  from the trunk. Length 175 along the trunk-side face; the",
+         "  inner end is cut at 30 deg so it lies flat on the spine.",
+         "TIG weld a 3 mm aluminium cap on the outer end (ER5356).",
+         "  No vent hole: the frame is not galvanised.",
+         "Drill two 9.0 holes through the trunk-side face only, 53 and",
+         "  138 from the inner end on the centre line; after welding set",
+         "  M6 countersunk-head stainless rivet nuts in them, flush.",
          "The two bars meet the spine at its foot and form a V with",
          "  120 deg between their trunk-side faces."],
         view_shape=bar_flat(), inset=(20, -60))
     S[104] = lambda: sheet(104, c["cheeks"], "Cleat cheek", COL["cheeks"],
-        [grey("spine", c["spine"]), grey("keeper", c["keeper"])], "cleat cheek (make 2)", "Aluminium 6082-T6 plate 8 mm",
-        ["Make two. 8 mm 6082-T6 plate, 60 long x 45 high.",
-         "Two notches from the top edge, 22 wide and 27 deep, centred",
+        [grey("spine", c["spine"]), grey("keeper", c["keeper"])], "cleat cheek (make 2)", "6082-T6 aluminium plate 8 mm",
+        ["Make two. 8 mm 6082-T6 aluminium plate, 60 long x 55 high.",
+         "Two notches from the top edge, 22 wide and 37 deep, centred",
          "  15 and 43 from the front end, so they sit round the two",
          "  chain slots in the spine with 7.25 of web showing each side.",
          "Weld one on each face of the spine, top edges flush with the",
-         "  spine top, front ends flush with its front edge: 4 mm TIG fillets",
-         "  along the bottom and the back end only (keep the notches",
+         "  spine top, front ends flush with its front edge: 5 mm TIG",
+         "  fillets along the bottom and back end only (keep the notches",
          "  and the top clean).",
          "Then drill the 8.5 lock pin hole through cheek, spine and",
          "  cheek together, 29 from the front, 139 up from the frame foot."],
         view_shape=one_cheek(), inset=(20, -60))
     S[105] = lambda: sheet(105, m.frame_weldment(c), "Frame weldment", COL["spine"],
         [grey("pads", c["pads"]), grey("keeper", c["keeper"])], "collar frame weldment (make 1)",
-        "Aluminium 6082-T6 parts above, AC TIG welded (ER5356), mill finish",
-        ["Clean every joint with a stainless brush and solvent first.",
-         "TIG weld the bars to the spine foot in a jig that holds their",
-         "  trunk-side faces at 120 deg, bottoms level with the foot.",
-         "  4 mm fillets all round each bar end; the bar ends must not",
+        "6082-T6 aluminium parts above, TIG welded (ER5356), not galvanised",
+        ["TIG weld the bars to the spine foot first (AC, ER5356), in a",
+         "  jig that holds their trunk-side faces at 120 deg, bottoms",
+         "  level. 5 mm fillets all round each bar end; the bar ends must not",
          "  stand proud of the spine's front edge.",
          "Then the four eye rings, then the two cheeks.",
          "Check: the V faces meet (if extended) 8 in front of the spine",
          "  front edge; both bar faces flat within 1 mm.",
-         "No galvanising: aluminium is left bare. Deburr the slots and",
-         "  eyes; a 7 mm bar must pass both slots, the 8 pin its hole.",
-         "Welds weaken 6082-T6 beside them by about half: weld only",
-         "  where shown, and never straighten the frame by heating.",
+         "Clean the bar faces, slots and eyes with a stainless brush;",
+         "  run a 7 mm bar through both slots and the 8 pin through",
+         "  its hole. Inspect every weld; no repair welding of a crack.",
          "Stamp SWL 100 kg ONE PERSON and the frame number on the spine."],
         inset=(20, -60))
     S[106] = lambda: sheet(106, c["pads"], "Rubber bark pad", COL["pads"],
@@ -269,20 +269,19 @@ def sheets(which=None):
          "  the screw heads sit 3 below the rubber face.",
          "Bond to the bar's trunk-side face with contact adhesive, the",
          "  inner end 15 from where the two pad faces would meet.",
-         "Fit M6 x 30 countersunk screws through pad and bar face with",
-         "  a washer and nyloc nut inside the bar (reach in from the",
-         "  inner end before the bar is capped, or use rivet nuts).",
+         "Fit M6 x 30 countersunk stainless screws through the pad",
+         "  into the rivet nuts in the bar face, with threadlocker.",
          "Replace a pad that is torn, glazed or soaked in oil."],
         view_shape=pad_flat(), inset=(20, -60))
     S[107] = lambda: sheet(107, c["keeper"], "Keeper", COL["keeper"],
         [grey("spine", c["spine"]), grey("cheeks", c["cheeks"]), grey("pin", c["pin"])], "keeper (make 1)",
         "S275 steel sheet 3 mm, zinc plated",
         ["Cut a cross from 3 mm sheet: a bridge 56 long (front to back)",
-         "  x 28 wide, with a leg 6 wide and 43 long at the middle of",
+         "  x 27 wide, with a leg 6 wide and 53 long at the middle of",
          "  each long side.",
-         "Bend both legs down 90 deg so they sit 22 apart inside: they",
-         "  slide over the two cheeks between the notches.",
-         "Drill 8.5 through both legs, 39 below the bridge's top face.",
+         "Bend both legs down 90 deg so they sit 21 apart inside: they",
+         "  slide over the two 8 mm cheeks between the notches.",
+         "Drill 8.5 through both legs, 49 below the bridge's top face.",
          "The bridge lies on the cleat top across both slot mouths, so a",
          "  chain link cannot lift out of its slot.",
          "Tie the lock pin's lanyard to one leg."],
@@ -332,19 +331,19 @@ def joints(which=None):
     J[1] = lambda: jt(1, [W("spine", "Spine plate", foot), K("bars", "Bearing bars (2)"), K("pads", "Rubber pads"),
                           K("pad_screws", "Pad screws", col="pad_screws")],
                       "bearing bars welded to the spine foot",
-                      "The two bars form a 120 deg V; 4 mm fillets all round each bar end on the spine faces",
+                      "The two aluminium bars form a 120 deg V; 5 mm TIG fillets all round each bar end on the spine faces",
                       elev=55, azim=-150)
     eye = (x + 120, x + 180, -20, 20, -5, 60)
     J[2] = lambda: jt(2, [W("spine", "Spine plate (cut)", eye), W("doublers", "Doubler rings (cut)", eye),
                           W("carab_main", "Load carabiner", (x + 120, x + 180, -40, 40, -100, 60), col="carab")],
                       "load eye with its doubler rings, cut open",
-                      "Ring, 5 mm spine, ring: 17 mm of rounded aluminium under the carabiner bar", cut="+X", elev=20, azim=-60)
-    top = (x - 10, x + 75, -45, 45, 120, 185)
+                      "Ring, 5 mm spine, ring: 13 mm of rounded aluminium under the carabiner bar", cut="+X", elev=20, azim=-60)
+    top = (x - 10, x + 75, -45, 45, 120, 195)
     J[3] = lambda: jt(3, [W("spine", "Spine top with two slots", top), K("cheeks", "Cheeks (2)"), part("Keeper, lifted to show the slots", Pos(0, 0, 70) * c["keeper"], COL["keeper"]),
                           K("pin", "Lock pin"), W("chain_loop", "Chain links in the slots", top, col="chain"),
                           W("chain_tail_a", "Fixed end tail", top, col="chain"), W("chain_tail_b", "Adjustable end tail", top, col="chain")],
                       "the chain cleat: two links standing in the slots",
-                      "Links stand in 7.5 mm slots; their neighbours bear on the 5 mm web in the cheek notches",
+                      "Links stand in 7.5 mm slots; their neighbours bear on the 5 mm web in the 8 mm cheeks' notches",
                       elev=45, azim=-125)
     J[4] = lambda: jt(4, [K("bars", "Bearing bar"), K("pads", "Rubber pad"), K("pad_screws", "Countersunk screws", col="pad_screws")],
                       "rubber pad on a bearing bar, cut open",
@@ -354,10 +353,10 @@ def joints(which=None):
                           W("sleeve", "Chain sleeve", back), W("chain_loop", "Chain", (-200, 40, -175, 175, 120, 200), col="chain")],
                       "the chain sleeve at the back of the trunk",
                       "600 mm of tubular webbing on the chain where it presses hardest on the bark", elev=30, azim=150)
-    spare = (x + 35, x + 110, -40, 60, -60, 70)
+    spare = (x + 50, x + 125, -40, 60, -60, 70)
     J[6] = lambda: jt(6, [W("spine", "Spine (spare eye)", spare), W("doublers", "Doubler rings", spare),
-                          K("maillon", "Tether quick link"), W("carab_brake", "Brake carabiner", (x + 40, x + 110, -40, 40, -110, 60), col="carab"),
-                          W("chain_tail_a", "Fixed end tail", (x + 20, x + 110, 0, 60, -60, 160), col="chain")],
+                          K("maillon", "Tether quick link"), W("carab_brake", "Brake carabiner", (x + 55, x + 125, -40, 40, -110, 60), col="carab"),
+                          W("chain_tail_a", "Fixed end tail", (x + 20, x + 125, 0, 60, -60, 160), col="chain")],
                       "spare eye: tether quick link and brake carabiner",
                       "The fixed end of the chain is tied to the frame, so it cannot be dropped; the brake carabiner shares the eye",
                       elev=20, azim=-35)
@@ -370,7 +369,7 @@ def joints(which=None):
                       elev=15, azim=-80)
     J[8] = lambda: jt(8, [part("Trunk, 300 mm", m.trunk(P, None, -60, 230), COL["trunk"]), K("bars", "Bearing bars"),
                           K("pads", "Rubber pads"), K("spine", "Spine"), K("cheeks", "Cheeks"), K("keeper", "Keeper"),
-                          part("Chain", chain_all() & bx(-400, 600, -400, 400, 100, 200), COL["chain"]), K("sleeve", "Sleeve")],
+                          part("Chain", chain_all() & bx(-400, 600, -400, 400, 100, 210), COL["chain"]), K("sleeve", "Sleeve")],
                       "the collar on the trunk, seen from above",
                       "Pads touch the bark on two lines; the chain wraps the trunk once at 160 mm above the frame foot",
                       elev=70, azim=-90, size=(7, 5.5))
@@ -396,17 +395,17 @@ def steps(which=None):
     frame = [spine, bars, rings, cheeks]
     tr = trunk()
     E[1] = lambda: st(1, [spine], [K("bars", "Bearing bars (2)", (-150, 0, -120))], "weld the bearing bars to the spine",
-                      "In a jig: the bar faces at 120 deg, their bottoms level with the spine foot; 4 mm TIG fillets all round",
+                      "In a jig: the bar faces at 120 deg, their bottoms level with the spine foot; 5 mm TIG fillets all round",
                       elev=30, azim=-120)
     E[2] = lambda: st(2, [spine, bars], [K("doublers", "Doubler rings (4)", (0, 0, -150))], "weld the eye rings",
-                      "A 22 mm pin through each eye lines the rings up; 4 mm TIG fillets round the outside only",
+                      "A 22 mm pin through each eye lines the rings up; 3 mm TIG fillets round the outside only",
                       elev=20, azim=-60)
     E[3] = lambda: st(3, [spine, bars, rings], [K("cheeks", "Cleat cheeks (2)", (0, 0, 160))], "weld the cheeks, drill the pin hole",
-                      "Cheeks flush with the spine top and front; then drill 8.5 mm through all three; no galvanising (aluminium)",
+                      "Cheeks flush with the spine top and front; drill 8.5 mm through all three; inspect welds; set rivet nuts",
                       elev=25, azim=-60)
     E[4] = lambda: st(4, frame, [K("pads", "Rubber pads (2)", (-160, 0, 0)), K("pad_screws", "M6 screws (4)", (-160, 0, 0), col="pad_screws")],
                       "bond and screw the pads",
-                      "Contact adhesive on both faces, press on, then two countersunk screws each, nuts inside the bars",
+                      "Contact adhesive on both faces, press on, then two countersunk screws each into the rivet nuts",
                       elev=30, azim=-120)
     E[5] = lambda: st(5, frame + [pads], [K("chain_tail_a", "Fixed end of the chain", (0, 150, 120), col="chain"),
                                           K("maillon", "Tether quick link", (0, 150, -100))],
@@ -440,13 +439,14 @@ def steps(which=None):
                       "As the descender's maker shows; brake strand up over the brake carabiner in the spare eye, then down",
                       context=[part(tr.name, tr.shape, "#E5E7EB")], elev=15, azim=-70, label_done=False)
     K_ = kit()
-    E[10] = lambda: st(10, [], [part("Victim carabiner", K_["carab_victim"], COL["carab"], (0, 0, 150)),
-                               part("Evacuation triangle", K_["triangle"], COL["triangle"], (0, 0, 0)),
-                               part("Chest sling", K_["chest_sling"], COL["sling"], (0, 0, 120)),
-                               part("Rope bag (rope inside)", K_["bag"] + K_["rope_coil"], COL["bag"], (0, 0, 0)),
-                               part("Shoulder pouch and tag line", K_["pouch"] + K_["tag_line"], COL["pouch"], (0, 0, 0))],
-                       "pre-rig the victim set and pack",
-                       "Triangle side loops, chest sling and rope loop on the victim carabiner, on top of the rope in the bag",
+    E[10] = lambda: st(10, [], [part("Victim carabiner", K_["carab_victim"], COL["carab"]),
+                               part("Rope's end loop", K_["rope_end"], COL["rope"]),
+                               part("Triangle, waist loops clipped in", K_["triangle"], COL["triangle"]),
+                               part("Chest sling, one end clipped in", K_["chest_sling"], COL["sling"]),
+                               part("Rope bag (rope and victim set inside)", K_["bag"] + K_["rope_coil"], COL["bag"]),
+                               part("Tag line and micro pulley", K_["tag_line"] + K_["micro_pulley"], COL["tag"])],
+                       "make up the pre-rigged victim set and pack",
+                       "Rope loop, triangle waist loops and sling on the victim carabiner, packed in the bag; tag line apart",
                        elev=25, azim=-70)
     for n in sorted(E):
         if which and n not in which:

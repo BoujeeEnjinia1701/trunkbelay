@@ -3,7 +3,7 @@ doc_id: TKB-PRB-001
 title: TrunkBelay problem statement
 project: TrunkBelay
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: TRL 2 and 3 update; constraints restated with the value-engineering target, open questions answered, first co-design candidates, safety section
+- version: "0.3"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: Cost and carry constraints updated for Amish's decisions 18C and 19A (TKB-DDR-003)
 ---
 
 # TrunkBelay problem statement
@@ -49,8 +53,8 @@ Utility workers have purpose-built answers. The Buckingham SuperSqueeze is a pol
 ## Constraints
 
 - Value-engineering target: USD 900 for the first prototype kit (a control target for value engineering, not a spending limit; STANDARDS section 18).
-- Kit parts cost target under USD 100 (R9), well below utility pole-rescue kits.
-- Carried up the trunk by one climber: total kit mass under 5 kg (11 lb) (target).
+- Kit parts cost target under USD 850 per kit at single-kit prices (R9), restated by Amish on 2026-10-03 from USD 100 so that the auto-locking descender and the evacuation triangle are kept; group purchase by the training partner and one kit per climber group are to bring the cost per climber down.
+- Carried up the trunk by one climber: under 5 kg (11 lb) (target); the rope bag may be hauled up by the helpers on a tag line (decision 18C).
 - Collar must fit the full trunk range without special tools.
 - Must not use the ratcheting cinch geometry of the 3M Cynch-Lok (IP screen design-around).
 - Open hardware under CERN-OHL-S-2.0.

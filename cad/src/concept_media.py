@@ -1,4 +1,4 @@
-"""TrunkBelay concept media (TRL 3, constructable design of TKB-DDR-002), generated from the parametric model.
+"""TrunkBelay concept media (TRL 3, constructable design of TKB-DDR-002, aluminium frame of TKB-DDR-003), from the parametric model.
 
 Run from the repo root:  python cad/src/concept_media.py
 Takes the collar, chain and lowering parts from cad/src/model.py as fitted to a 300 mm palm trunk and
@@ -72,13 +72,13 @@ if __name__ == "__main__":
     try:
         render_all(
             parts(), project="TrunkBelay", title="Palm trunk rescue collar and lowering kit", dwg_no="TKB-DWG-010",
-            key_figures=["Aluminium 6082-T6 collar frame: 5 mm spine, two rubber-faced bars in a 120 deg V",
+            key_figures=["Aluminium collar frame: 5 mm spine, two rubber-faced bars in a 120 deg V",
                          "Grade 80 chain, 6 mm, wraps the trunk once; two-slot cleat, keeper and ball-lock pin",
                          "Fits trunks 200 to 450 mm across with no tools",
                          "Load eye 150 mm out: the frame cocks and grips; locking factor 1.54 or more (estimate)",
-                         "Held 2.5 kN (R1 load) on paper; bars at 2.0 on the welded-zone proof strength",
+                         "Held 2.5 kN (R1 load) on paper; frame at 1.55 times its welded proof strength",
                          "Auto-locking descender, 30 m of 11 mm rope; brake hand about 80 N for 100 kg",
-                         "4.74 kg carried, rope hauled up on a tag line; about USD 802 (estimate)"],
+                         "4.55 kg carried, bag hauled up on a tag line; about USD 826 (estimate)"],
             cut=False, scale_figure=False, context=context,
             flow={"title": "energy turned to heat lowering a 100 kg person 25 m, kJ (TKB-CAL-001 estimates)",
                   "unit": "kJ",

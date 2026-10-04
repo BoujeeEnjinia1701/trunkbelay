@@ -20,26 +20,28 @@ revisions:
 - version: "0.3"
   date: '2026-10-03'
   author: Amish Chadha
-  change: Status after Amish's round 2 decisions (TKB-DDR-003); targets unchanged
+  change: Amish's decisions 16A, 17B, 18C and 19A carried out (TKB-DDR-003); R9 target restated by Amish; status of R2, R4, R7 and R9 updated
 ---
 
 # TrunkBelay requirements
 
-Requirements with their status on paper at TRL 3. The targets are unchanged from version 0.1; they are to be confirmed with the co-design partner. The status column comes from the calculation note TKB-CAL-001 (v0.2). Amish decided how each requirement that was not met or at risk is handled on 2026-10-03 (TKB-DDR-003); open questions are in the design decisions register (TKB-DEC-001).
+Requirements with their status on paper at TRL 3. The targets are unchanged from version 0.1 except R9, which Amish restated on 2026-10-03; they are to be confirmed with the co-design partner. The status column comes from the calculation note TKB-CAL-001 v0.2.
+
+Amish Chadha, 2026-10-03, on the recommendations put to him: "i agree with all the 46 recommendations you provided. please proceed." For TrunkBelay that is decisions 16A (R2: keep the drill rule, double-acting collar as the recorded fallback), 17B (R4: pack the victim set pre-rigged), 18C (R7: the helpers haul the rope bag on a tag line and the collar frame goes to aluminium) and 19A (R9: keep the auto-locking descender and evacuation triangle, seek group purchase, restate the cost target). The design decisions register (TKB-DEC-001) and decision record TKB-DDR-003 hold the detail.
 
 Table 1. Requirements
 
 | ID | Requirement | Target | Verification (TRL 3 or later) | Status on paper (TRL 3) |
 | --- | --- | --- | --- | --- |
-| R1 | Collar holds on a palm trunk | No slip greater than 20 mm under a 2.5 kN (562 lbf) static downward load on wet trunk sections | Proof test on CalRig with cut trunk sections at TRL 3 | Met on paper; the friction on wet bark is to be confirmed (locking factor 1.54, settles about 10 mm). The aluminium cleat web has a factor of 1.1 on its heat-affected proof strength at this load (TKB-DEC-001, O5) |
-| R2 | Collar holds when load direction changes | No slip greater than 50 mm when a 100 kg (220 lb) test mass passes the collar during lowering | Drop and transition tests on trunk sections | At risk on paper: the single top chain cannot hold an upward pull. Controlled by the drill rule (decision 41 A): the collar is set 300 mm or more above the victim's attachment, so the case does not arise; the upward case is tested at TRL 4 only as a misuse test. Fallback: the double-acting collar, if the TRL 4 drill shows a rescuer cannot reach above the attachment |
+| R1 | Collar holds on a palm trunk | No slip greater than 20 mm under a 2.5 kN (562 lbf) static downward load on wet trunk sections | Proof test on CalRig with cut trunk sections at TRL 3 | Met on paper; the friction on wet bark is to be confirmed (locking factor 1.54, settles about 10 mm) |
+| R2 | Collar holds when load direction changes | No slip greater than 50 mm when a 100 kg (220 lb) test mass passes the collar during lowering | Drop and transition tests on trunk sections; the upward case as a misuse test only | At risk for an upward pull: the single top chain cannot hold it. Decided by Amish (16A): the drill rule stays (collar at least 300 mm above the victim's attachment); the double-acting collar is the recorded fallback if the TRL 4 drill shows a rescuer cannot reach above the attachment |
 | R3 | Fits common palms | Trunk diameters 200 to 450 mm (8 to 18 in) without tools | Fit trials on surveyed palms | Met: the V and the 110-link chain fit the whole range |
-| R4 | Quick to rig | Collar fixed and victim clipped in under 5 minutes by a trained climber | Timed drills at 3 m height | Met on paper (estimate): about 4.2 minutes with the victim set pre-rigged (decision 42 B) and the rope hauled up on the tag line (decision 43 C); to be timed at TRL 4 |
+| R4 | Quick to rig | Collar fixed and victim clipped in under 5 minutes by a trained climber | Timed drills at 3 m height | At risk: about 4.5 minutes estimated, a thin margin; the pre-rigged victim set (17B) saves 45 s and the tag-line haul (18C) adds 45 s |
 | R5 | Controlled lowering | Descent speed held under 0.5 m/s with hand force under 150 N (34 lbf) for a 100 kg (220 lb) load | Lowering tests with test mass | Met on paper: about 80 N at the hand with the brake carabiner |
 | R6 | Rope length | Lowers from 25 m (82 ft) | Measured | Met: 30 m of rope, 28 m needed |
-| R7 | Portable | Kit mass under 5 kg (11 lb); carried hands-free while climbing | Weighing and climbing trial | Met on paper, thin margin: 4.74 kg carried by the rescuer with the aluminium frame and the rope bag and victim set hauled up on a tag line (decision 43 C); whole kit 8.5 kg |
+| R7 | Portable | Kit mass under 5 kg (11 lb); carried hands-free while climbing | Weighing and climbing trial | Met on paper: 4.55 kg carried with the aluminium frame and the rope bag hauled up on the tag line (18C); whole kit 8.3 kg |
 | R8 | No damage to the palm | No bark cuts deeper than 5 mm after a full test lowering | Inspection after trials | Met on paper; to confirm by test (pads 1.9 MPa, sleeve 0.6 MPa at 2.5 kN) |
-| R9 | Cost | Parts under USD 100 per kit | Costed bill of materials | Not met: USD 802 per kit. Amish kept the auto-locking descender and triangle (decision 44 A); savings are sought through group purchase and one kit per climber group |
+| R9 | Cost | Parts under USD 850 per kit at single-kit prices, keeping the auto-locking descender and the evacuation triangle; group purchase by the training partner sought to lower it, one kit per climber group. Restated by Amish (19A); was USD 100 | Costed bill of materials | Met on paper: USD 826 per kit (USD 24 under) |
 | R10 | Teachable | Climbers new to the kit complete a supervised rescue drill after a half-day session | Training trial with partner programme | Cannot be shown on paper; training trial at TRL 4 |
 
 ## Assumptions
