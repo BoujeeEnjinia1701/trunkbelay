@@ -1,4 +1,4 @@
-"""TrunkBelay product appearance model (build123d), TRL 3, constructable design (TKB-DDR-002).
+"""TrunkBelay product appearance model (build123d), TRL 3, constructable design (TKB-DDR-002; aluminium frame, TKB-DDR-003).
 
 Finished-product look for photoreal renders, built from the constructable model: every component of
 cad/src/model.py build_components() is used as it is (spine with its slots and eyes, the two bearing
@@ -44,7 +44,8 @@ RENDER_VIEWS = [
              "standing in the slots of the spine top, the cheeks, the keeper over both slots and the ball-lock pin"},
 ]
 
-C_GALV = "#A9B0B8"      # hot-dip galvanised steel
+C_GALV = "#A9B0B8"      # galvanised steel (quick link)
+C_MILL = "#C9CDD2"      # mill-finish aluminium 6082-T6 frame (TKB-DDR-003)
 C_ACCENT = "#0F766E"    # teal paint stripe on the keeper and pin lanyard
 C_RUBBER = "#1F2328"
 C_CHAIN = "#5B6168"
@@ -58,10 +59,10 @@ C_CLAY = "#B9B4AC"
 
 # model key: (display name, colour, material, group, BOM line, explode offset)
 LOOK = {
-    "spine": ("Spine plate, galvanised steel", C_GALV, "metal", "shell", 1, (150, 0, 0)),
-    "bars": ("Bearing bars, galvanised steel", C_GALV, "metal", "shell", 2, (-60, 0, -200)),
-    "doublers": ("Eye doubler rings, galvanised", C_GALV, "metal", "shell", 3, (150, 0, -150)),
-    "cheeks": ("Cleat cheeks, galvanised", C_GALV, "metal", "shell", 4, (150, 0, 150)),
+    "spine": ("Spine plate, aluminium", C_MILL, "metal", "shell", 1, (150, 0, 0)),
+    "bars": ("Bearing bars, aluminium", C_MILL, "metal", "shell", 2, (-60, 0, -200)),
+    "doublers": ("Eye doubler rings, aluminium", C_MILL, "metal", "shell", 3, (150, 0, -150)),
+    "cheeks": ("Cleat cheeks, aluminium", C_MILL, "metal", "shell", 4, (150, 0, 150)),
     "pads": ("Rubber bark pads", C_RUBBER, "rubber", "shell", 6, (-200, 0, -200)),
     "pad_screws": ("Pad screws, stainless", C_GALV, "metal", "shell", 7, (-200, 0, -200)),
     "keeper": ("Keeper, painted steel", C_ACCENT, "painted", "shell", 9, (150, 0, 300)),

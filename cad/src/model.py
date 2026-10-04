@@ -1,21 +1,24 @@
-"""TrunkBelay parametric model (build123d), constructable design (TRL 3, TKB-DDR-002).
+"""TrunkBelay parametric model (build123d), constructable design (TRL 3, TKB-DDR-002; aluminium frame and
+tag-line haul from TKB-DDR-003).
 
 Run from the repo root:
     python cad/src/model.py            export STEP and STL, run the constructability checks
     python cad/src/model.py --check    run the constructability checks only
 
 TrunkBelay is a rescue kit that lets a fellow climber anchor and lower a climber stranded on a
-coconut palm. A welded steel collar frame (a 6 mm spine plate with two rubber-faced bearing bars
-set in a 120 deg V at its foot) is held on the trunk by a 6 mm grade 80 chain that wraps the trunk
+coconut palm. A TIG-welded aluminium 6082-T6 collar frame (a 5 mm spine plate with two rubber-faced
+bearing bars set in a 120 deg V at its foot) is held on the trunk by a 6 mm grade 80 chain that wraps the trunk
 once and sits in two slots cut in the top of the spine (the chain cleat, stiffened by a cheek plate
 on each face), held there by a sheet-steel keeper and a ball-lock pin. The fixed end is also tethered
 to the spare eye with a quick link. The load
-hangs from an eye at the outer end of the spine, 140 mm out from the frame, so the frame cocks on
+hangs from an eye at the outer end of the spine, 150 mm out from the frame, so the frame cocks on
 the trunk: the bearing bars press the bark low on the near side and the chain presses it high on
 the far side, and the grip rises with the load. An auto-locking rope descender on the eye lowers
 the victim, who is fitted with an evacuation triangle and a chest sling, on 30 m of 11 mm
-semi-static rope whose spare end runs down to the rope bag on the ground. A second (spare) eye takes a
-carabiner for the chain tail or the bag while rigging.
+semi-static rope whose spare end runs down to the rope bag on the ground. The helpers keep the rope bag
+on the ground and the rescuer hauls the rope's loop end, with the victim set pre-rigged on the victim
+carabiner, up on a 4 mm tag line (TKB-DDR-003). A second (spare) eye takes the brake carabiner and the
+tether quick link of the chain's fixed end.
 
 Coordinates in mm. Z up; the trunk axis is the Z axis; the frame sits on the +X side of the trunk,
 its foot (the bottom of the bearing bars) at Z = 0. The frame is built in a frame-local system with
@@ -41,19 +44,22 @@ PARAMS = {
     "v_half": 60.0,              # angle of each pad face from the frame's centre plane, deg (120 deg V)
     "pad": (155.0, 10.0, 50.0),  # rubber pad: length along the face x thickness x height
     "pad_u0": 15.0,              # pad starts this far along the face from the virtual vertex
-    "bar": (50.0, 25.0, 2.5),    # bearing bar RHS: height x depth (away from the trunk) x wall
+    "frame_material": "aluminium",   # 6082-T6, TIG welded, not galvanised (TKB-DDR-003, decision 43 C)
+    "bar": (70.0, 30.0, 5.0),    # bearing bar RHS: height x depth (away from the trunk) x wall; sized for the
+                                 # heat-affected zone at the weld (TKB-CAL-001, C1); depth 30 at most to clear the spare eye ring
     "bar_u1": 172.0,             # outer end of the bar along the face (end cap included)
-    "cap_t": 3.0,
+    "cap_t": 4.0,
     # spine
-    "spine_t": 5.0,              # also the web of the chain cleat: no thicker than 6 mm (link inner length less two wires)
+    "spine_t": 5.0,              # also the web of the chain cleat: 5 mm, not thickened for aluminium, because a link must
+                                 # span it (inner length 18 less two wires of up to 6.3 leaves 5.4 mm)
     "spine_set": 8.0,            # spine front edge behind the virtual vertex
     "spine_pts": ((0, 0), (175, 0), (175, 55), (60, 175), (0, 175)),   # x' (from the front edge), z
     "eye_main": (150.0, 28.0), "eye_bag": (70.0, 28.0), "eye_d": 22.0,   # load eye and spare eye
-    "doubler": (50.0, 4.0),      # eye doubler ring OD x thickness, one each side of each eye
+    "doubler": (50.0, 6.0),      # eye doubler ring OD x thickness, one each side of each eye
     "light_hole": (85.0, 90.0, 36.0),   # x', z, diameter
     # chain cleat: two slots in the top of the spine, stiffened by a cheek plate on each face
     "slots": (15.0, 43.0), "slot_w": 7.5, "slot_bottom": 150.0,
-    "cheek": (60.0, 6.0, 130.0), # x' length x thickness x bottom z (top level with the spine top)
+    "cheek": (60.0, 8.0, 130.0), # x' length x thickness x bottom z (top level with the spine top)
     "notch": (22.0, 148.0),      # notch in each cheek round each slot: width x bottom z
     "pin_xz": (29.0, 139.0), "pin_d": 8.0, "pin_hole": 8.5,
     "keeper": (56.0, 3.0, 6.0, 132.0),  # bridge length (X) x sheet thickness x leg width x leg bottom z
@@ -245,7 +251,7 @@ def _doublers(P, D):
 
 
 def _cheeks(P, D):
-    """Two 6 mm cheek plates welded on the faces of the spine top, notched round each slot so the chain
+    """Two 8 mm cheek plates welded on the faces of the spine top, notched round each slot so the chain
     links lie against the 5 mm web, and drilled for the lock pin."""
     x0 = P["spine_set"]
     L, t, zb = P["cheek"]
@@ -541,7 +547,8 @@ def load_side(P=PARAMS, D=None):
 
 
 def victim_kit(P=PARAMS, origin=(0.0, 0.0, 0.0)):
-    """Victim connector, evacuation triangle and chest sling, laid out flat (for the kit pictures)."""
+    """Victim connector, evacuation triangle and chest sling, laid out flat, with the rope bag, the shoulder
+    pouch and the coiled tag line (for the kit pictures)."""
     ox, oy, oz = origin
     tri = extrude(make_face(Polyline((0, 0, 0), (560, 0, 0), (280, 0, -420), close=True)), amount=7, both=True)
     tri = tri - extrude(make_face(Polyline((180, 0, -40), (380, 0, -40), (280, 0, -190), close=True)), amount=10, both=True)
@@ -551,9 +558,11 @@ def victim_kit(P=PARAMS, origin=(0.0, 0.0, 0.0)):
     bag = Pos(900, 0, -P["bag"][1] / 2) * Cylinder(P["bag"][0] / 2, P["bag"][1])
     coil = Pos(900, 0, -P["bag"][1] - 120) * Torus(140, 30)
     spare = place(stadium(P["carab"][1], P["carab"][2], P["carab"][0] / 2), (420, 0, 60), (0, 0, 1), (1, 0, 0))
+    pouch = Pos(1250, 0, -150) * Cylinder(80, 300)                 # 10 l shoulder pouch (TKB-DDR-003)
+    tag = Pos(1250, 0, -360) * Torus(90, 6)                         # 4 mm tag line, coiled
     S = Pos(ox, oy, oz)
     return {"triangle": S * (tri + fuse_all(loops)), "chest_sling": S * sling, "carab_victim": S * conn,
-            "carab_spare": S * spare, "bag": S * bag, "rope_coil": S * coil}
+            "carab_spare": S * spare, "bag": S * bag, "rope_coil": S * coil, "pouch": S * pouch, "tag_line": S * tag}
 
 
 # ----------------------------------------------------------------- whole kit
@@ -587,10 +596,12 @@ def frame_weldment(C):
 
 
 def mass_table(P=PARAMS, C=None):
-    """Mass in kg of each carried item (steel parts from volume; bought items from catalogue class)."""
+    """Mass in kg of each item (frame parts from volume; bought items from catalogue class)."""
     C = C or build_components(P)
     m = {}
-    for k in ("spine", "bars", "doublers", "cheeks", "keeper", "pad_screws"):
+    for k in ("spine", "bars", "doublers", "cheeks"):
+        m[k] = C[k].volume * DENSITY[P["frame_material"]]
+    for k in ("keeper", "pad_screws"):
         m[k] = C[k].volume * DENSITY["steel"]
     m["pin"] = 0.04                                          # 8 mm stainless ball-lock pin with lanyard
     m["maillon"] = 0.05                                      # 8 mm steel quick link
@@ -604,7 +615,20 @@ def mass_table(P=PARAMS, C=None):
     m["bag"] = 0.45                                           # rope bag with shoulder straps
     m["triangle"] = 0.75                                      # evacuation triangle class
     m["chest_sling"] = 0.12                                   # 120 cm sewn sling
+    m["tag_line"] = 0.30                                      # 30 m of 4 mm accessory cord, about 10 g/m
+    m["pouch"] = 0.15                                         # shoulder pouch for the collar, descender and tag line
     return m
+
+
+CARRIED = ("spine", "bars", "doublers", "cheeks", "keeper", "pad_screws", "pin", "maillon", "pads", "chain",
+           "master_links", "sleeve", "descender", "tag_line", "pouch")
+"""Items the rescuer carries up the trunk (TKB-DDR-003): the collar, the descender, the load and brake carabiners
+(two of the three), the tag line and the pouch. The rope bag, the rope and the victim set (triangle, chest sling and
+victim carabiner, pre-rigged on the rope's loop) stay with the helpers and are hauled up on the tag line."""
+
+
+def carried_mass(m):
+    return sum(m[k] for k in CARRIED) + m["carabiners"] * 2 / 3
 
 
 # ----------------------------------------------------------------- constructability checks
@@ -648,7 +672,7 @@ def checks(P=PARAMS, C=None, verbose=True, trunk_d=None, label=""):
         ("pin", "chain_tail_a", 0.5), ("pin", "chain_tail_b", 0.5), ("rope_load", "rope_brake", 10),
         ("carab_brake", "maillon", 0.3), ("carab_brake", "chain_tail_a", 0.1), ("carab_brake", "chain_tail_b", 2),
         ("rope_brake", "chain_tail_b", 5), ("rope_brake", "chain_tail_a", 3), ("rope_brake", "spine", 3),
-        ("carab_brake", "bars", 5),
+        ("carab_brake", "bars", 5), ("bars", "doublers", 3),
     ]
     res = []
     for a, b in touch:

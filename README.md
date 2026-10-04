@@ -4,7 +4,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/trunkbelay/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/trunkbelay/actions/workflows/reuse.yml)
 
-**Area:** Food and water security · **TRL:** 3 of 9 (analytical proof of concept, constructable design) · **Value-engineering target:** USD 900; estimated cost of the constructable design USD 758 (USD 142 under the target) · **Difficulty:** 3 of 5
+**Area:** Food and water security · **TRL:** 3 of 9 (analytical proof of concept, constructable design) · **Value-engineering target:** USD 900; estimated cost of the constructable design USD 802 (USD 98 under the target) · **Difficulty:** 3 of 5
 
 Lets a fellow climber anchor and lower a climber stranded high on a palm trunk.
 
@@ -53,7 +53,7 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 ## Concept
 
-A steel collar frame with two rubber-faced bars in a V is held on the palm trunk by a 6 mm grade 80 chain locked in two slots on its top. The load hangs from an eye 150 mm out from the frame, so the frame cocks on the trunk and grips harder as the load rises. A second climber fixes the collar, clips an auto-locking descender to it, fits an evacuation triangle and chest sling to the stranded climber, frees their feet and lowers them to the helpers on the ground. On paper it fits trunks from 200 to 450 mm, holds 2.5 kN with a locking factor of 1.54 or more, and needs about 80 N at the brake hand for a 100 kg person. It is heavier (8.9 kg) and costlier (USD 758 a kit) than its targets; the options are open for Amish in the design decisions register.
+An aluminium collar frame with two rubber-faced bars in a V is held on the palm trunk by a 6 mm grade 80 chain locked in two slots on its top. The load hangs from an eye 150 mm out from the frame, so the frame cocks on the trunk and grips harder as the load rises. A second climber carries the collar up in a shoulder pouch, fixes it at least 300 mm above the point where the rope will meet the stranded climber, hauls the rope's end up from the helpers on a tag line with the evacuation triangle and chest sling already clipped to it, fits them, frees the stranded climber's feet and lowers them to the helpers on the ground. On paper it fits trunks from 200 to 450 mm, holds 2.5 kN with a locking factor of 1.54 or more, needs about 80 N at the brake hand for a 100 kg person, rigs in about 4.2 minutes and puts 4.74 kg on the rescuer. It costs about USD 802 a kit, well over its USD 100 target; Amish has kept the auto-locking descender and triangle for safety and seeks savings through group purchase and one kit per climber group.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [docs/03-requirements.md](docs/03-requirements.md) · Calculations: [docs/04-calcs/01-sizing.md](docs/04-calcs/01-sizing.md) · Prototype build plan: [docs/05-build-plan.md](docs/05-build-plan.md) · Design decisions: [docs/06-design-decisions.md](docs/06-design-decisions.md) · General arrangement: [cad/drawings/TKB-DWG-001.pdf](cad/drawings/TKB-DWG-001.pdf) · 3D viewer: [media/viewer.html](media/viewer.html)
 
@@ -61,18 +61,19 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [d
 
 ## Key components
 
-- Collar frame: 5 mm steel spine, two bearing bars in a 120 deg V, eye doubler rings and cleat cheeks, welded and galvanised
+- Collar frame: 5 mm aluminium 6082-T6 spine, two bearing bars in a 120 deg V, eye doubler rings and cleat cheeks, TIG welded
 - Rubber bark pads
 - Chain cleat keeper and ball-lock pin
 - Chain, 6 mm grade 80, 110 links, with sleeve, master link and tether quick link
 - Auto-locking descender with a brake carabiner
 - Lowering rope, 30 m of 11 mm semi-static
 - Evacuation triangle, chest sling and victim carabiner
-- Rope and carry bag
+- Rope and carry bag (stays with the helpers)
+- 4 mm tag line and shoulder pouch
 
 ## Building the prototype
 
-The prototype is built to a plan, not yet built: [docs/05-build-plan.md](docs/05-build-plan.md) (TKB-BLD-001). The collar frame is profile cut from 5 mm plate and welded to two short box-section bars, eye rings and cleat cheeks in any fabrication shop, then hot-dip galvanised; the pads are cut from rubber sheet and the keeper bent from sheet. The chain, rigging and rescue gear are bought to specification. Every component has a making sketch and every assembly step a picture, and nobody is lowered with the kit before a proof test on cut trunk sections and a dummy drill at low height.
+The prototype is built to a plan, not yet built: [docs/05-build-plan.md](docs/05-build-plan.md) (TKB-BLD-001). The collar frame is cut from 5 mm aluminium 6082-T6 plate and TIG welded to two short box-section bars, eye rings and cleat cheeks by a fabricator with an aluminium-qualified welder, then left bare; the pads are cut from rubber sheet and the keeper bent from sheet. The chain, rigging and rescue gear are bought to specification. Every component has a making sketch and every assembly step a picture, and nobody is lowered with the kit before a proof test on cut trunk sections and a dummy drill at low height.
 
 ![The kit pulled apart, in build order](docs/05-build-plan/overview.png)
 
@@ -85,6 +86,8 @@ The prototype is built to a plan, not yet built: [docs/05-build-plan.md](docs/05
 > Always call emergency services as well; TrunkBelay is for the minutes before they arrive.
 >
 > The collar can slip on wet, fibrous bark under shock load; load it gently and never let the victim drop onto it.
+>
+> The collar holds a downward pull only: always set it at least 300 mm above the point where the rope meets the victim.
 >
 > A person hanging head down for a long time needs medical assessment after rescue.
 >

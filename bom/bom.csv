@@ -1,22 +1,24 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-1,1,"Spine plate: S355 steel plate 5 mm, profile cut 175 x 175 mm with two chain slots, two eyes, pin hole and lightening hole",Local steel fabricator (laser or plasma cutting),6.00,make,Drawing TKB-DWG-101; also the web of the chain cleat
-2,2,"Bearing bars: S355 rectangular hollow section 50 x 25 x 2.5 mm, 172 mm long, mitred at one end, 3 mm end cap at the other",Local steel stockist,2.50,make,Drawing TKB-DWG-103; drill an 8 mm vent hole before galvanising
-3,4,"Eye doubler rings: S275 steel, 50 mm outside, 22 mm bore, 4 mm thick",Local steel fabricator,0.75,make,Drawing TKB-DWG-102; two each side of each eye
-4,2,"Cleat cheeks: S355 steel plate 6 mm, 60 x 45 mm, two 22 mm notches and an 8.5 mm pin hole",Local steel fabricator,1.50,make,Drawing TKB-DWG-104
-5,1,"Welding (E7018 or ER70S-6) and hot-dip galvanising of the frame weldment, about 1.7 kg",Local fabricator and galvaniser,25.00,make,Drawing TKB-DWG-105; service cost
+1,1,"Spine plate: aluminium 6082-T6 plate 5 mm, profile cut 175 x 175 mm with two chain slots, two eyes, pin hole and lightening hole",Local fabricator (waterjet or laser cutting),8.00,make,"Drawing TKB-DWG-101; also the web of the chain cleat, so it stays 5 mm (estimate: 0.29 kg of plate at about USD 8/kg plus cutting)"
+2,2,"Bearing bars: aluminium 6082-T6 rectangular tube 70 x 30 x 5 mm, 175 mm long, mitred at one end, 4 mm end cap at the other",Aluminium stockist,5.00,make,"Drawing TKB-DWG-103; sized for the heat-affected zone at the weld (TKB-CAL-001, C1); estimate"
+3,4,"Eye doubler rings: aluminium 6082-T6, 50 mm outside, 22 mm bore, 6 mm thick",Local fabricator,1.00,make,Drawing TKB-DWG-102; two each side of each eye; estimate
+4,2,"Cleat cheeks: aluminium 6082-T6 plate 8 mm, 60 x 45 mm, two 22 mm notches and an 8.5 mm pin hole",Local fabricator,2.00,make,Drawing TKB-DWG-104; estimate
+5,1,"TIG welding of the aluminium frame weldment with ER5356 filler (AC TIG), about 1.4 kg; no galvanising, mill finish",Fabricator with AC TIG and an aluminium-qualified welder,45.00,make,"Drawing TKB-DWG-105; service cost, estimate (the steel weld and galvanise line was USD 25)"
 6,2,"Rubber bark pads: natural rubber sheet with one fabric ply, 10 mm, 60 to 70 Shore A, cut 155 x 50 mm",Industrial rubber dealer,3.00,make,Drawing TKB-DWG-106
-7,4,"Pad screws: M6 x 30 countersunk stainless A2 with nyloc nut and washer",Fastener dealer,0.40,buy,Heads sunk 3 mm below the rubber face
-8,1,"Contact adhesive for rubber to galvanised steel (polychloroprene), 250 ml",Hardware store,4.00,buy,For the pads
-9,1,"Keeper: S275 steel sheet 3 mm, cut cross-shaped and bent, zinc plated",Local steel fabricator,3.00,make,Drawing TKB-DWG-107
-10,1,"Lock pin: ball-lock pin 8 mm, stainless, 23 mm grip, button head, with a 300 mm stainless lanyard",Industrial fastener supplier,18.00,buy,Lanyard to the keeper
+7,4,Pad screws: M6 x 30 countersunk stainless A2 with nyloc nut and washer,Fastener dealer,0.40,buy,"Heads sunk 3 mm below the rubber face; stainless in aluminium, assembled with anti-seize"
+8,1,"Contact adhesive for rubber to aluminium (polychloroprene), 250 ml",Hardware store,4.00,buy,For the pads; abrade and degrease the bar face first
+9,1,"Keeper: S275 steel sheet 3 mm, cut cross-shaped and bent, zinc plated",Local steel fabricator,3.00,make,Drawing TKB-DWG-107; bridge widened to 28 mm for the 8 mm cheeks
+10,1,"Lock pin: ball-lock pin 8 mm, stainless, 28 mm grip, button head, with a 300 mm stainless lanyard",Industrial fastener supplier,18.00,buy,Lanyard to the keeper
 11,1,"Chain: grade 80 alloy chain 6 mm, 110 links (about 1.98 m), working load limit 1.12 t, minimum breaking force 45 kN, with certificate",Lifting and rigging supplier,36.00,buy,Drawing TKB-DWG-108 (cut to length by the supplier; never weld or heat it)
 12,1,"Master link, grade 80, for 6 mm chain",Lifting and rigging supplier,8.00,buy,On the end of the adjustable tail (handle)
 13,1,"Connecting link, grade 80, 6 mm",Lifting and rigging supplier,5.00,buy,Joins the master link to the chain
 14,1,"Tether quick link: 8 mm steel screw-gate quick link (maillon), zinc plated",Lifting and rigging supplier,3.00,buy,Fixed chain end to the spare eye
 15,1,"Chain sleeve: 50 mm (2 in) tubular nylon webbing, 600 mm, ends heat-sealed",Climbing or rescue supplier,4.00,make,Drawing TKB-DWG-109
-16,3,"Carabiners: aluminium alloy, screw-gate locking, EN 362 class B or equal, 25 kN major axis",Rope rescue equipment supplier,15.00,buy,"Load eye, brake redirect, victim connector"
+16,3,"Carabiners: aluminium alloy, screw-gate locking, EN 362 class B or equal, 25 kN major axis",Rope rescue equipment supplier,15.00,buy,"Load eye, brake redirect, victim connector (the victim carabiner is packed pre-rigged with the victim set)"
 17,1,"Auto-locking rope descender with anti-panic function, for 10.5 to 11.5 mm rope, rated for a one-person rescue load (EN 341 class A or EN 12841 type C, or equal)",Rope rescue equipment supplier,280.00,buy,Specification not brand; follow the maker's instructions
-18,30,"Lowering rope: 11 mm semi-static kernmantle, EN 1891 type A or equal, sold per metre",Rope rescue equipment supplier,3.50,buy,30 m; figure-eight loop at the victim end and a stopper knot at the other
+18,30,"Lowering rope: 11 mm semi-static kernmantle, EN 1891 type A or equal, sold per metre",Rope rescue equipment supplier,3.50,buy,"30 m; figure-eight loop at the victim end and a stopper knot at the other; stays in the bag on the ground, its loop end hauled up on the tag line"
 19,1,"Evacuation triangle, EN 1498 class B or equal",Rope rescue equipment supplier,140.00,buy,Fitted round the victim's hips
 20,1,"Chest sling: 120 cm sewn sling, 22 kN",Climbing or rescue supplier,12.00,buy,Keeps the victim's head up once the feet are freed
-21,1,"Rope and carry bag: 35 l rope bag with shoulder straps and a clip loop",Climbing or rescue supplier,45.00,buy,Carries the kit; lowered to the ground before the lowering
+21,1,Rope and carry bag: 35 l rope bag with shoulder straps and a clip loop,Climbing or rescue supplier,45.00,buy,Stays with the helpers on the ground; holds the rope with the pre-rigged victim set on top
+22,30,"Tag line: 4 mm polyamide accessory cord, sold per metre",Climbing or rescue supplier,0.25,buy,Carried by the rescuer; one end dropped to the helpers to haul up the rope's loop end and the victim set (estimate)
+23,1,"Shoulder pouch: 10 l drawstring bag with a shoulder strap, for the collar, descender, carabiners and tag line",Climbing or rescue supplier,8.00,buy,Carried hands-free while climbing (estimate)
