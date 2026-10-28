@@ -3,9 +3,9 @@ doc_id: TKB-PRC-001
 title: TrunkBelay design precis
 project: TrunkBelay
 doc_type: Precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,11 +25,17 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Amish's decisions carried out (TKB-DDR-003); aluminium frame, tag-line haul, pre-rigged victim set; figures from TKB-CAL-001 v0.2
+- version: "0.5"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: the design is option A of TKB-OPT-001 (selection awaiting Amish, O5); fixed-end tether now a grade 80 connecting link through a 10 mm tether hole (TKB-DEC-001 D-S1); cost USD 828; requirement IDs PR-001 to PR-018 (TKB-PRS-001)"
 ---
 
 # TrunkBelay design precis
 
 Lets a fellow climber anchor and lower a climber stranded high on a palm trunk.
+
+This precis describes option A, the self-locking lever collar, which is the current, constructable design. Two other ways to anchor on the trunk (a constricting wrap anchor and a screwed stem anchor) are recorded in TKB-OPT-001; the choice between A and B is awaiting Amish (TKB-DEC-001 O5).
 
 ![Figure 1. TrunkBelay collar on a 300 mm palm trunk, with the descender and rope](../media/hero.png)
 
@@ -37,7 +43,7 @@ Lets a fellow climber anchor and lower a climber stranded high on a palm trunk.
 
 ## How it works
 
-TrunkBelay is an aluminium collar that grips a palm trunk harder the more load hangs from it, with a commodity rope descender clipped to it. The rescuer climbs on their own climbing device to just below the stranded climber, carrying the collar, the chain and the descender (about 4.6 kg) and a micro pulley with a 4 mm tag line running through it to the helpers on the ground, and works in four stages.
+TrunkBelay is an aluminium collar that grips a palm trunk harder the more load hangs from it, with a commodity rope descender clipped to it. The rescuer climbs on their own climbing device to just below the stranded climber, carrying the collar, the chain and the descender (about 4.7 kg) and a micro pulley with a 4 mm tag line running through it to the helpers on the ground, and works in four stages.
 
 1. **Fix the collar.** The rescuer holds the collar frame against the trunk, with its two rubber-faced bearing bars touching the bark, passes the chain round the trunk, drops a link into the open slot on top of the frame, pulls the chain snug and slips the keeper and lock pin on. The frame is set at least 300 mm above the point where the rope will meet the victim.
 2. **Rig the lowering.** The helpers haul the rope bag up on the tag line. The descender is clipped to the load eye at the outer end of the frame and the rope reeved through it. The brake strand turns over a carabiner on the spare eye and runs down to the rope bag, which is lowered to the helpers on the ground.
@@ -56,14 +62,14 @@ The load eye sits 150 mm out from the frame. The pull of the rope on the eye til
 
 | BOM | Component | Role |
 | --- | --- | --- |
-| 1 | Spine plate | 5 mm 6082-T6 aluminium plate in the frame's centre plane: carries the bearing bars at its foot, the chain slots at its top and the load and spare eyes at its outer end |
+| 1 | Spine plate | 5 mm 6082-T6 aluminium plate in the frame's centre plane: carries the bearing bars at its foot, the chain slots at its top, the load and spare eyes at its outer end and a 10 mm tether hole at its front edge |
 | 2 | Bearing bars (2) | 50 x 40 x 3 mm aluminium box section set in a 120 deg V at the foot of the spine; they bear on the bark through the pads |
 | 3 | Eye doubler rings (4) | Thicken both eyes to 13 mm so a carabiner bears on a rounded, wide edge |
 | 4 | Cleat cheeks (2) | 8 mm aluminium; stiffen the slotted top of the spine; notched so the chain links bear on the 5 mm web |
 | 5 | TIG welding | The frame is one TIG-welded aluminium piece, left bare |
 | 6, 7, 8 | Rubber bark pads (2), screws, adhesive | 10 mm rubber on each bar spreads the load on the bark and adds grip |
 | 9, 10 | Keeper and lock pin | Hold both chain links down in their slots |
-| 11 to 14 | Chain set | 6 mm grade 80 chain, 110 links, with a master link on the adjustable end and a quick link tethering the fixed end to the spare eye |
+| 11 to 14 | Chain set | 6 mm grade 80 chain, 110 links, with a master link joined by a connecting link on the adjustable end, and a second grade 80 connecting link tethering the fixed end through the tether hole (TKB-DEC-001 D-S1) |
 | 15 | Chain sleeve | 600 mm of tubular webbing on the chain where it bears on the back of the trunk |
 | 16 | Carabiners (3) | Load eye to descender, brake redirect, victim connector |
 | 17 | Auto-locking descender | Controls the lowering; locks if the rescuer lets go |
@@ -100,12 +106,12 @@ From TKB-CAL-001; assumptions are stated there.
 | Static load the collar is sized for (R1) | 2.5 kN |
 | Friction needed to lock, 200 mm trunk (worst) | 0.58, against about 0.9 assumed on wet bark; locking factor 1.54 |
 | Frame settles under 2.5 kN | About 10 mm |
-| Strength at 2.5 kN | Frame 1.55 times its welded proof strength or better; chain 8.1 times its breaking force; rope 5.7 times at the knot |
+| Strength at 2.5 kN | Frame 1.21 times its welded proof strength or better, even with all of the chain's pull on one slot (TKB-DEC-001 D-S2); chain 4.1 times its breaking force in one leg; rope 5.7 times at the knot; estimated breaking load about 5.0 kN, at or below the low end of rescue practice (TKB-DEC-001 O7) |
 | Hand force on the brake strand, 100 kg | About 80 N |
 | Rope | 30 m; 28 m needed for a 25 m lowering |
 | Rigging time once in position | About 4.5 minutes (estimate), the haul included |
-| Mass | 4.55 kg carried up the trunk; 3.7 kg bag hauled up; 8.3 kg in all |
-| Cost | Value-engineering target: USD 900. Estimated cost of the constructable design: USD 826 (USD 74 under the target); R9 as restated, USD 850 |
+| Mass | 4.67 kg carried up the trunk; 3.7 kg bag hauled up; 8.4 kg in all |
+| Cost | Value-engineering target: USD 900. Estimated cost of the constructable design: USD 828 (USD 72 under the target); PR-009 (R9 as restated), USD 850 |
 
 ## Patent design-arounds
 

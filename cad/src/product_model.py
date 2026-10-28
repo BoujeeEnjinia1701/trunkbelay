@@ -1,19 +1,18 @@
-"""TrunkBelay product appearance model (build123d), TRL 3, constructable design (TKB-DDR-002), aluminium frame (TKB-DDR-003).
+"""TrunkBelay product appearance model for photoreal renders (STANDARDS sections 12 and 24), TRL 3, kit 1.9.
 
-Finished-product look for photoreal renders, built from the constructable model (bare aluminium frame since
-TKB-DDR-003): every component of
-cad/src/model.py build_components() is used as it is (spine with its slots and eyes, the two bearing
-bars, eye doubler rings, cleat cheeks, rubber pads and screws, keeper and lock pin, the 110-link chain
-with its master link, the sleeve, the tether quick link, both carabiners, the descender and the rope),
-fitted to a 400 mm palm trunk, inside the 200 to 450 mm range. Only the look is added, as recorded in
-docs/REVIEW.md: a safe working load label on the spine, a bark texture band (the trunk is a plain
-cylinder with leaf-scar rings), the rope cut 450 mm below the frame foot, and the rescuer's left
-forearm and hand (clay) holding the brake strand from the far side, for scale.
-APPEARANCE MODEL ONLY: no tolerances, no fabrication detail. CONCEPT, NOT FOR FABRICATION.
+Every product part is components(CHOSEN) from cad/src/model.py as it is, at detail level D3: the spine plate,
+bearing bars, rubber pads with their countersunk screws and rivet nuts, eye doubler rings, cleat cheeks, every
+weld bead, keeper and lock pin, the 110-link chain with its sleeve, tether link, connecting link and master link,
+the load and brake carabiners (body, gate, sleeve, rivet), the descender (plates, cam, handle, axle bolt set,
+rivets) and the rope, fitted to the reference 300 mm palm trunk. The whole model is lifted so that ground level
+is z = 0 and the collar's foot is 1.4 m up: the low-height drill of the build plan's first checks (TKB-BLD-001).
+Only the look and the site are added, as recorded in docs/REVIEW.md: a safe working load label on the spine,
+both rope strands carried on down to the rope bag on the ground, the palm trunk and two more palms behind, all
+reaching below the ground, and a 1.75 m helper standing on the ground for scale.
+APPEARANCE MODEL ONLY. CONCEPT, NOT FOR FABRICATION.
 
-Axes as model.py: Z up, the trunk axis on Z, the frame on the +X side, its foot at Z = 0.
-Groups: "shell" (frame, pads, cleat, chain), "internal" (carabiners, descender, rope),
-"context" (trunk, forearm and hand).
+Groups: "shell" (collar, chain and their fixings), "internal" (carabiners, descender, rope, bag), "context"
+(site and the helper).
 
     from product_model import product_parts
     for p in product_parts(): print(p["name"], p["group"], p["material"])
@@ -24,113 +23,90 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE), str(HERE.parents[1] / ".kit")]
 
-from build123d import Box, Cylinder, Location, Pos, Rot, Torus, Vector  # noqa: E402
+from build123d import Cylinder, Pos, Rot  # noqa: E402
 import model as M  # noqa: E402
+import tkb_parts as tk  # noqa: E402
+from cad_parts import part, break_edges, label_plate, rope  # noqa: E402
 
 TITLE = "TrunkBelay: palm trunk rescue collar and lowering kit"
-TRUNK_D = 400.0
-ROPE_CUT = -450.0
+LIFT = -M.PARAMS["ground_z"]            # 1400 mm: model z = 0 (the collar foot) becomes 1.4 m above the ground
 
+_SITE = ["--scene=outdoor", "--ground=soil", "--ground-z=0", "--sun=48,-75", "--lens=50"]
 RENDER_VIEWS = [
-    {"name": "hero", "groups": ["shell", "internal", "context"], "explode": False, "el": 18, "az": -40,
-     "note": "Product render from the front right, about 18 deg above: the collar fitted to a 400 mm palm trunk, "
-             "the auto-locking descender on the load eye and the brake strand held by the rescuer's hand, "
-             "reaching in from the far side (forearm and hand for scale)"},
+    {"name": "hero", "groups": ["shell", "internal", "context"], "explode": False, "el": 12, "az": -40, "args": _SITE,
+     "note": "Site render in a coconut plantation, from the front right and a little above (about 12 deg elevation): the collar "
+             "on a 300 mm palm at drill height (foot 1.4 m up), the descender on the load eye, both rope strands running down "
+             "to the rope bag on the ground; a 1.75 m helper standing beside the palm for scale; sun from the camera's side"},
+    {"name": "studio", "groups": ["shell", "internal"], "explode": False, "el": 20, "az": -40,
+     "note": "Studio render from the front right and above (about 20 deg elevation), trunk hidden: frame weldment with its "
+             "weld beads, pads, chain loop and sleeve, keeper and pin, tether link, carabiners, descender and the top of the rope"},
     {"name": "exploded", "groups": ["shell", "internal"], "explode": True, "el": 22, "az": -40,
-     "note": "Exploded view from the front right and above (about 22 deg elevation): spine plate, bearing bars and pads, "
-             "eye rings, cleat cheeks, keeper and lock pin, chain and sleeve, tether quick link, carabiners, "
-             "descender and rope; trunk not shown"},
+     "note": "Exploded view from the front right and above (about 22 deg elevation): spine plate, bearing bars and pads with "
+             "their screws and rivet nuts, eye rings, cleat cheeks, keeper and lock pin, chain, sleeve, tether and connecting "
+             "links, master link, carabiners, descender parts and rope; trunk not shown"},
     {"name": "detail", "groups": ["shell"], "explode": False, "el": 35, "az": -125,
-     "note": "Detail of the collar from behind and above (about 35 deg elevation), trunk hidden: the two chain links "
-             "standing in the slots of the spine top, the cheeks, the keeper over both slots and the ball-lock pin"},
+     "note": "Detail of the collar from behind and above (about 35 deg elevation), trunk hidden: the two chain links standing in "
+             "the slots of the spine top, the cheeks with their weld beads, the keeper over both slots, the ball-lock pin and the "
+             "fixed end's tether link at the spine front edge"},
 ]
 
-C_GALV = "#A9B0B8"      # zinc-plated and stainless steel fittings
-C_AL6082 = "#D3D7DB"    # bare 6082-T6 aluminium frame, wire-brushed (TKB-DDR-003)
-C_ACCENT = "#0F766E"    # teal paint stripe on the keeper and pin lanyard
-C_RUBBER = "#1F2328"
-C_CHAIN = "#5B6168"
-C_SLEEVE = "#E2A90F"
-C_ALU = "#C2410C"       # orange anodised carabiners
-C_DESC = "#2F7D32"
-C_ROPE = "#0E7490"
-C_LABEL = "#F4F4F2"
-C_BARK = "#8A6F4E"
-C_CLAY = "#B9B4AC"
-
-# model key: (display name, colour, material, group, BOM line, explode offset)
-LOOK = {
-    "spine": ("Spine plate, aluminium 6082-T6", C_AL6082, "metal", "shell", 1, (150, 0, 0)),
-    "bars": ("Bearing bars, aluminium 50 x 40 x 3", C_AL6082, "metal", "shell", 2, (-60, 0, -200)),
-    "doublers": ("Eye doubler rings, aluminium", C_AL6082, "metal", "shell", 3, (150, 0, -150)),
-    "cheeks": ("Cleat cheeks, aluminium 8 mm", C_AL6082, "metal", "shell", 4, (150, 0, 150)),
-    "pads": ("Rubber bark pads", C_RUBBER, "rubber", "shell", 6, (-200, 0, -200)),
-    "pad_screws": ("Pad screws, stainless", C_GALV, "metal", "shell", 7, (-200, 0, -200)),
-    "keeper": ("Keeper, painted steel", C_ACCENT, "painted", "shell", 9, (150, 0, 300)),
-    "pin": ("Lock pin, stainless", "#D9DDE1", "metal", "shell", 10, (150, -200, 260)),
-    "chain_loop": ("Chain, grade 80, 6 mm", C_CHAIN, "metal", "shell", 11, (-250, 0, 200)),
-    "chain_tail_a": ("Chain fixed end", C_CHAIN, "metal", "shell", 11, (150, 150, 0)),
-    "chain_tail_b": ("Chain adjustable end with master link", C_CHAIN, "metal", "shell", 11, (150, -200, 0)),
-    "sleeve": ("Chain sleeve, tubular webbing", C_SLEEVE, "fabric", "shell", 15, (-400, 0, 200)),
-    "maillon": ("Tether quick link, zinc plated", C_GALV, "metal", "shell", 14, (150, 200, -250)),
-    "carab_main": ("Load carabiner, aluminium", C_ALU, "metal", "internal", 16, (350, 0, -250)),
-    "carab_brake": ("Brake carabiner, aluminium", C_ALU, "metal", "internal", 16, (200, 0, -350)),
-    "descender": ("Auto-locking descender", C_DESC, "painted", "internal", 17, (500, 0, -350)),
-}
+_INTERNAL = ("carabiner", "Descender", "rope", "Lowering")
 
 
-def _rope(C):
-    keep = Pos(0, 0, (ROPE_CUT + 200) / 2) * Box(3000, 3000, 200 - ROPE_CUT)
-    return (C["rope_brake"] & keep), (C["rope_load"] & keep)
+def _lift(s):
+    return Pos(0, 0, LIFT) * s
 
 
-def _label(D):
-    """Safe working load label on the spine's +Y face, between the eyes and the lightening hole."""
-    P = M.PARAMS
-    x = D["x_s"] + 120
-    return Pos(x, -P["spine_t"] / 2 - 0.4, 66) * Box(40, 0.8, 16)
-
-
-def _trunk(D):
-    r = TRUNK_D / 2
-    z0, z1 = -520.0, 420.0
-    body = Pos(0, 0, (z0 + z1) / 2) * Cylinder(r, z1 - z0)
-    rings = None
-    for z in (-430, -250, -70, 330):
-        ring = Pos(0, 0, z) * Torus(r, 4.0)
-        rings = ring if rings is None else rings + ring
-    return body + rings
-
-
-def _hand(D):
-    from context_parts import forearm_hand
-    turn = Rot(0, 0, -90) * Rot(90, 0, 0)         # grip axis vertical, hand pointing -Y, forearm toward +Y (the far side)
-    h = turn * forearm_hand(side="left", pose="grip", grip_d=20.0)
-    g = (turn * Location(Vector(92, 0, -27))).position
-    return Pos(D["xb_strand"] - g.X, -g.Y, -300.0 - g.Z) * h
-
-
-def product_parts(p=M.PARAMS):
-    C = M.build_components(p, TRUNK_D)
-    D = C["_D"]
+def site():
+    """The plantation: the palm the collar is on (300 mm, reaching 0.3 m below the ground and up out of the picture),
+    two more palms behind, and the helper on the ground. Ground level is z = 0."""
     out = []
-
-    def add(name, shape, color, material, bom, group, explode=(0, 0, 0)):
-        out.append({"name": name, "shape": shape, "color": color, "material": material, "bom": bom,
-                    "group": group, "explode": tuple(explode)})
-
-    for key, (name, color, mat, group, bom, ex) in LOOK.items():
-        add(name, C[key], color, mat, bom, group, ex)
-    rb, rl = _rope(C)
-    add("Lowering rope, brake strand", rb, C_ROPE, "fabric", 18, "internal", (200, 0, -500))
-    add("Lowering rope, load strand to the victim", rl, C_ROPE, "fabric", 18, "internal", (500, 0, -500))
-    add("Safe working load label, one person 100 kg", _label(D), C_LABEL, "paper", None, "shell", (150, 0, 0))
-    add("Palm trunk, 400 mm, bark", _trunk(D), C_BARK, "wood", None, "context")
-    add("Rescuer's forearm and hand (scale)", _hand(D), C_CLAY, "clay", None, "context")
+    ctx = lambda n, sh, mat: out.append(part(f"{n} (site)", sh, mat, kind="context", group="context"))
+    r = M.PARAMS["trunk_d"] / 2
+    ctx("Palm trunk, 300 mm", Pos(0, 0, 2100) * Cylinder(r, 4800), "timber")
+    ctx("Palm trunk behind, left", Pos(-2600, 3400, 2100) * Rot(2, -3, 0) * Cylinder(170, 4800), "timber")
+    ctx("Palm trunk behind, right", Pos(2900, 4200, 2100) * Rot(-3, 2, 0) * Cylinder(150, 4800), "timber")
+    try:
+        import context_parts
+        man = Pos(700, 850, 0) * Rot(0, 0, 220) * context_parts.mannequin(1750.0, "stand")   # beside the palm, to the right in the hero view
+        out.append(part("Helper 1.75 m (scale)", man, "skin", kind="context", group="context"))
+    except Exception as e:      # the mannequin is for scale only; never block the product parts
+        print("mannequin not added:", e)
     return out
 
 
+def product_parts():
+    parts = [q for q in M.components(M.CHOSEN) if q["kind"] != "context"]
+    out = []
+    for q in parts:
+        d = dict(q)
+        d["shape"] = _lift(q["shape"])
+        d["group"] = "internal" if any(k in q["name"] for k in _INTERNAL) else "shell"
+        out.append(d)
+    # safe working load label on the spine's +Y face, between the eyes and the lightening hole
+    D = M.build_components(M.PARAMS)["_D"]
+    lab = Pos(D["x_s"] + 120, -M.PARAMS["spine_t"] / 2, 66) * label_plate(40, 16, 0.6)
+    out.append(dict(part("Safe working load label, one person 100 kg", _lift(lab), "label", kind="bought"), group="shell"))
+    # both strands carried on down to the rope bag standing on the ground
+    _, info = tk.lowering_set(M.PARAMS, D["carab_main_top"], D["carab_brake_top"])
+    end = M.PARAMS["load_end_z"] + LIFT
+    bag_c = (info["xl_strand"] - 60.0, 0.0)
+    bag_h, bag_d = M.PARAMS["bag"][1], M.PARAMS["bag"][0]
+    rd = M.PARAMS["rope_d"]
+    for nm, x0 in (("brake", info["xb_strand"]), ("load", info["xl_strand"] + 12.0)):
+        pts = [(x0, 0.0, end), (x0, 0.0, end - 150.0), (bag_c[0] + (25 if nm == "load" else -25), 0.0, bag_h + 40.0), (bag_c[0] + (10 if nm == "load" else -10), 0.0, bag_h - 30.0)]
+        out.append(dict(part(f"Lowering rope, {nm} strand down to the bag", rope(pts, rd), "rope", kind="bought", bom=18), group="internal"))
+    bag = Pos(bag_c[0], 0, bag_h / 2) * Cylinder(bag_d / 2, bag_h)
+    bag = break_edges(bag - Pos(bag_c[0], 0, bag_h) * Cylinder(bag_d / 2 - 4, 60), 3.0)
+    out.append(dict(part("Rope and carry bag, 35 l, on the ground", bag, "canvas", kind="bought", bom=21), group="internal"))
+    return out + site()
+
+
 if __name__ == "__main__":
-    for q in product_parts():
-        s = q["shape"]
-        print(f"{q['name']:50s} {q['group']:9s} {q['material']:8s} vol={s.volume / 1000:10.1f} cm3")
+    ps = product_parts()
+    print(len(ps), "parts;", sum(p["group"] == "shell" for p in ps), "shell,", sum(p["group"] == "internal" for p in ps), "internal,",
+          sum(p["group"] == "context" for p in ps), "context")
+    for p in ps:
+        bb = p["shape"].bounding_box()
+        if bb.min.Z < -1 and "(site)" not in p["name"]:
+            print("below ground:", p["name"], round(bb.min.Z))

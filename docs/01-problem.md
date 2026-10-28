@@ -3,9 +3,9 @@ doc_id: TKB-PRB-001
 title: TrunkBelay problem statement
 project: TrunkBelay
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Cost and carry constraints updated for Amish's decisions 18C and 19A (TKB-DDR-003)
+- version: "0.4"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: Kit 1.9.1 upgrade; users-and-needs and stakeholders tables added (STANDARDS section 22), the source of TKB-URS-001; cost figure updated to USD 828 (TKB-DEC-001 D-S1)
 ---
 
 # TrunkBelay problem statement
@@ -41,6 +45,32 @@ Utility workers have purpose-built answers. The Buckingham SuperSqueeze is a pol
 | The stranded climber | Be supported, freed from the climbing device and lowered without a fall | Head down or slumped, possibly unconscious, 6 to 25 m up |
 | Fire and rescue services | A light anchor to secure a victim before ladders or nets are set | Rural stations called to palm rescues |
 | Coconut Development Board and climber training schemes | A standard kit and drill to teach | Climber training and insurance programmes |
+
+### Users and needs
+
+Table 2. Users and needs (the source of the user requirements, TKB-URS-001).
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Rescuer: a fellow coconut climber | Anchor the stranded climber to the trunk quickly and lower them safely without help from below; keep both hands free while climbing; trust the anchor on a wet trunk | Climbs on a mechanical climbing device to just below the victim, 6 to 25 m up, often within minutes of the event | Nothing to anchor to but the trunk; improvised cloth and rope; working one-handed at height; fear of dropping the victim; the kit must be light and simple enough to carry and remember |
+| The stranded climber | Be held so they cannot fall, turned head up, freed from the climbing device and brought down as soon as possible | Hangs head down or slumped from the device, possibly unconscious | Reported waits of 30 to 150 minutes head down; cannot help in their own rescue |
+| Helpers on the ground: family, other pluckers, neighbours | Pass up what the rescuer needs and take the person at the bottom | Stand at the foot of the palm; call emergency services | Cannot reach the victim; no role without a way to send gear up |
+| Fire and rescue crew | Secure the victim fast on arrival, before ladders or nets are set, and finish the rescue | Arrive by road from a rural station, sometimes after an hour or more | Ladders do not reach tall palms; each rescue improvised on the spot |
+| Trainer in a climber training scheme | A standard kit and a drill short enough to teach in a half day, and kits a scheme can afford | Teaches machine climbing under the Coconut Development Board's Friends of Coconut Tree scheme | No rescue drill or kit in current training; budgets per climber are small |
+
+### Stakeholders
+
+Table 3. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| Coconut climbers and their collectives or labour banks | First users and rescuers; fit trials on real palms | Co-design of the kit and drill; fit and carry trials (TRL 4) |
+| Kerala Fire and Rescue Services stations with palm rescues (Kasaragod, Kannur) | Respond to stranded climbers; could adopt the kit as a quick anchor | Review of the drill; joint dummy drill at low height |
+| Coconut Development Board and its Friends of Coconut Tree training scheme | Trains climbers; runs the climbers' insurance scheme | Training trial (R10); group purchase of the rescue gear |
+| Palm owners and farmers | Own the palms; care that the trunk is not damaged | Consent for trials on their palms; inspection of bark after use (R8) |
+| Local fabricators with an AC TIG welder | Make and repair the aluminium frame | Quotes, a sample frame and weld inspection (TRL 4) |
+| Rope rescue equipment suppliers | Supply the certified descender, carabiners, rope and triangle | Data on the bought parts (descender hand force, rope stretch) |
+| Design Molecule | Publishes the design as open hardware | Keeps it open and clear of the Cynch-Lok cinch geometry |
 
 ## Operating environment
 

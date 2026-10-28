@@ -5,6 +5,10 @@ repo: BoujeeEnjinia1701/trunkbelay         # GitHub repository, shown on every d
 area: Food and water security
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
+stage: P3                # pipeline stage, STANDARDS section 19; P3 since the kit 1.9.1 upgrade of 2026-10-25
+stem_check: open         # TKB-STM-001 v0.1: 22 within, 17 plausible on field data, 1 fails with a fix proposed to Amish (S30, strength margin, TKB-DEC-001 O7)
+concept_options: [A, B, C]   # TKB-OPT-001: A self-locking lever collar (current design), B constricting wrap anchor, C screwed stem anchor
+# concept_chosen: left unset; A and B are within 10 % and both go to Amish (TKB-DEC-001 O5, TKB-DDR-004); the repo carries A
 design_state: constructable   # STANDARDS section 18; made constructable 2026-10-03 (TKB-DDR-002)
 trl_evidence:
   - docs/01-problem.md
@@ -24,12 +28,35 @@ trl_evidence:
   - docs/06-design-decisions.md
   - docs/05-build-plan/overview.png
   - cad/src/build_plan_media.py
+  - docs/01b-stem-check.md
+  - docs/04-calcs/stem_check.py
+  - docs/02a-concept-options.md
+  - docs/03a-user-requirements.md
+  - docs/03b-traceability.md
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
+  - docs/decisions/0004-concept-selection.md
+  - cad/src/tkb_parts.py
+  - cad/src/product_model.py
+  - cad/src/options_preview.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
+  - cad/step/C-assembly.step
+  - cad/stl/trunkbelay-frame-weldment.stl
+  - media/hero.png
+  - media/concept-blueprint.png
+  - media/model.glb
+  - media/options.png
 shortlisted: false
 pitch: >-
   Lets a fellow climber anchor and lower a climber stranded high on a palm trunk.
 problem: >-
   Coconut climbers who black out or slip can end up hanging upside down from their climbing device high on a palm, and the people nearby have no way to anchor and lower them. They hold on and wait, sometimes for hours, for a fire crew with ladders and nets.
-budget_usd: 900  # value-engineering target (STANDARDS section 18); estimated cost of the constructable design USD 826
+budget_usd: 900  # value-engineering target (STANDARDS section 18); estimated cost of the constructable design USD 828
 difficulty: 3  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:

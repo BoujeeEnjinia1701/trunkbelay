@@ -106,6 +106,17 @@ out("C1", f"Bearing bar (aluminium RHS {h_b:.0f} x {d_b:.0f} x {t_b:.0f}): {M_ba
 throat, wd, wb = 3.5, d_b / math.cos(math.radians(30)) + 5, h_b
 S_w = throat * (wd ** 2 / 3 + wb * wd)
 s_w = M_bar / S_w
+# combined stress in the bar (independent review, TKB-STM-001): bending in plan, plus the vertical friction the pad
+# carries (its share of the load at the lock limit) bending the bar in the vertical plane, plus torsion from the
+# pad force acting at the bar's bottom edge as the frame cocks (h / 2 off the shear centre)
+F_fric_pad = W_proof * mu_pad / mu_sum / 2
+Z_v = (d_b * h_b ** 3 - (d_b - 2 * t_b) * (h_b - 2 * t_b) ** 3) / (6 * h_b)
+s_v = F_fric_pad * 1000 * (worst["u"] - P["spine_t"] / 2 / math.cos(math.radians(30))) / Z_v
+tor = worst["F_pad"] * 1000 * h_b / 2
+tau_b = tor / (2 * (h_b - t_b) * (d_b - t_b) * t_b)
+s_eq = math.sqrt((s_bar + s_v) ** 2 + 3 * tau_b ** 2)
+out("C1b", f"Bearing bar, combined: plan bending {s_bar:.0f} MPa, vertical bending from the pad's friction {s_v:.0f} MPa and torsion "
+           f"{tau_b:.0f} MPa give {s_eq:.0f} MPa (von Mises), factor {fy / s_eq:.2f} on the welded proof strength", fy / s_eq, "")
 out("C2", f"Bar to spine fillet welds (5 mm, all round, ER5356): {s_w:.0f} MPa against {f_weld:.0f} MPa weld metal strength, "
           f"factor {f_weld / s_w:.1f}", f_weld / s_w, "")
 # spine arm: load on the eye, section through the spare eye and lightening hole region
@@ -138,9 +149,15 @@ out("C4", f"Chain cleat at {T_max:.1f} kN chain tension: web ligament beside a s
           f"{tau:.0f} MPa in the top with {P['cheek'][1]:.0f} mm cheeks (factor {0.577 * fy / tau:.1f}); the steel links bear on "
           f"the aluminium web at about {T_max / 2 * 1000 / (P['wire'] * P['spine_t']):.0f} MPa (wear to confirm)",
     fy / s_lig, "")
+# the chain's two legs need not share the tension equally: friction round the wrap (capstan ratio about 6) lets the
+# split follow how the chain was pulled snug; worst case, all of it on one slot (independent review; D-S2)
+s_lig_one = 2 * s_lig
+out("C4b", f"Chain cleat, worst split (all {2 * T_max:.1f} kN of the chain's pull on one slot): web ligament {s_lig_one:.0f} MPa, "
+           f"factor {fy / s_lig_one:.2f} on HAZ proof with the {P['spine_pts'][-1][1] - P['slot_bottom']:.0f} mm web (TKB-DEC-001 D-S2)", fy / s_lig_one, "")
 chain_mbl, chain_wll = 45.0, 11.2
 out("C5", f"Chain: {T_max:.1f} kN at most at the R1 load against a working load limit of {chain_wll} kN and a minimum breaking "
-          f"force of {chain_mbl:.0f} kN (factor {chain_mbl / T_max:.1f}); {T_max * W_work / W_proof:.1f} kN at the working load",
+          f"force of {chain_mbl:.0f} kN (factor {chain_mbl / T_max:.1f}; {chain_mbl / (2 * T_max):.1f} with all of it in one leg); "
+          f"{T_max * W_work / W_proof:.1f} kN at the working load",
     chain_mbl / T_max, "")
 rope_mbs, knot = 22.0, 0.65
 out("C6", f"Rope: EN 1891 type A, at least {rope_mbs:.0f} kN, about {rope_mbs * knot:.0f} kN at the figure-eight loop: factor "
@@ -178,7 +195,9 @@ for d in (200.0, 300.0, 450.0):
     L = M.loop_length(P, d)
     fits.append(f"{d:.0f} mm trunk: loop {L:.0f} mm ({math.ceil(L / P['pitch'])} links), bars touch the trunk {grip[d]['u']:.0f} mm "
                 f"along the pad, spine {grip[d]['gap']:.0f} mm clear of the bark")
-out("E2", "Fit: " + "; ".join(fits) + f"; the 110-link chain leaves at least 10 links of tail on a 450 mm trunk", None)
+D450 = M.build_components(P, 450.0)["_D"]
+out("E2", "Fit: " + "; ".join(fits) + f"; the 110-link chain leaves {D450['n_tail_b']} links in the adjustable tail on a 450 mm trunk "
+          f"({D450['n_tail_a']} in the fixed end, which is tethered through the 10 mm tether hole)", D450["n_tail_b"], "links")
 steps = [("Clip the frame to the trunk with the chain round it, link into slot, keeper and pin on", 60),
          ("Helpers haul the rope bag up on the tag line through the micro pulley on the rescuer's harness; the rescuer "
           "clips it to the spare eye", 45),

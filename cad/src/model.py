@@ -29,10 +29,11 @@ import math
 import sys
 from pathlib import Path
 
-from build123d import (Box, Cylinder, Location, Plane, Pos, Rot, Solid, Torus, Compound, Polyline,
-                       make_face, extrude, export_step, export_stl)
+from build123d import (Box, Cylinder, Location, Plane, Pos, Rot, Solid, Torus, Compound, Polyline, Helix, Rectangle,
+                       make_face, extrude, sweep, export_step, export_stl)
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path[:0] = [str(Path(__file__).resolve().parent), str(ROOT / ".kit")]
 
 PARAMS = {
     "trunk_d": 300.0,            # trunk used for the model and pictures (range 200 to 450, R3)
@@ -48,7 +49,7 @@ PARAMS = {
     "spine_t": 5.0,              # also the web of the chain cleat: no thicker than 6 mm (link inner length less two wires)
     "frame_material": "aluminium",   # spine, bars, doublers and cheeks: 6082-T6, TIG welded (TKB-DDR-003)
     "spine_set": 8.0,            # spine front edge behind the virtual vertex
-    "spine_pts": ((0, 0), (175, 0), (175, 55), (60, 185), (0, 185)),   # x' (from the front edge), z; top 185 for a deeper cleat web
+    "spine_pts": ((0, 0), (175, 0), (175, 55), (60, 205), (0, 205)),   # x' (from the front edge), z; top 205: a 55 mm cleat web for all the chain tension on one slot (TKB-DEC-001 D-S2)
     "eye_main": (150.0, 28.0), "eye_bag": (85.0, 28.0), "eye_d": 22.0,   # load eye and spare eye (spare clear of the deeper bars)
     "doubler": (50.0, 4.0),      # eye doubler ring OD x thickness, one each side of each eye
     "light_hole": (85.0, 90.0, 36.0),   # x', z, diameter
@@ -58,7 +59,8 @@ PARAMS = {
     "notch": (22.0, 148.0),      # notch in each cheek round each slot: width x bottom z
     "pin_xz": (29.0, 139.0), "pin_d": 8.0, "pin_hole": 8.5,
     "keeper": (56.0, 3.0, 6.0, 132.0),  # bridge length (X) x sheet thickness x leg width x leg bottom z
-    "maillon": (8.0, 30.0, 11.0),  # tether quick link: wire x straight x bend radius (centre line)
+    "tether_hole": (12.0, 112.0, 10.0),  # x' (from the spine front edge), z, diameter: the fixed end's tether link (TKB-DEC-001 D-S1)
+    "conn_link": (7.0, 14.0, 9.0), # grade 80 connecting link for 6 mm chain (BOM 13 and 14): wire x straight x bend radius (centre line), opening 11 mm
     # chain, 6 mm grade 80
     "wire": 6.0, "pitch": 18.0, "link_w": 7.8,     # wire dia, inner length, inner width
     "chain_len_links": 110,      # links in the chain, both tails included
@@ -76,6 +78,21 @@ PARAMS = {
     # the ground; the helpers tie the bag to one end and haul on the other
     "tag_line": (4.0, 55.0, 0.011),   # cord diameter mm, length m (2 x 25 m plus 5 m), mass kg/m
     "pulley": (30.0, 12.0),           # micro pulley sheave diameter x width (pictures only)
+    # ---- concept options B and C (TKB-OPT-001), modelled at D3 for the options picture and the fidelity check
+    # option B, constricting wrap anchor: a sewn 45 mm polyester anchor strap wrapped in a tight helix over a
+    # rubber bark mat, tied off as a Klemheist, its loop through the top slot of an aluminium rigging plate
+    "wrap_turns": 4, "wrap_pitch": 60.0,     # turns and helix pitch, mm
+    "webbing": (45.0, 2.0),                  # anchor strap width x thickness, mm
+    "mat_t": 3.0,                            # rubber bark mat under the wraps, mm
+    "rig_plate": (120.0, 10.0, 140.0),       # rigging plate width (along the trunk face) x thickness x height, mm
+    "rig_holes": 65.0,                       # load and brake holes apart, mm (22 mm holes, as the spine eyes)
+    "rig_top": -150.0,                       # top of the rigging plate below the wraps, mm
+    # option C, screwed stem anchor: a folded 6 mm steel V saddle screwed to the stem with four M10 x 120
+    # coach screws, a 10 mm eye lug welded to its ridge
+    "saddle": (150.0, 6.0, 200.0),           # V flange length along each face x thickness x height, mm
+    "saddle_screw": (10, 120, 60.0, (50.0, 150.0)),   # coach screw d, length; distance along the face; heights
+    "lug": (10.0, 125.0, 60.0, 50.0),        # lug thickness; load hole and brake hole out from the ridge; hole height
+    "ground_z": -1400.0,                     # ground level for the option and site pictures: a low-height drill, collar foot 1.4 m up
 }
 
 DENSITY = {"steel": 7.85e-6, "rubber": 1.5e-6, "aluminium": 2.70e-6}
@@ -144,6 +161,18 @@ def stadium(straight, bend_r, wire_r):
         ends.append(Pos(sgn * straight / 2, 0, 0) * (Torus(bend_r, wire_r) & cut))
     sides = [rod((-straight / 2, s * bend_r, 0), (straight / 2, s * bend_r, 0), wire_r) for s in (1, -1)]
     return fuse_all(ends + sides)
+
+
+def bend_lift(br, wr, half):
+    """How far a ring of centre-line bend radius br and wire radius wr must sit back from the edge of an eye or
+    hole so that its end bend clears the edge over a plate half-thickness 'half': off the centre plane the bend
+    reaches nearer the edge and its section there is an ellipse."""
+    worst = 0.0
+    for i in range(41):
+        y = half * i / 40
+        c = math.sqrt(br * br - y * y)
+        worst = max(worst, (br - c) + wr * br / c - wr)
+    return worst
 
 
 def place(shape, center, axis, normal):
@@ -233,6 +262,8 @@ def _spine(P, D):
         holes.append(Pos(x0 + sx, 0, (P["slot_bottom"] + top + 5) / 2) * Box(P["slot_w"], 20, top + 5 - P["slot_bottom"]))
     px, pz = P["pin_xz"]
     holes.append(rod((x0 + px, -20, pz), (x0 + px, 20, pz), P["pin_hole"] / 2))
+    tx, tz, td = P["tether_hole"]
+    holes.append(rod((x0 + tx, -20, tz), (x0 + tx, 20, tz), td / 2))
     for hsh in holes:
         plate = plate - hsh
     return plate
@@ -412,32 +443,24 @@ def chain_parts(P=PARAMS, D=None):
         normal = _cross(ax, (0, 0, 1)) if k % 2 == 0 else (0, 0, 1)
         loop_links.append(place(link, (c[0], c[1], zc), ax, normal))
     # sleeve as a torus segment
-    tor = Pos(0, 0, zc) * Torus(R, P["sleeve"][1])
+    tor = Pos(0, 0, zc) * (Torus(R, P["sleeve"][1]) - Torus(R, P["sleeve"][1] - 1.5))   # the tubular webbing, the chain inside it
     big = 5 * R
     wedge = extrude(make_face(Polyline((0, 0, 0), (big * COS(s1), big * SIN(s1), 0),
                                        (big * COS((s0 + s1) / 2), big * SIN((s0 + s1) / 2), 0),
                                        (big * COS(s0), big * SIN(s0), 0), close=True)), amount=4 * P["sleeve"][1], both=True)
     sleeve = tor & Pos(0, 0, zc) * wedge
     # tail A (fixed end, +Y side): a flat link in the notch, then links down to the tether quick link
-    # in the spare eye, so the fixed end cannot be lost when the keeper is off
+    # in the spare eye, so the fixed end cannot be lost when the keeper is off (exact end interlocks, TKB-DEC-001 D-S1)
     xa = D["x_s"] + P["slots"][0]
     xb = D["x_s"] + P["slots"][1]
     p = P["pitch"]
-    tail_a = [place(link, (xa, p - 1.1, zc), (0, 1, 0), (0, 0, 1))]
-    mq = maillon_center(P, D)
-    a0 = (xa, p + 12.0, zc - 6.0)
-    a1 = (mq[0], mq[1] + P["maillon"][2] + 9.0, mq[2])
-    La = math.dist(a0, a1)
-    na = max(int(round(La / p)), 1)
-    ax = _norm(_sub(a1, a0))
-    for k in range(na + 1):
-        c = _add(a0, _mul(ax, La * k / na))
-        normal = _cross(ax, (1, 0, 0)) if k % 2 == 0 else (1, 0, 0)
-        tail_a.append(place(link, c, ax, normal))
+    tail_a = tail_a_links(P, D, link, zc)
+    na_total = len(tail_a)
     # tail B (adjustable end, -Y side): one flat link in the notch, then links hanging down, then a master link
-    n_tail = P["chain_len_links"] - n - 1 - (na + 2)
+    n_tail = P["chain_len_links"] - n - 1 - na_total
     # the tail first runs out and down, clear of the back of the deeper bearing bar (TKB-DDR-003), then hangs
     tail_b = [place(link, (xb, -p + 1.1, zc), (0, -1, 0), (0, 0, 1))]
+    last_link = None
     pos = (xb, -p - 12.0, zc - 6.0)
     y_out = P["tail_b_out"]
     dg = _norm((0.0, -1.0, -1.2))
@@ -451,14 +474,27 @@ def chain_parts(P=PARAMS, D=None):
         else:
             normal = (1, 0, 0) if k % 2 == 0 else (0, 1, 0)
             tail_b.append(place(link, pos, (0, 0, 1), normal))
+            last_link = (pos, normal)
             pos = (xb, pos[1], pos[2] - p)
         zs.append(pos[2] + p)
     hy = pos[1]
     st, ML, MW = P["master"]
-    mz_b = (zs[-1] if zs else zc) - 9.0 - st / 2 - ML / 2 + 3.0
-    tail_b.append(place(master_template(P), (xb, hy, mz_b), (0, 0, 1), (0, 1, 0) if len(zs) % 2 == 0 else (1, 0, 0)))
+    # the master link hangs from a grade 80 connecting link, which threads the last chain link (a 10 mm master
+    # link does not pass a 6 mm link's 7.8 mm opening): exact interlocks, each ring at right angles to the last
+    (lc, ln) = last_link
+    cw, cs, cb = P["conn_link"]
+    z_cw_top = lc[2] - (D["link_straight"] / 2 + D["link_bend"]) + P["wire"] / 2 + cw / 2 + 0.05
+    cc = (xb, lc[1], z_cw_top - cs / 2 - cb)
+    cn = (0, 1, 0) if abs(ln[0]) > 0.5 else (1, 0, 0)
+    conn = place(stadium(cs, cb, cw / 2), cc, (0, 0, 1), cn)
+    z_m_top = cc[2] - cs / 2 - cb + cw / 2 + st / 2 + 0.05
+    mz_b = z_m_top - (ML - MW) / 2 - (MW / 2 + st / 2)
+    master = place(master_template(P), (xb, lc[1], mz_b), (0, 0, 1), ln)
+    D["loop_links"], D["tail_a_links"] = loop_links, tail_a        # kept for the kit 1.9 components (D3)
+    D["tail_b_links"], D["tail_b_conn"], D["tail_b_master"] = tail_b, conn, master
+    tail_b = tail_b + [conn, master]
     D["tail_b_y"] = hy
-    D["n_tail_a"] = na + 2
+    D["n_tail_a"] = na_total
     D["n_loop_links"] = n + 1
     D["n_tail_b"] = n_tail
     D["loop_len"] = L
@@ -467,19 +503,96 @@ def chain_parts(P=PARAMS, D=None):
             "chain_tail_b": group(tail_b), "maillon": maillon(P, D)}
 
 
-def maillon_center(P=PARAMS, D=None):
-    """Tether quick link through the spare eye: long axis Z, ring in the YZ plane, top bar on the eye bottom."""
+NOTCH_SWING = 39.0      # deg: the fixed end's first link swings toward -X over the cleat top, clear of the loop
+NOTCH_DROOP = 0.0      # deg: and droops on the slot link's end bend, under the loop coming back into slot B
+
+
+def tether_pose(P=PARAMS, D=None):
+    """The tether link (a grade 80 connecting link, BOM 14; TKB-DEC-001 D-S1) lies flat (ring plane horizontal)
+    through the 10 mm tether hole near the spine's front edge, round the strip of web between the hole and the
+    edge. Returns its centre (global) and its long axis (+X, toward the hole)."""
     D = D or derived(P)
-    w, st, br = P["maillon"]
-    ex, ez = P["eye_bag"]
-    dx = -6.0                                      # shares the spare eye with the brake carabiner
-    top = ez - math.sqrt((P["eye_d"] / 2 - w / 2) ** 2 - dx ** 2)
-    return (D["x_s"] + ex + dx, 0.0, top - br - st / 2)
+    tx, tz, td = P["tether_hole"]
+    cw, cs, cb = P["conn_link"]
+    apex_x = tx + 0.5                                        # hole-side bend inside the hole, just past its centre
+    xc = D["x_s"] + apex_x - cb - cs / 2
+    return (xc, 0.0, tz), (1.0, 0.0, 0.0)
+
+
+def maillon_center(P=PARAMS, D=None):
+    return tether_pose(P, D)[0]
 
 
 def maillon(P=PARAMS, D=None):
-    w, st, br = P["maillon"]
-    return place(stadium(st, br, w / 2), maillon_center(P, D), (0, 0, 1), (1, 0, 0))
+    """The tether link: a 6 mm grade 80 connecting link (two halves and a pin, drawn as one ring with the pin
+    boss on its -Y side) through the tether hole, round the web strip at the spine's front edge."""
+    cw, cs, cb = P["conn_link"]
+    c, u = tether_pose(P, D)
+    tmpl = stadium(cs, cb, cw / 2) + rod((-2.0, cb, 0), (2.0, cb, 0), cw / 2 + 1.6, cw / 2)   # template +y is global -Y
+    return place(tmpl, c, u, (0.0, 0.0, 1.0))
+
+
+def tail_a_links(P, D, link, zc):
+    """Links of the fixed end (tail A), with exact interlocks: a flat link on the +Y end of the link standing in
+    slot A, swung toward -X clear of the chain loop that comes back into slot B over the cleat; a short run
+    hanging from it; and a link that hooks the tether link's +Y straight wire in front of the spine's front edge.
+    Interlocked links are one pitch apart along the chain and at right angles."""
+    p = P["pitch"]
+    xa = D["x_s"] + P["slots"][0]
+    ends = D["link_straight"] / 2 + D["link_bend"]          # centre to end-wire centre, 12 mm
+    sw, dr = math.radians(NOTCH_SWING), math.radians(NOTCH_DROOP)
+    a0 = (-SIN(sw) * COS(dr), COS(sw) * COS(dr), -SIN(dr))
+    s_end = (xa, ends, zc)                                   # +Y end wire of the link standing in slot A, along Z
+    c0 = _add(s_end, _mul(a0, ends - P["wire"] - 0.05))
+    out = [place(link, c0, a0, _norm(_sub((0, 0, 1), _mul(a0, a0[2]))))]
+    l0_end = _add(c0, _mul(a0, ends))                        # its far end wire, horizontal
+    cw, cs, cb = P["conn_link"]
+    tc, _ = tether_pose(P, D)
+    wire = (tc[0] - cs / 2 + 2.0, tc[1] + cb, tc[2])          # on the tether link's +Y straight wire, along X
+    gap = P["wire"] / 2 + cw / 2 + 0.05
+    hc = (wire[0], wire[1], wire[2] + ends - gap)
+    hook = place(link, hc, (0, 0, 1), (1, 0, 0))
+    h_top = (hc[0], hc[1], hc[2] + ends)                     # its top end wire, along Y
+    A = _add(l0_end, (0.0, 0.0, -(ends - P["wire"] - 0.05)))   # the run's first link hangs from the notch link
+    B = _add(h_top, (0.0, 0.0, ends - P["wire"] - 0.05))     # the run's last link stands on the hook link
+    d = math.dist(A, B)
+    m = max(2, int(math.ceil(d / p)) + 1)
+    if m % 2 == 1:                                           # first and last run links: the first hangs at right
+        m += 1                                               # angles to the flat notch link, the last at right
+    L = (m - 1) * p                                          # angles to the hook link
+    mid = _mul(_add(A, B), 0.5)
+    lo, hi = 0.0, L
+    for _ in range(80):                                       # the slack bows out to +Y and -X, clear of the cheek
+        sg = (lo + hi) / 2
+        K = (mid[0] - 0.5 * sg, mid[1] + sg, mid[2])
+        if math.dist(A, K) + math.dist(K, B) > L:
+            hi = sg
+        else:
+            lo = sg
+    K = (mid[0] - 0.5 * lo, mid[1] + lo, mid[2])
+    pts = [A, K, B]
+    run = []
+    for i in range(m):
+        c, a = _along(pts, i * p)
+        if i == 0:
+            c = A
+        if i == m - 1:
+            c = B
+        nA = _norm(_sub((1.0, 0.0, 0.0), _mul(a, a[0]))) if abs(a[0]) < 0.95 else _norm(_sub((0.0, 1.0, 0.0), _mul(a, a[1])))
+        n_ = nA if i % 2 == 1 else _norm(_cross(a, nA))
+        run.append(place(link, c, a, n_))
+    return out + run + [hook]
+
+
+def _along(pts, s):
+    """Point and unit direction at arc length s along a 3D polyline."""
+    acc = 0.0
+    for a, b in zip(pts, pts[1:]):
+        L = math.dist(a, b)
+        if s <= acc + L + 1e-9 or b is pts[-1]:
+            d = _norm(_sub(b, a))
+            return _add(a, _mul(d, s - acc)), d
+        acc += L
 
 
 def chain_envelope(P=PARAMS, D=None):
@@ -527,12 +640,14 @@ def load_side(P=PARAMS, D=None):
     out = {}
     ex, ez = P["eye_main"]
     off = P["eye_d"] / 2 - P["carab"][0] / 2          # the bar bears on the bottom of the eye
-    top_m = (x0 + ex, 0.0, ez - off)
+    # the carabiner's end bend bears on the eye at the outer faces of the doubler rings, not at its middle
+    lift = bend_lift(P["carab"][2], P["carab"][0] / 2, P["spine_t"] / 2 + P["doubler"][1]) + 0.05
+    top_m = (x0 + ex, 0.0, ez - off + lift)
     out["carab_main"] = carabiner(P, top_m)
     # descender: body in the XZ plane, hole for the carabiner 15 mm below its top
     dx, dy, dz = P["desc"]
     cb = carab_bottom(P, top_m)
-    hole_z = cb[2] + P["carab"][0] / 2 - 9.0          # the carabiner bar rests on the top of the 18 mm hole
+    hole_z = cb[2] + P["carab"][0] / 2 - 9.0 + bend_lift(P["carab"][2], P["carab"][0] / 2, 11.6) + 0.1   # the 18 mm hole bears on the bar at the plate faces
     body = Pos(cb[0], 0, hole_z + 15 - dz / 2) * Box(dx, dy, dz)
     body = body - rod((cb[0], -dy, hole_z), (cb[0], dy, hole_z), 9.0)
     handle = rod((cb[0] + dx / 2 - 10, 0, hole_z - 25), (cb[0] + dx / 2 + 85, 0, hole_z + 5), 7.0)
@@ -543,9 +658,10 @@ def load_side(P=PARAMS, D=None):
     # the descender, turns 180 deg over the carabiner's bottom bar and runs down to the rope bag, which is
     # lowered to the helpers on the ground before the lowering starts; the load strand runs down to the victim
     sx, sz = P["eye_bag"]
-    cdx = 5.0
-    top_s = (x0 + sx + cdx, 0.0, sz - math.sqrt((P["eye_d"] / 2 - P["carab"][0] / 2) ** 2 - cdx ** 2))
+    cdx = 0.0                                  # the spare eye holds the brake carabiner alone (TKB-DEC-001 D-S1)
+    top_s = (x0 + sx + cdx, 0.0, sz - math.sqrt((P["eye_d"] / 2 - P["carab"][0] / 2) ** 2 - cdx ** 2) + lift)
     out["carab_brake"] = carabiner(P, top_s)
+    D["carab_main_top"], D["carab_brake_top"] = top_m, top_s          # kept for the kit 1.9 components (D3)
     cbs = carab_bottom(P, top_s)
     rr = P["rope_d"] / 2
     R = P["carab"][0] / 2 + rr
@@ -639,13 +755,13 @@ def mass_table(P=PARAMS, C=None):
     for k in ("keeper", "pad_screws"):
         m[k] = C[k].volume * DENSITY["steel"]
     m["pin"] = 0.04                                          # 8 mm stainless ball-lock pin with lanyard
-    m["maillon"] = 0.05                                      # 8 mm steel quick link
+    m["maillon"] = 0.05                                      # tether: grade 80 connecting link for 6 mm chain (TKB-DEC-001 D-S1)
     m["pads"] = C["pads"].volume * DENSITY["rubber"]
     m["chain"] = P["chain_len_links"] * P["pitch"] / 1000 * 0.80     # 6 mm grade 80, 0.80 kg/m
     m["master_links"] = 2 * 0.11
     m["sleeve"] = P["sleeve"][0] / 1000 * 0.045
     m["carabiners"] = 3 * 0.085                               # aluminium alloy screw-gate, class B (load, brake, victim)
-    m["descender"] = 0.53                                     # auto-locking descender class
+    m["descender"] = 0.60                                     # auto-locking descender class, at the cited Petzl I'D S mass (TKB-STM-001 S18)
     m["rope"] = 30 * 0.078                                    # 11 mm EN 1891 type A, 30 m
     m["bag"] = 0.45                                           # rope bag with shoulder straps
     m["triangle"] = 0.75                                      # evacuation triangle class
@@ -685,28 +801,30 @@ def checks(P=PARAMS, C=None, verbose=True, trunk_d=None, label=""):
     touch = [
         ("pads", "bars"), ("bars", "spine"), ("doublers", "spine"), ("cheeks", "spine"), ("keeper", "cheeks"),
         ("keeper", "spine"), ("pin", "keeper"), ("pin", "cheeks"), ("pad_screws", "pads"), ("pad_screws", "bars"),
-        ("chain_loop", "spine"), ("chain_tail_a", "spine"), ("chain_tail_b", "spine"), ("maillon", "spine"),
+        ("chain_loop", "spine"), ("chain_tail_b", "spine"), ("chain_tail_a", "chain_loop"),
         ("maillon", "chain_tail_a"),
         ("carab_main", "doublers"), ("descender", "carab_main"), ("carab_brake", "doublers"),
         ("rope_load", "descender"), ("rope_brake", "descender"), ("rope_brake", "carab_brake"),
     ]
     apart = [
         ("spine", 15), ("bars", 5), ("cheeks", 15), ("keeper", 15), ("pin", 5), ("doublers", 20), ("pad_screws", 2),
-        ("maillon", 10),
+        ("maillon", 0.3),
         ("descender", 50), ("rope_load", 50), ("rope_brake", 30), ("carab_main", 50), ("carab_brake", 20),
-        ("chain_tail_a", 10), ("chain_tail_b", 10),
+        ("chain_tail_a", 3), ("chain_tail_b", 10),
     ]
     pairs_apart = [
         ("chain_tail_b", "doublers", 0.5), ("chain_tail_b", "carab_main", 5), ("chain_tail_b", "keeper", 0.5),
         ("chain_tail_b", "bars", 5), ("chain_tail_b", "descender", 5), ("chain_tail_b", "cheeks", 0.3),
-        ("chain_tail_a", "cheeks", 0.3), ("chain_tail_a", "keeper", 0.5), ("chain_tail_a", "doublers", 0.5),
+        ("chain_tail_a", "cheeks", 0.0), ("chain_tail_a", "keeper", 0.5), ("chain_tail_a", "doublers", 0.5),
         ("chain_tail_a", "bars", 5), ("chain_loop", "cheeks", 0.3), ("chain_loop", "keeper", 0.5),
         ("chain_loop", "pin", 0.5), ("chain_loop", "bars", 20), ("chain_loop", "pads", 20), ("maillon", "bars", 5),
         ("descender", "spine", 5), ("descender", "doublers", 3), ("pads", "spine", 5),
         ("pin", "chain_tail_a", 0.5), ("pin", "chain_tail_b", 0.5), ("rope_load", "rope_brake", 10),
         ("carab_brake", "maillon", 0.3), ("carab_brake", "chain_tail_a", 0.1), ("carab_brake", "chain_tail_b", 2),
         ("rope_brake", "chain_tail_b", 5), ("rope_brake", "chain_tail_a", 3), ("rope_brake", "spine", 3),
-        ("carab_brake", "bars", 5),
+        ("carab_brake", "bars", 5), ("chain_tail_a", "chain_loop", 0.0), ("chain_tail_a", "chain_tail_b", 0.0),
+        ("maillon", "doublers", 5.0), ("maillon", "cheeks", 0.5), ("maillon", "spine", 0.0), ("maillon", "chain_tail_b", 0.0),
+        ("chain_tail_a", "pads", 2.0), ("carab_brake", "spine", 0.0), ("carab_brake", "doublers", 0.0),
     ]
     res = []
     for a, b in touch:
@@ -719,7 +837,8 @@ def checks(P=PARAMS, C=None, verbose=True, trunk_d=None, label=""):
     for a, b, clr in pairs_apart:
         d = _gap(C[a], C[b])
         ov = _shared(C[a], C[b])
-        res.append((ov < 1.0 and d >= clr, f"{label}apart  {a:13s} {b:13s} gap {d:6.1f} mm (need {clr:g}), shared {ov:.1f} mm3"))
+        tol = 6.0 if (a, b) == ("chain_tail_a", "chain_loop") else 1.0     # slack links resting on each other
+        res.append((ov < tol and d >= clr, f"{label}apart  {a:13s} {b:13s} gap {d:6.1f} mm (need {clr:g}), shared {ov:.1f} mm3"))
     # pads bear on the trunk; the sleeve lies on it
     for a in ("pads", "sleeve"):
         d = _gap(C[a], T)
@@ -745,10 +864,12 @@ def frame_checks(P=PARAMS, C=None):
     res.append((P["spine_t"] <= span - 0.5, f"frame cleat web {P['spine_t']:.1f} mm inside a link's span of {span:.1f} mm (0.5 mm clearance)"))
     stack = P["spine_t"] + 2 * P["cheek"][1] + 2 * P["keeper"][1]
     res.append((abs(stack - 27.0) <= 0.5, f"frame lock pin stack {stack:.1f} mm against a 27 mm ball-lock pin grip"))
-    w, st, br = P["maillon"]
-    inner = 2 * (br - w / 2)
-    eye_t = P["spine_t"] + 2 * P["doubler"][1]
-    res.append((eye_t <= inner - 0.5, f"frame spare eye {eye_t:.1f} mm thick inside the quick link's {inner:.1f} mm opening"))
+    cw, cs, cb = P["conn_link"]
+    inner = 2 * (cb - cw / 2)
+    res.append((P["spine_t"] <= inner - 0.5, f"frame tether link opening {inner:.1f} mm round the {P['spine_t']:.1f} mm web (0.5 mm clearance)"))
+    tx, tz, td = P["tether_hole"]
+    res.append((cw <= td - 2.0 and tx - td / 2 >= 5.0, f"frame tether hole {td:.0f} mm for the {cw:.0f} mm link wire; web strip to the front edge {tx - td / 2:.0f} mm (need 5)"))
+    res.append((cw <= P["link_w"] - 0.5, f"frame tether link wire {cw:.1f} mm through the chain link's {P['link_w']:.1f} mm opening"))
     d = _gap(C["bars"], C["doublers"])
     res.append((d >= 8.0, f"frame bars to eye rings {d:.1f} mm (need 8 for the welds)"))
     depth = P["spine_pts"][-1][1] - P["slot_bottom"]
@@ -782,6 +903,282 @@ def export(P=PARAMS, C=None):
                tolerance=0.2, angular_tolerance=0.3)
     export_stl(F["pads"], str(stl_dir / "trunkbelay-pads.stl"), tolerance=0.2, angular_tolerance=0.3)
     print("wrote cad/step/trunkbelay-assembly.step, trunkbelay-frame-weldment.step and cad/stl/*.stl")
+
+
+# ================================================================== kit 1.9 interface (STANDARDS section 24), D3
+import cad_parts as cp  # noqa: E402
+import tkb_parts as tk  # noqa: E402
+
+TITLE = "TrunkBelay"
+OPTIONS = {"A": "Self-locking lever collar", "B": "Constricting wrap anchor", "C": "Screwed stem anchor"}
+PRINCIPLES = {
+    "A": "A rigid V frame held by a chain wrap cocks under the load on its 150 mm lever arm; the grip at the pads "
+         "and the chain rises in step with the load (self-locking couple).",
+    "B": "A webbing strap wrapped four turns round the trunk and tied off as a Klemheist constricts as it is "
+         "loaded; friction over the wrapped length holds it (capstan friction).",
+    "C": "A folded steel saddle is screwed to the stem with four coach screws; the screws carry the load in "
+         "bearing and bending in the stem wood (mechanical fastening).",
+}
+CHOSEN = "A"          # the current design (option A, TKB-OPT-001); the choice between options is awaiting Amish
+_GZ = PARAMS["ground_z"]
+OPTION_VIEWS = {k: {"el": 18, "az": -40, "scale": "person", "keep_context": True, "ground_z": _GZ} for k in OPTIONS}
+ALLOWED_CONTACTS = []
+
+_AL, _ST = "aluminium", "stainless"
+
+
+def _spine_prism(P, D):
+    """The spine outline extruded 40 mm each side: weld beads on the spine faces are trimmed to it."""
+    x0 = P["spine_set"]
+    pts = [(x0 + x, z) for x, z in P["spine_pts"]]
+    face = make_face(Polyline(*[(x, 0, z) for x, z in pts], close=True))
+    return extrude(face, amount=40, both=True)
+
+
+def _frame_welds(P, D):
+    """Fillet weld beads (r 2.5 mm, about a 5 mm leg) of the frame weldment, frame-local: each bearing bar to
+    the spine (top edge and both walls), each eye ring all round, each cheek along its bottom and rear edges."""
+    r = 2.5
+    hs = P["spine_t"] / 2
+    h, dep, wall = P["bar"]
+    t0, t1 = P["pad"][1], P["pad"][1] + dep
+    bx, by = D["b"][0], D["b"][1]
+    out = []
+    for s in (1, -1):
+        b = (bx, s * by, 0.0)
+        xf = (t0 - hs * by) / bx
+        xb = (t1 - hs * by) / bx
+        side = "right" if s > 0 else "left"
+        out.append((f"Weld, bearing bar {side} to spine, top", tk.bead((xf, s * hs, h), (xb, s * hs, h), (0, 0, 1), (0, s, 0), r)))
+        out.append((f"Weld, bearing bar {side} to spine, front wall", tk.bead((xf, s * hs, 0.5), (xf, s * hs, h), (0, s, 0), tuple(-c for c in b), r)))
+        out.append((f"Weld, bearing bar {side} to spine, rear wall", tk.bead((xb, s * hs, 0.5), (xb, s * hs, h), (0, s, 0), b, r)))
+        x0 = P["spine_set"]
+        od, t = P["doubler"]
+        for nm, (ex, ez) in (("load eye", P["eye_main"]), ("spare eye", P["eye_bag"])):
+            out.append((f"Weld, {nm} ring {side} to spine", tk.ring_bead((x0 + ex, s * hs, ez), (0, s, 0), od / 2, 2.0)))
+        L, ct, zb = P["cheek"]
+        top = P["spine_pts"][-1][1]
+        out.append((f"Weld, cleat cheek {side} to spine, bottom", tk.bead((x0 + 0.5, s * hs, zb), (x0 + L, s * hs, zb), (0, 0, -1), (0, s, 0), r)))
+        out.append((f"Weld, cleat cheek {side} to spine, rear", tk.bead((x0 + L, s * hs, zb), (x0 + L, s * hs, top), (1, 0, 0), (0, s, 0), r)))
+    prism = _spine_prism(P, D)
+    return [(n, sh & prism) for n, sh in out]
+
+
+def _pad_fixings(P, D, side):
+    """Two M6 x 30 countersunk screws per pad, each in a rivet nut set in the bearing bar's front wall:
+    returns the screws, the rivet nuts and the cutters for the pad and bar holes (frame-local)."""
+    w = (D["w"][0], side * D["w"][1], 0.0)
+    b = (D["b"][0], side * D["b"][1], 0.0)
+    pt, wall = P["pad"][1], P["bar"][2]
+    zc = P["pad"][2] / 2
+    at_ = lambda u, t: (w[0] * u + b[0] * t, w[1] * u + b[1] * t, zc)
+    screws, nuts, pad_cut, bar_cut = [], [], [], []
+    for u in (P["pad_u0"] + 35, P["pad_u0"] + P["pad"][0] - 35):
+        head = Solid.make_cone(6.0, 3.0, 3.3, Plane(origin=at_(u, 3.0), z_dir=b))
+        shank = tk.rod(at_(u, 6.2), at_(u, 33.0), 3.0)
+        screws.append(head + shank)
+        nuts.append(tk.rod(at_(u, pt), at_(u, pt + wall + 10.0), 4.5, 3.0) + tk.rod(at_(u, pt + wall + 10.0), at_(u, pt + wall + 11.0), 4.5, 3.0))
+        pad_cut.append(Solid.make_cone(6.0, 3.0, 3.3, Plane(origin=at_(u, 3.0), z_dir=b)) + tk.rod(at_(u, -1.0), at_(u, 3.0), 6.0)
+                       + tk.rod(at_(u, 0.0), at_(u, pt + 0.5), 3.25))
+        bar_cut.append(tk.rod(at_(u, pt - 0.5), at_(u, pt + wall + 0.5), 4.5))
+    return screws, nuts, pad_cut, bar_cut
+
+
+def _keeper_d3(P, D):
+    """The keeper as one bent piece of 3 mm sheet: legs run up into the bridge so the part is one solid."""
+    x0 = P["spine_set"]
+    Lb, t, lw, lb = P["keeper"]
+    top = P["spine_pts"][-1][1]
+    half = P["spine_t"] / 2 + P["cheek"][1]
+    px, pz = P["pin_xz"]
+    k = Pos(x0 + P["cheek"][0] / 2, 0, top + t / 2) * Box(Lb, 2 * (half + t), t)
+    for sgn in (1, -1):
+        k = k + Pos(x0 + px, sgn * (half + t / 2), (lb + top + t) / 2) * Box(lw, t, top + t - lb)
+    k = k - rod((x0 + px, -30, pz), (x0 + px, 30, pz), P["pin_hole"] / 2)
+    return cp.break_edges(k, 0.5)
+
+
+def _trunk_part(P, r, z0=None, z1=900.0):
+    z0 = PARAMS["ground_z"] - 200.0 if z0 is None else z0
+    return cp.part(f"Palm trunk, {2 * r:.0f} mm (site)", Pos(0, 0, (z0 + z1) / 2) * Cylinder(r, z1 - z0), "timber", kind="context", group="context")
+
+
+def option_a(P=PARAMS, trunk_d=None):
+    """Option A, the self-locking lever collar: the constructable design of TKB-DDR-002 and TKB-DDR-003, as
+    build_components() fits it to the trunk, with the D3 detail added (holes for every fixing, rivet nuts,
+    weld beads, edge breaks, the master link on its own, and detailed carabiners and descender)."""
+    C = build_components(P, trunk_d)
+    D = C["_D"]
+    mv = lambda s: Pos(D["q0"], 0, 0) * s
+    out = []
+    add = lambda name, shape, mat, kind="made", bom=None, ex=(0, 0, 0): out.append(cp.part(name, shape, mat, kind=kind, bom=bom, explode=ex))
+    add("Spine plate, 6082-T6 aluminium 5 mm", cp.break_edges(mv(_spine(P, D)), 0.5), _AL, bom=1, ex=(120, 0, 0))
+    for s, side in ((1, "right"), (-1, "left")):
+        screws, nuts, pad_cut, bar_cut = _pad_fixings(P, D, s)
+        bar = cp.break_edges(_bar(P, D, s), 0.5)
+        pad = cp.break_edges(_pad(P, D, s), 1.0)
+        for c_ in bar_cut:
+            bar = bar - c_
+        for c_ in pad_cut:
+            pad = pad - c_
+        add(f"Bearing bar {side}, 6082-T6 RHS 50 x 40 x 3", mv(bar), _AL, bom=2, ex=(-60, 0, -120))
+        add(f"Rubber bark pad {side}, 10 mm", mv(pad), "epdm", bom=6, ex=(-140, 0, -120))
+        for i, (sc, nu) in enumerate(zip(screws, nuts), 1):
+            add(f"Pad screw {side} {i}, M6 x 30 countersunk, A2", mv(sc), _ST, kind="fastener", ex=(-180, 0, -120))
+            add(f"Rivet nut {side} {i}, M6 countersunk, stainless", mv(nu), _ST, kind="fastener", ex=(-100, 0, -120))
+    for i, ring in enumerate(_doublers(P, D), 1):
+        add(f"Eye doubler ring {i}, 6082-T6 4 mm", cp.break_edges(mv(ring), 0.4), _AL, bom=3, ex=(120, 0, -120))
+    for i, ch in enumerate(_cheeks(P, D), 1):
+        add(f"Cleat cheek {i}, 6082-T6 8 mm", cp.break_edges(mv(ch), 0.5), _AL, bom=4, ex=(120, 0, 120))
+    for name, sh in _frame_welds(P, D):
+        add(name + " (TIG, ER5356)", mv(sh), _AL, kind="weld", bom=None, ex=(120, 0, 0))
+    add("Keeper, 3 mm steel sheet, zinc plated", mv(_keeper_d3(P, D)), "zinc_plated", bom=9, ex=(120, 0, 260))
+    add("Lock pin, ball-lock 8 mm, stainless", mv(_pin(P, D)), _ST, kind="bought", bom=10, ex=(120, -160, 200))
+    add("Chain loop, grade 80, 6 mm", group(D["loop_links"]), "mild_steel", kind="bought", bom=11, ex=(-200, 0, 150))
+    add("Chain fixed end", group(D["tail_a_links"]), "mild_steel", kind="bought", bom=11, ex=(150, 150, 0))
+    add("Chain adjustable end", group(D["tail_b_links"]), "mild_steel", kind="bought", bom=11, ex=(150, -200, 0))
+    add("Master link, grade 80", D["tail_b_master"], "mild_steel", kind="bought", bom=12, ex=(150, -260, -60))
+    add("Chain sleeve, 50 mm tubular nylon webbing", C["sleeve"], "canvas", bom=15, ex=(-350, 0, 150))
+    add("Tether link, grade 80 connecting link, 6 mm", C["maillon"], "mild_steel", kind="bought", bom=14, ex=(-120, 120, 0))
+    add("Connecting link, grade 80, 6 mm", D["tail_b_conn"], "mild_steel", kind="bought", bom=13, ex=(150, -260, -30))
+    ls, _ = tk.lowering_set(P, D["carab_main_top"], D["carab_brake_top"])
+    out += ls
+    out.append(_trunk_part(P, D["r"]))
+    return out
+
+
+def option_b(P=PARAMS, trunk_d=None):
+    """Option B, the constricting wrap anchor: rubber bark mat, anchor strap wrapped in a helix and tied off
+    as a Klemheist (the top tail runs down over the wraps through the bottom eye), its sewn loop through the
+    top slot of an aluminium rigging plate; the same carabiners, descender and rope as option A, turned so the
+    rope hangs in the plane of the plate."""
+    r = (trunk_d or P["trunk_d"]) / 2
+    n, pitch = P["wrap_turns"], P["wrap_pitch"]
+    ww, wt = P["webbing"]
+    mt = P["mat_t"]
+    H = n * pitch
+    out = []
+    # rubber bark mat: a slit sleeve under the wraps
+    z0m, z1m = -ww / 2 - 15, H + ww / 2 + 15
+    mat = Pos(0, 0, (z0m + z1m) / 2) * (Cylinder(r + mt, z1m - z0m) - Cylinder(r, z1m - z0m))
+    mat = mat - Pos(r + mt, 0, (z0m + z1m) / 2) * Box(30, 20, z1m - z0m + 2)
+    out.append(cp.part("Rubber bark mat, 3 mm, slit sleeve", cp.break_edges(mat, 0.8), "epdm", explode=(-200, 0, 0)))
+    # strap: helix of n turns at the mid-plane of the webbing
+    rh = r + mt + wt / 2
+    hx = Helix(pitch, H, rh)
+    pl = Plane(origin=hx.position_at(0), z_dir=hx.tangent_at(0), x_dir=(1, 0, 0))
+    wrap = sweep(pl * Rectangle(wt, ww), hx, is_frenet=True)
+    xt = r + mt + wt + 0.3                       # inner face of the top tail lying over the wraps
+    zt0, zt1 = -70.0, H + ww / 2
+    tail1 = Pos(xt + 1.1, 0, (zt0 + zt1) / 2) * Box(2.2, ww, zt1 - zt0)
+    pw, pt_, ph = P["rig_plate"]
+    xp = r + 32.0                                # mid-plane of the rigging plate and of the rope
+    zp = P["rig_top"]
+    a0, a1 = (xt + 1.1, 0.0, zt0), (xp, 0.0, zp + 1.3)
+    d = (a1[0] - a0[0], 0.0, a1[2] - a0[2])
+    tail2 = Location(Plane(origin=((a0[0] + a1[0]) / 2, 0, (a0[2] + a1[2]) / 2), x_dir=(0, 1, 0), z_dir=d)) * Box(ww, 2.2, math.hypot(d[0], d[2]) + 2.0)
+    eye = (Pos(xt + 1.1, 0, -50) * Box(2.2 + 4.4, ww + 4.4, 18)) - (Pos(xt + 1.1, 0, -50) * Box(2.4, ww + 0.4, 20))
+    bridge_lo = zp - 12.0
+    xo0, xo1 = xp - pt_ / 2 - 2.4, xp + pt_ / 2 + 2.4
+    loop = (Pos(xp, 0, (bridge_lo - 2.4 + zp + 2.4) / 2) * Box(xo1 - xo0, ww, zp + 2.4 - (bridge_lo - 2.4))) - \
+        (Pos(xp, 0, (bridge_lo - 0.2 + zp + 0.2) / 2) * Box(pt_ + 0.4, ww + 2, zp + 0.2 - (bridge_lo - 0.2)))
+    strap = wrap + tail1 + tail2 + eye + loop
+    out.append(cp.part("Anchor strap, 45 mm polyester webbing, sewn loop, Klemheist", strap, "canvas", kind="bought", explode=(-120, 0, 0)))
+    # rigging plate in the YZ plane: top slot for the strap loop, load and brake holes below
+    hz = zp - ph + 30.0
+    hsep = P["rig_holes"]
+    plate = Pos(xp, 0, zp - ph / 2) * Box(pt_, pw, ph)
+    try:
+        plate = plate.fillet(12.0, plate.edges().filter_by(lambda e: abs(e.tangent_at(0.5).X) > 0.9))
+    except Exception:
+        pass
+    plate = plate - Pos(xp, 0, zp - 18.0) * Box(pt_ + 2, 50.0, 12.0)
+    for y in (hsep / 2, -hsep / 2):
+        plate = plate - rod((xp - 20, y, hz), (xp + 20, y, hz), P["eye_d"] / 2)
+    out.append(cp.part("Rigging plate, aluminium, 3 holes and a strap slot", cp.break_edges(plate, 0.6), _AL, kind="bought", explode=(150, 0, -150)))
+    # lowering set built in option A's frame (hole axes along Y, brake on -X), then turned 90 deg about Z
+    off = P["eye_d"] / 2 - P["carab"][0] / 2
+    lift = tk.bend_drop(P, pt_ / 2) + 0.05
+    ls, _ = tk.lowering_set(P, (hsep / 2, 0.0, hz - off + lift), (-hsep / 2, 0.0, hz - off + lift), load_end_z=-900.0)
+    T = Pos(xp, 0, 0) * Rot(0, 0, 90)
+    for q in ls:
+        q["shape"] = T * q["shape"]
+        out.append(q)
+    out.append(_trunk_part(P, r))
+    return out
+
+
+def _saddle(P, D):
+    """Folded V saddle of 6 mm plate, frame-local (virtual vertex at the origin, faces as option A's pads)."""
+    L, t, h = P["saddle"]
+    w, b = D["w"], D["b"]
+    wm, bm = (w[0], -w[1]), (b[0], -b[1])
+    p1 = (w[0] * L, w[1] * L)
+    p3 = (wm[0] * L, wm[1] * L)
+    p4 = (p3[0] + bm[0] * t, p3[1] + bm[1] * t)
+    p5 = (t / b[0], 0.0)                              # the ridge: both back faces meet on the centre plane
+    p6 = (p1[0] + b[0] * t, p1[1] + b[1] * t)
+    poly = Polyline((p1[0], p1[1], 0), (0, 0, 0), (p3[0], p3[1], 0), (p4[0], p4[1], 0), (p5[0], p5[1], 0), (p6[0], p6[1], 0), close=True)
+    v = extrude(make_face(poly), amount=h)
+    try:
+        v = v.fillet(4.0, v.edges().filter_by(lambda e: abs(e.tangent_at(0.5).Z) > 0.9 and abs(e.center().Y) < 1e-3))
+    except Exception:
+        pass
+    return v, p5[0]
+
+
+def option_c(P=PARAMS, trunk_d=None):
+    """Option C, the screwed stem anchor: a folded 6 mm steel V saddle (the same 120 deg V as option A) held
+    by four M10 x 120 coach screws with washers driven into the stem, a 10 mm eye lug welded to the ridge
+    with two fillet welds; the same carabiners, descender and rope as option A."""
+    D = derived(P, trunk_d)
+    mv = lambda s: Pos(D["q0"], 0, 0) * s
+    L, t, h = P["saddle"]
+    sd, sl, su, szs = P["saddle_screw"]
+    v, xr = _saddle(P, D)
+    out = []
+    fix = []
+    for s in (1, -1):
+        w = (D["w"][0], s * D["w"][1], 0.0)
+        b = (D["b"][0], s * D["b"][1], 0.0)
+        for zz in (szs if s > 0 else tuple(z + 30.0 for z in szs)):      # staggered: the screws must not meet in the stem
+            pt = (w[0] * su + b[0] * t, w[1] * su + b[1] * t, zz)
+            v = v - tk.rod((pt[0] - b[0] * 20, pt[1] - b[1] * 20, zz), (pt[0] + b[0] * 5, pt[1] + b[1] * 5, zz), (sd + 1) / 2)
+            fix.append((s, zz, pt, b))
+    out.append(cp.part("Saddle, folded 6 mm steel V, galvanised", mv(cp.break_edges(v, 0.8)), "galvanised", explode=(-120, 0, 0)))
+    lt, lm, ls_, lz = P["lug"]
+    x0 = xr - 3.5
+    prof = [(x0, 0), (xr + 150, 0), (xr + 150, 80), (x0, 190)]
+    lug = extrude(make_face(Polyline(*[(x, 0, z) for x, z in prof], close=True)), amount=lt / 2, both=True)
+    lug = Pos(0, 0, 5) * lug
+    lug = lug - v
+    for xx in (lm, ls_):
+        lug = lug - rod((xr + xx, -20, 5 + lz), (xr + xx, 20, 5 + lz), P["eye_d"] / 2)
+    lug = cp.break_edges(lug, 0.6)
+    out.append(cp.part("Eye lug, 10 mm steel plate, galvanised", mv(lug), "galvanised", explode=(150, 0, 0)))
+    bx_, by_ = D["b"][0], D["b"][1]
+    xw = (t - (lt / 2) * by_) / bx_
+    for s in (1, -1):
+        bd = tk.bead((xw, s * lt / 2, 6.0), (xw, s * lt / 2, 6.0 + 180.0), (0, s, 0), (bx_, s * by_, 0), 3.0)
+        bd = bd & Pos(0, 0, h / 2) * Box(2000, 2000, h - 1)
+        out.append(cp.part(f"Weld, eye lug to saddle {'right' if s > 0 else 'left'}", mv(bd), "galvanised", kind="weld", explode=(150, 0, 0)))
+    for i, (s, zz, pt, b) in enumerate(fix, 1):
+        loc = Location(Plane(origin=pt, z_dir=b))
+        out.append(cp.part(f"Coach screw {i}, M{sd} x {sl}, DIN 571, galvanised", mv(Location(Plane(origin=(pt[0] + b[0] * cp.ISO[sd][4], pt[1] + b[1] * cp.ISO[sd][4], zz), z_dir=b)) * cp.coach_screw(sd, sl)),
+                           "galvanised", kind="fastener", explode=(-200, 0, 0)))
+        out.append(cp.part(f"Washer {i}, M{sd}, ISO 7089", mv(loc * cp.washer(sd)), "galvanised", kind="fastener", explode=(-160, 0, 0)))
+    off = P["eye_d"] / 2 - P["carab"][0] / 2
+    lift = tk.bend_drop(P, lt / 2) + 0.05
+    xq = D["q0"] + xr
+    ls, _ = tk.lowering_set(P, (xq + lm, 0.0, 5 + lz - off + lift), (xq + ls_, 0.0, 5 + lz - off + lift))
+    out += ls
+    out.append(_trunk_part(P, D["r"]))
+    return out
+
+
+def components(option=CHOSEN):
+    """kit 1.9: every part of one concept option as cad_parts.part() dicts, fitted to the reference 300 mm trunk."""
+    return {"A": option_a, "B": option_b, "C": option_c}[option]()
 
 
 if __name__ == "__main__":

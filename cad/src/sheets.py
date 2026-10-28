@@ -1,4 +1,4 @@
-"""TrunkBelay general arrangement drawing TKB-DWG-001 (Rev P2).
+"""TrunkBelay general arrangement drawing TKB-DWG-001 (Rev P3).
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/TKB-DWG-001.svg, .pdf and .png from the parametric model: the collar frame, pads,
@@ -33,10 +33,11 @@ asm = Compound([F["spine"], F["bars"], F["doublers"], F["cheeks"], F["pads"], F[
 work = ROOT / "cad/drawings/_views"
 views = project_views(asm, work)
 s = Sheet(project="TrunkBelay", title="Palm trunk rescue collar and lowering kit: general arrangement",
-          dwg_no="TKB-DWG-001", rev="P2", author="Amish Chadha", date="2026-10-03", concept=True, scale=None,
+          dwg_no="TKB-DWG-001", rev="P3", author="Amish Chadha", date="2026-10-25", concept=True, scale=None,
           material="6082-T6 aluminium plate and RHS, TIG welded; rubber pads; grade 80 chain. See bom/bom.csv",
           revisions=[("P1", "Preliminary GA from the constructable TRL 3 model (TKB-DDR-002)", "2026-10-03", "AC"),
-                     ("P2", "Aluminium frame and tag line (TKB-DDR-003)", "2026-10-03", "AC")])
+                     ("P2", "Aluminium frame and tag line (TKB-DDR-003)", "2026-10-03", "AC"),
+                     ("P3", "Tether hole for the fixed end; 55 mm cleat web (TKB-DEC-001 D-S1, D-S2)", "2026-10-25", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(views["iso"], 276, 57, 140, 62, label="Isometric view",
           sublabel="Seen from the front right, above; 300 mm trunk section for reference")
@@ -48,10 +49,11 @@ s.add_notes("Key dimensions (mm) and data", [
     f"Load eye {P['eye_main'][0]:.0f} out from the spine front edge, {P['eye_main'][1]:.0f} up",
     f"Chain line {D['z_c']:.0f} above the frame foot; slots {P['slot_w']} wide",
     "Chain 6 mm grade 80, 110 links; sleeve 600 tubular webbing",
+    f"Tether hole {P['tether_hole'][2]:.0f} at {P['tether_hole'][0]:.0f} back, {P['tether_hole'][1]:.0f} up; G80 connecting link",
     f"Cheeks {P['cheek'][1]:.0f}; keeper 3 steel; ball-lock pin 8, grip 27",
     "Locking factor 1.54 or more (TKB-CAL-001, B4)",
     "Sized for 2.5 kN static (R1); one person, 100 kg",
-    "Carried 4.55 kg; bag hauled on the tag line",
+    "Carried 4.67 kg; bag hauled on the tag line",
     "PRELIMINARY, NOT FOR FABRICATION",
 ], x=276, y=130, width=140)
 s.save(ROOT / "cad/drawings/TKB-DWG-001")

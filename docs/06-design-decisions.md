@@ -3,9 +3,9 @@ doc_id: TKB-DEC-001
 title: TrunkBelay design decisions register
 project: TrunkBelay
 doc_type: Design decisions register
-version: "0.2"
+version: '0.4'
 status: Draft
-date: '2026-10-03'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,6 +17,14 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Open decisions O1 to O4 decided by Amish (16A, 17B, 18C, 19A) and moved to Decisions made; items to confirm and value engineering updated
+- version: "0.3"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: D-S1 decided under Amish's standing instruction of 2026-10-23 (tether connecting link through a new tether hole); O5 (concept selection, options A and B within 10 %), O6 (appearance of the new renders), O7 (strength target) and O8 (leaning trunks) proposed, awaiting Amish; D-S2 decided under the standing instruction (55 mm cleat web); item 8 closed by D-S1, items 13 and 14 added; cost USD 828"
+- version: '0.4'
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: 'Amish decided O6, O7 (option C) and O8 (option C) as recommended on 2026-10-25 ("i concur with your recommendations"); O5 stays open (no pick)'
 ---
 
 # TrunkBelay design decisions register
@@ -27,7 +35,13 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-None. Amish decided the four open decisions (O1 to O4) on 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." They are recorded under Decisions made and in TKB-DDR-003. R2 and R4 remain at risk on paper and are settled by the TRL 4 drill and timed trial (items 9 and 10 below); nothing in carrying out the decisions needs a new decision from Amish.
+Table 1. Decisions awaiting Amish. O6, O7 and O8 were decided by Amish on 2026-10-25 as recommended and are in Table 3; O5 had no pick and stays open.
+
+| # | Decision needed | Options | Recommendation | Affects in the build | Source |
+| --- | --- | --- | --- | --- | --- |
+| O5 | Concept selection (STANDARDS section 21). Option B scores 175, option A 167 and option C 140; A and B are within 10 % | A: keep the self-locking lever collar, the constructable design. B: develop the constricting wrap anchor (strap, mat and rigging plate) as a new TRL 3 step. C: screwed stem anchor | **No pick: A and B go to Amish together** (within 10 %). Proposed, awaiting Amish. C is not recommended. Whichever is chosen, the first test is the friction and slip of the anchor on cut, wet trunk sections | A: none (the repo carries A). B: a new constructable design, calculation note, drawings and build plan | TKB-OPT-001; TKB-DDR-004 |
+
+Amish decided the four earlier open decisions (O1 to O4) on 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." They are recorded under Decisions made and in TKB-DDR-003. R2 and R4 (now PR-002 and PR-004) remain at risk on paper and are settled by the TRL 4 drill and timed trial (items 9 and 10 below).
 
 ## To confirm when parts are bought
 
@@ -44,15 +58,17 @@ These are facts that can only be settled with real parts, real trunks or the tra
 | 5 | Rubber hardness and the bond of contact adhesive to bare 6082 aluminium | Pad squash and pad security | TKB-CAL-001, B5 |
 | 6 | Trunk diameters and shapes in the first partner's area | The 200 to 450 mm range and the 110-link chain | TKB-REQ-001, R3; TKB-DDR-002, A6 |
 | 7 | Whether the triangle can be fitted to a head-down dummy in the time estimated | Rigging time | TKB-CAL-001, E3 |
-| 8 | That the brake carabiner and the 8 mm quick link sit side by side in the 22 mm spare eye | Spare eye layout | Build plan, Figure 16 |
+| 8 | Closed by D-S1 (2026-10-25): the spare eye now holds the brake carabiner alone | Spare eye layout | TKB-STM-001 S28 |
 | 9 | In the timed drill, that a rescuer can reach to set the collar at least 300 mm above the victim's attachment | If not, the recorded fallback for R2 (the double-acting collar) is built | TKB-DDR-003, 16A |
 | 10 | The timed drill with the bag hauled on the doubled tag line and the victim set pre-rigged | R4 estimate of 4.5 minutes; whether the doubled line tangles while the rescuer climbs | TKB-DDR-003, 17B and 18C |
 | 11 | Wear of the aluminium cleat web where the steel links bear (about 92 MPa at 2.5 kN), and no permanent set of the frame after the 2.5 kN proof test | The aluminium frame's smaller strength margins (1.55 on the welded proof strength) | TKB-CAL-001, C1 and C4 |
 | 12 | Quotes for 6082-T6 plate and tube and AC TIG welding near the first partner | Cost of the aluminium frame (about USD 69 with welding) | bom/bom.csv, lines 1 to 5 |
+| 13 | The connecting links bought: the 6 mm grade 80 connecting link's chain-end wire at most 7.3 mm, so it passes the chain's 7.8 mm link opening, and an 11 mm opening at the other end | Tether (D-S1) and the master link joint | bom/bom.csv, lines 13 and 14; TKB-STM-001 S27 |
+| 14 | That the 7 mm strip of web between the tether hole and the spine's front edge is not bent by a dropped chain end in handling (it carries no working load) | Tether hole | TKB-DWG-101; D-S1 |
 
 ## Value engineering
 
-Value-engineering target: USD 900 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 826 (USD 74 under the target). Against R9 as restated by Amish (USD 850 per kit at single-kit prices) the kit is USD 24 under. Main cost drivers and savings worth trying:
+Value-engineering target: USD 900 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 828 (USD 72 under the target). Against R9 (PR-009) as restated by Amish (USD 850 per kit at single-kit prices) the kit is USD 22 under. Main cost drivers and savings worth trying:
 
 - The bought rescue gear is most of the cost: the auto-locking descender (USD 280), the evacuation triangle (USD 140), the rope (USD 105), the bag (USD 45) and three carabiners (USD 45). Amish kept the descender and triangle for safety (19A). The aluminium frame, including TIG welding, is about USD 69; the tag line and micro pulley about USD 39.
 - Savings worth trying: group purchase of descenders, triangles and rope by the training partner for many kits; rope and cord bought by the reel; a plain stuff sack in place of a rope bag (about USD 30); welding frames in batches.
@@ -70,3 +86,8 @@ Value-engineering target: USD 900 (a hypothetical control target, not a limit). 
 | 2026-10-03 | No use on a person before a proof test of the collar at 2.5 kN on cut trunk sections and a dummy drill at low height (conservative; this is a gate, not relaxed) | Amish, same pre-approvals | TKB-BLD-001, section 6 |
 | 2026-10-03 | O1 to O4 on the requirements not met or at risk. 16A (R2): keep the drill rule, collar at least 300 mm above the victim's attachment; double-acting collar recorded as the fallback. 17B (R4): pack the triangle and chest sling pre-rigged on the victim carabiner (45 s saved). 18C (R7): the helpers haul the rope bag up on a tag line and the collar frame goes to aluminium (4.55 kg carried, met). 19A (R9): keep the auto-locking descender and evacuation triangle, seek group purchase, R9 restated to USD 850 per kit (USD 826, met) | Amish, 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." | TKB-DDR-003 |
 | 2026-10-03 | Appearance model departures for the renders only: a safe working load label on the spine, a 400 mm trunk with leaf-scar rings, the rope cut below the frame, and a clay forearm and hand on the brake strand | Amish, same pre-approvals | docs/REVIEW.md, TRL 3 section |
+| 2026-10-25 | D-S1, fixed-end tether (fix rule, STEM check TKB-STM-001 S27): the 8 mm quick link (BOM 14) does not pass through a 6 mm grade 80 chain link (7.8 mm opening), and in the spare eye it left no place for the chain's hooked end clear of the brake carabiner. Options weighed: a 7 mm quick link in the spare eye (fits the link, still crowds the carabiner); moving the brake carabiner to the lightening hole (its body then crosses the tether below); a grade 80 connecting link through a new 10 mm tether hole 12 mm behind the spine's front edge and 112 mm up, round the web strip there (chosen: fits, frees the spare eye, shortens the fixed end from about 12 to 6 links so the adjustable tail on a 450 mm trunk grows to 15). Cost USD 2 more (BOM line 14, USD 5); drawings TKB-DWG-101 and 108, build plan section 3.11 and step 5, CAL v0.3 and the model updated | Claude, under Amish's standing instruction of 2026-10-23 (fix rule, STANDARDS section 20); Amish can reverse it | TKB-STM-001; this register |
+| 2026-10-25 | D-S2, cleat web for an unequal chain split (fix rule, STEM check TKB-STM-001 S9, found by the independent review): with all of the chain's pull on one slot at the R1 load the 35 mm web reached 162 MPa, factor 0.77 on the welded proof strength. Options weighed: a thicker web (not possible: a link must span it, 6 mm at most); thicker cheeks (they do not carry the ligament's bending); a deeper web (chosen). The spine top goes from 185 to 205 mm, so the web above the slot bottoms is 55 mm (103 MPa, factor 1.21); the cheeks become 75 mm high and the keeper legs 73 mm; slots, notches, pin and chain line unchanged. About 0.05 kg and no cost; drawings TKB-DWG-101, 104, 105 and 107, build plan sections 3.1, 3.4 and 3.7, CAL v0.3 and the model updated | Claude, under Amish's standing instruction of 2026-10-23 (fix rule, STANDARDS section 20); Amish can reverse it | TKB-STM-001; this register |
+| 2026-10-25 | O6, appearance of the kit 1.9 renders: accept the departures (site scene at drill height with the collar foot 1.4 m up, a 1.75 m helper, both strands carried to the rope bag on the ground, two more palms behind, the safe working load label) | Amish: "i concur with your recommendations" | `cad/src/product_model.py` (no change) |
+| 2026-10-25 | O7, strength target of the collar: option C, keep the 2.5 kN design load (PR-001) and its proof test, raise the TRL 4 proof load to 3.5 kN and decide after a test to failure of a sample frame; option B (a frame for about 10:1) is the recorded fallback if the test shows less than 5:1 | Amish: "i concur with your recommendations" | TKB-PRS-001 v0.5 PR-001; TKB-STM-001 v0.2 S30; TKB-BLD-001 v0.4 first checks; TKB-PLN-001 v0.2; TKB-RSK-001 v0.2 H6 |
+| 2026-10-25 | O8, leaning trunks: option C, both a 20 deg lean limit in PR-003 and a drill rule that sets the frame on the favourable side of a leaning trunk, to confirm by test | Amish: "i concur with your recommendations" | TKB-PRS-001 v0.5 PR-003; TKB-STM-001 v0.2 S31; TKB-BLD-001 v0.4; TKB-RSK-001 v0.2 H12 |

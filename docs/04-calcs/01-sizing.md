@@ -3,9 +3,9 @@ doc_id: TKB-CAL-001
 title: TrunkBelay sizing calculations
 project: TrunkBelay
 doc_type: Calculation note
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,11 +17,15 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Re-run for Amish's decisions 16A, 17B, 18C and 19A (TKB-DDR-003); aluminium frame, tag-line haul, pre-rigged victim set, restated R9
+- version: "0.3"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: re-run on the detailed (D3) model; the fixed end's tether is a grade 80 connecting link through a new 10 mm tether hole (TKB-DEC-001 D-S1), so the adjustable tail on a 450 mm trunk is 15 links and the kit costs USD 828; after the independent review the cleat web is 55 mm deep (spine top 205 mm, TKB-DEC-001 D-S2) for all of the chain's pull on one slot, the bars are checked for combined stresses and the descender is taken at its cited 600 g; results table keyed to the product requirements PR-001 to PR-018 (TKB-PRS-001)"
 ---
 
 # TrunkBelay sizing calculations
 
-On paper, the constructable TrunkBelay collar locks on every trunk from 200 to 450 mm with a locking factor of 1.54 or more, holds the 2.5 kN load of R1 with every aluminium frame part at 1.55 times its welded (heat-affected) proof strength or better, and lets one rescuer lower a 100 kg person 25 m with about 80 N at the brake hand. Version 0.2 carries out Amish's decisions of 2026-10-03 (TKB-DDR-003): the frame is TIG-welded 6082-T6 aluminium, the helpers haul the rope bag up on a tag line, and the victim set is packed pre-rigged, so the rescuer carries 4.55 kg against the 5 kg target; the kit costs USD 826 against the restated R9 target of USD 850. Its weak points are friction and the drill: the lock rests on an assumed friction on wet bark that must be measured first, and the upward pull of R2 is avoided by the drill rule, not by the hardware. Every figure below comes from `docs/04-calcs/sizing.py`, which imports the parametric model (`cad/src/model.py`), so the sizes here are the sizes in the STEP file, the drawings and the build plan. Tags in square brackets ([A1], [B4] ...) match the script output and `results.csv`.
+On paper, the constructable TrunkBelay collar locks on every trunk from 200 to 450 mm with a locking factor of 1.54 or more, holds the 2.5 kN load of R1 with every aluminium frame part at 1.21 times its welded (heat-affected) proof strength or better, even with all of the chain's pull on one slot, and lets one rescuer lower a 100 kg person 25 m with about 80 N at the brake hand. Version 0.2 carries out Amish's decisions of 2026-10-03 (TKB-DDR-003): the frame is TIG-welded 6082-T6 aluminium, the helpers haul the rope bag up on a tag line, and the victim set is packed pre-rigged, so the rescuer carries 4.67 kg against the 5 kg target (4.55 kg in version 0.2); the kit costs USD 828 against the restated R9 target of USD 850. Version 0.3 is the same design on the detailed (D3) model of kit 1.9, with one change found by that model: the fixed end of the chain is tethered with a grade 80 connecting link through a new 10 mm tether hole at the spine's front edge, because the 8 mm quick link did not pass a 6 mm chain link (TKB-DEC-001 D-S1). Its weak points are friction and the drill: the lock rests on an assumed friction on wet bark that must be measured first, and the upward pull of R2 is avoided by the drill rule, not by the hardware. Every figure below comes from `docs/04-calcs/sizing.py`, which imports the parametric model (`cad/src/model.py`), so the sizes here are the sizes in the STEP file, the drawings and the build plan. Tags in square brackets ([A1], [B4] ...) match the script output and `results.csv`.
 
 These are first-principles screening estimates for a paper proof of concept. They do not replace a proof test of the collar on cut palm trunk sections or a timed drill, which are TRL 4 work.
 
@@ -70,10 +74,12 @@ The lock depends on assumption 3. If the combined friction on a wet 200 mm trunk
 ## 4. Strength at the R1 load [C]
 
 - [C1] Bearing bars, aluminium RHS 50 x 40 x 3: 0.48 kN m at the spine on the 450 mm trunk, 78 MPa, factor 1.60 on the welded proof strength (4.0 at the working load) and 2.4 on the welded ultimate strength. The bars are 15 mm deeper than the steel ones; that is why the spare eye moved 15 mm back (to 85 mm) and the adjustable chain tail now runs out 75 mm before it hangs.
+- [C1b] Combined, the bar also bends vertically under the friction its pad carries (13 MPa) and twists because the pad force acts at its bottom edge as the frame cocks (9 MPa): 92 MPa by von Mises, factor 1.36 on the welded proof strength (independent review, TKB-STM-001 S6).
 - [C2] Bar-to-spine fillet welds, 5 mm all round: 40 MPa, factor 5.3 on the weld metal.
-- [C3] Spine arm: 7 MPa beside the lightening hole. The load eye is 13 mm thick with its doubler rings (kept at 4 mm so the 8 mm quick link still passes round the spare eye); bearing under the carabiner bar is 19 MPa and the tear-out strength 39 kN, 16 times the R1 load.
-- [C4] Chain cleat at 5.5 kN of chain tension: the 5 mm web beside a slot, loaded by the next link, now 35 mm deep (the spine top was raised 10 mm to 185 mm), 81 MPa, factor 1.55 on the welded proof strength; the twist between the two slots, 0.16 kN m, gives 35 MPa in the top with 8 mm cheeks (factor 2.0 in shear). The web stays 5 mm because a chain link must span it. The steel links bear on the aluminium web at about 92 MPa; wear of the slot faces is to be confirmed.
-- [C5] Chain: 5.5 kN at most, factor 8.1 on its breaking force and under half its working load limit; 2.2 kN at the working load.
+- [C3] Spine arm: 7 MPa beside the lightening hole. The load eye is 13 mm thick with its doubler rings (kept at 4 mm, as sized); bearing under the carabiner bar is 19 MPa and the tear-out strength 39 kN, 16 times the R1 load.
+- [C4] Chain cleat at 5.5 kN of chain tension: the 5 mm web beside a slot, loaded by the next link, now 55 mm deep (the spine top is 205 mm, D-S2), 51 MPa, factor 2.43 on the welded proof strength; the twist between the two slots, 0.16 kN m, gives 35 MPa in the top with 8 mm cheeks (factor 2.0 in shear). The web stays 5 mm because a chain link must span it.
+- [C4b] The chain's two legs need not share its pull equally: friction round the wrap (a capstan ratio of about 6) lets the split follow how the chain was pulled snug. With all of it, 11.1 kN, on one slot the web sees 103 MPa, factor 1.21 (the 35 mm web of version 0.2 gave 162 MPa, factor 0.77: D-S2). The steel links bear on the aluminium web at about 92 MPa; wear of the slot faces is to be confirmed.
+- [C5] Chain: 5.5 kN at most, factor 8.1 on its breaking force and under half its working load limit, factor 4.1 with all of it in one leg; 2.2 kN at the working load.
 - [C6] Rope: about 14 kN at the figure-eight loop, factor 5.7 at the R1 load and 14 at the working load. Carabiners: factor 10 and 25.
 
 ## 5. Lowering [D]
@@ -88,13 +94,13 @@ The lock depends on assumption 3. If the combined friction on a wet 200 mm trunk
 ## 6. Fit, reach and rigging [E]
 
 - [E1] Rope: 25 m of lowering, 1 m from the descender to the person at the start, 1.5 m for the knots and 0.5 m round the brake carabiner: 28 m of the 30 m.
-- [E2] Fit: on a 200 mm trunk the chain loop is 769 mm, the pads touch 58 mm along their faces and the spine is 23 mm clear of the bark; on 300 mm, 1,086 mm, 87 mm and 31 mm; on 450 mm, 1,563 mm, 130 mm and 43 mm. The 110-link chain leaves at least 10 links of tail on a 450 mm trunk.
+- [E2] Fit: on a 200 mm trunk the chain loop is 769 mm, the pads touch 58 mm along their faces and the spine is 23 mm clear of the bark; on 300 mm, 1,086 mm, 87 mm and 31 mm; on 450 mm, 1,563 mm, 130 mm and 43 mm. The fixed end is 6 links: a flat link on the slot link, a short hanging run and the link that hooks the tether link at the spine's front edge (TKB-DEC-001 D-S1). The 110-link chain leaves 15 links in the adjustable tail on a 450 mm trunk (PR-003).
 - [E3] Rigging time once the rescuer is in position (estimate): collar 60 s; the helpers haul the bag up on the tag line 45 s; descender and rope 40 s; bag to the ground 20 s; the pre-rigged triangle and chest sling 90 s (was 120 s); clip the crotch loop and the sling's free end and take in slack 15 s (was 30 s): 4.5 minutes. The pre-rigged set saves the 45 s the haul adds, so the estimate is unchanged.
 
 ## 7. Mass [F]
 
-- [F1] Collar frame 1.31 kg (the aluminium weldment 0.97 kg), chain set 1.88 kg, descender 0.53 kg, carabiners 0.26 kg, rope 2.34 kg, triangle and sling 0.87 kg, bag 0.45 kg, tag line 0.60 kg (55 m of 4 mm cord) and micro pulley 0.05 kg: 8.3 kg in all.
-- [F2] The helpers haul 3.7 kg up in the bag (the rope, the pre-rigged victim set with its carabiner, and the bag). The rescuer carries 4.55 kg: the collar, chain set, descender, load and brake carabiners, the micro pulley and the tag line hanging from it. R7 asks for under 5 kg: met on paper with 0.45 kg to spare. The decision estimate was about 4.4 kg; the difference is the tag line, which runs doubled from the ground (both legs hang from the rescuer at the top) so the helpers can haul.
+- [F1] Collar frame 1.36 kg (the aluminium weldment 1.01 kg), chain set 1.88 kg, descender 0.60 kg (the cited Petzl I'D S class), carabiners 0.26 kg, rope 2.34 kg, triangle and sling 0.87 kg, bag 0.45 kg, tag line 0.60 kg (55 m of 4 mm cord) and micro pulley 0.05 kg: 8.4 kg in all.
+- [F2] The helpers haul 3.7 kg up in the bag (the rope, the pre-rigged victim set with its carabiner, and the bag). The rescuer carries 4.67 kg: the collar, chain set, descender, load and brake carabiners, the micro pulley and the tag line hanging from it. R7 asks for under 5 kg: met on paper with 0.33 kg to spare. The decision estimate was about 4.4 kg; the difference is the tag line, which runs doubled from the ground (both legs hang from the rescuer at the top) so the helpers can haul.
 - [F3] The aluminium weldment saves about 1.9 kg against the same parts in steel.
 
 ## 8. Bark [G]
@@ -103,24 +109,32 @@ The lock depends on assumption 3. If the combined friction on a wet 200 mm trunk
 
 ## 9. Cost [H]
 
-- [H1] Value-engineering target: USD 900. Estimated cost of the constructable design: USD 826 (USD 74 under the target). The aluminium frame adds about USD 29 (material, TIG welding and rivet nuts, less the galvanising) and the tag line and micro pulley USD 39, USD 68 in all against the decision estimate of about USD 50.
-- [H2] Against R9 as restated by Amish's decision 19A (USD 850 per kit at single-kit prices), the kit is USD 24 under. The largest lines are the auto-locking descender (USD 280), the evacuation triangle (USD 140), the rope (USD 105) and the TIG welding (USD 45). Group purchase by the training partner and one kit per climber group are savings to seek and are not counted.
+- [H1] Value-engineering target: USD 900. Estimated cost of the constructable design: USD 828 (USD 72 under the target). The tether connecting link costs USD 2 more than the quick link it replaces (D-S1). The aluminium frame adds about USD 29 (material, TIG welding and rivet nuts, less the galvanising) and the tag line and micro pulley USD 39, USD 68 in all against the decision estimate of about USD 50.
+- [H2] Against R9 as restated by Amish's decision 19A (USD 850 per kit at single-kit prices), the kit is USD 22 under (PR-009). The largest lines are the auto-locking descender (USD 280), the evacuation triangle (USD 140), the rope (USD 105) and the TIG welding (USD 45). Group purchase by the training partner and one kit per climber group are savings to seek and are not counted.
 
 ## 10. Results against the requirements
 
-*Table 3. Requirements on paper.*
+*Table 3. Product requirements on paper (TKB-PRS-001; the R numbers of TKB-REQ-001 in brackets).*
 
 | ID | Status on paper | Basis |
 | --- | --- | --- |
-| R1 | Met on paper; friction to confirm | Locking factor 1.54 at the smallest trunk; settles about 10 mm [B4, B5] |
-| R2 | **At risk** for an upward pull; drill rule kept (decision 16A) | The single top chain cannot hold an upward pull on paper; the drill keeps the collar at least 300 mm above the person's attachment so the case does not arise; the double-acting collar is the recorded fallback |
-| R3 | Met | 200 to 450 mm, no tools [E2] |
-| R4 | **At risk** (estimate) | About 4.5 minutes: the pre-rigged set saves 45 s and the tag-line haul adds 45 s [E3]; timed at TRL 4 |
-| R5 | Met on paper (estimate) | About 80 N at the hand [D1] |
-| R6 | Met | 28 m needed of 30 m [E1] |
-| R7 | Met on paper | 4.55 kg carried, 0.45 kg under the target; the 3.7 kg bag is hauled up [F2] |
-| R8 | Met on paper; to confirm | Pads 1.9 MPa, sleeve 0.6 MPa [G1] |
-| R9 | Met on paper (restated target) | USD 826 a kit against USD 850 [H2] |
-| R10 | Cannot be shown on paper | Needs the training trial at TRL 4 |
+| PR-001 (R1) | Met on paper; friction, settlement and the strength margin to confirm | Locking factor 1.54 at the smallest trunk; settles about 10 mm [B4, B5], 14 to 18 mm with pad shear (TKB-STM-001 S5); frame 1.21 or better at 2.5 kN [C1b, C4b]; breaking load about 5.0 kN, below the 5:1 to 10:1 of rescue practice in the worst case (TKB-STM-001 S30, TKB-DEC-001 O7) |
+| PR-002 (R2) | **At risk** for an upward pull; drill rule kept (decision 16A) | The single top chain cannot hold an upward pull on paper; the drill keeps the collar at least 300 mm above the person's attachment so the case does not arise; the double-acting collar is the recorded fallback |
+| PR-003 (R3) | Met | 200 to 450 mm, no tools; 15 links to spare on 450 mm [E2] |
+| PR-004 (R4) | **At risk** (estimate) | About 4.5 minutes: the pre-rigged set saves 45 s and the tag-line haul adds 45 s [E3]; timed at TRL 4 |
+| PR-005 (R5) | Met on paper (estimate) | About 80 N at the hand [D1] |
+| PR-006 (R6) | Met | 28 m needed of 30 m [E1] |
+| PR-007 (R7) | Met on paper | 4.67 kg carried, 0.33 kg under the target; the 3.7 kg bag is hauled up [F2] |
+| PR-008 (R8) | Met on paper; to confirm | Pads 1.9 MPa, sleeve 0.6 MPa [G1]; bare links mark about 0.3 mm (TKB-STM-001 S20) |
+| PR-009 (R9) | Met on paper (restated target) | USD 828 a kit against USD 850 [H2] |
+| PR-010 (R10) | Cannot be shown on paper | Needs the training trial at TRL 4 |
+| PR-011 | Met by design | Auto-locking descender with anti-panic function, BOM line 17; the hand force of [D1] assumes it |
+| PR-012 | Met by design | Triangle and chest sling on one victim carabiner (BOM lines 16, 19, 20); TKB-STM-001 S22 |
+| PR-013 | To verify at TRL 4 | Bare 6082-T6 (weld strengths of [C1] to [C4] are the heat-affected values), stainless fixings in rivet nuts with barrier paste; TKB-STM-001 S25, S26 plausible |
+| PR-014 | Met by design | Pads, sleeve, keeper, pin, rope and soft goods are separate, bought or simply cut parts (BOM lines 6, 9, 10, 15 to 23) |
+| PR-015 | Met by design | Rated rescue gear specified by standard in BOM lines 16 to 19; strength factors [C5], [C6] |
+| PR-016 | Met by design | Profile-cut plate, RHS, rubber sheet and 3 mm sheet, drilled and AC TIG welded (BOM lines 1 to 9) |
+| PR-017 | Met by design | Plain slots, keeper and pin; no ratchet, cam or cleated plate (TKB-PRC-001, patent design-arounds) |
+| PR-018 | Met by design | Fixed end tethered through the 10 mm tether hole with a grade 80 connecting link (BOM line 14); no interference in the D3 model (TKB-STM-001 S27, S28) |
 
-Amish decided R2, R4, R7 and R9 on 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." (decisions 16A, 17B, 18C and 19A, TKB-DDR-003). R2 and R4 stay at risk on paper and are settled by the TRL 4 drill and timed trial.
+Amish decided R2, R4, R7 and R9 on 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." (decisions 16A, 17B, 18C and 19A, TKB-DDR-003). PR-002 and PR-004 stay at risk on paper and are settled by the TRL 4 drill and timed trial.

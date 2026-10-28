@@ -1,12 +1,14 @@
 # TrunkBelay
 
-![TrunkBelay: palm trunk rescue collar and lowering kit](media/render-hero.png)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Stage P3](https://img.shields.io/badge/stage-P3%20design%20outputs-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/trunkbelay/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/trunkbelay/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/trunkbelay/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/trunkbelay) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23132240.svg)](https://doi.org/10.5281/zenodo.23132240)
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/trunkbelay/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/trunkbelay/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/trunkbelay/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/trunkbelay) [![DOI](https://zenodo.org/badge/{"message":"GitHub access to this repository is not enabled for this session. Use add_repo to request access. If add_repo answers that read access is already available and you need GitHub API or write access, call add_repo again with access:\"push\" to attach the repository with credentials.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"}.svg)](https://zenodo.org/badge/latestdoi/{"message":"GitHub access to this repository is not enabled for this session. Use add_repo to request access. If add_repo answers that read access is already available and you need GitHub API or write access, call add_repo again with access:\"push\" to attach the repository with credentials.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"})
-
-**Area:** Food and water security · **TRL:** 3 of 9 (analytical proof of concept, constructable design) · **Value-engineering target:** USD 900; estimated cost of the constructable design USD 826 (USD 74 under the target) · **Difficulty:** 3 of 5
+**Area:** Food and water security · **TRL:** 3 of 9 (analytical proof of concept, constructable design) · **Stage:** P3 · **Value-engineering target:** USD 900; estimated cost of the constructable design USD 828 (USD 72 under the target) · **Difficulty:** 3 of 5
 
 Lets a fellow climber anchor and lower a climber stranded high on a palm trunk.
+
+![TrunkBelay: palm trunk rescue collar and lowering kit](media/render-hero.png)
+
+[Studio render](media/render-studio.png) · [Exploded render](media/render-exploded.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement TKB-DWG-001 (PDF)](cad/drawings/TKB-DWG-001.pdf) · [STEM check](docs/01b-stem-check.md) · [Concept options](docs/02a-concept-options.md) · [User requirements](docs/03a-user-requirements.md) · [Product requirements](docs/03-requirements.md) · [Traceability](docs/03b-traceability.md) · [Calculations TKB-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -53,19 +55,27 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 ## Concept
 
-An aluminium collar frame with two rubber-faced bars in a V is held on the palm trunk by a 6 mm grade 80 chain locked in two slots on its top. The load hangs from an eye 150 mm out from the frame, so the frame cocks on the trunk and grips harder as the load rises. A second climber fixes the collar, the helpers haul the rope bag up on a tag line, and the rescuer clips an auto-locking descender to the collar, fits the pre-rigged evacuation triangle and chest sling to the stranded climber, frees their feet and lowers them to the helpers on the ground. On paper it fits trunks from 200 to 450 mm, holds 2.5 kN with a locking factor of 1.54 or more, and needs about 80 N at the brake hand for a 100 kg person. The rescuer carries 4.55 kg up the trunk, under the 5 kg target, and the kit costs about USD 826, under the USD 850 per kit that Amish set for R9.
-
-Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [docs/03-requirements.md](docs/03-requirements.md) · Calculations: [docs/04-calcs/01-sizing.md](docs/04-calcs/01-sizing.md) · Prototype build plan: [docs/05-build-plan.md](docs/05-build-plan.md) · Design decisions: [docs/06-design-decisions.md](docs/06-design-decisions.md) · General arrangement: [cad/drawings/TKB-DWG-001.pdf](cad/drawings/TKB-DWG-001.pdf) · 3D viewer: [media/viewer.html](media/viewer.html)
+An aluminium collar frame with two rubber-faced bars in a V is held on the palm trunk by a 6 mm grade 80 chain locked in two slots on its top. The load hangs from an eye 150 mm out from the frame, so the frame cocks on the trunk and grips harder as the load rises. A second climber fixes the collar, the helpers haul the rope bag up on a tag line, and the rescuer clips an auto-locking descender to the collar, fits the pre-rigged evacuation triangle and chest sling to the stranded climber, frees their feet and lowers them to the helpers on the ground. On paper it fits trunks from 200 to 450 mm, locks with a factor of 1.54 or more on an assumed friction, holds 2.5 kN with every frame part at 1.21 times its welded proof strength or better, and needs about 80 N at the brake hand for a 100 kg person. The rescuer carries 4.67 kg up the trunk, under the 5 kg target, and the kit costs about USD 828, under the USD 850 per kit that Amish set for PR-009.
 
 ![Concept blueprint](media/concept-blueprint.png)
 
+## STEM check
+
+Forty claims are checked (TKB-STM-001), 32 of them for the current design. For option A, 19 sit within known science, 12 need parts or trunks to confirm at TRL 4 (above all the friction of the pads and the sleeved chain on wet coconut bark, which the lock rests on) and one, the strength margin, waits on a test to failure that Amish decided on 2026-10-25 (with a 3.5 kN proof load and a stronger frame as the fallback): the frame's estimated breaking load of about 5.0 kN is about 5:1 on a one-person load, and 4.5:1 in the worst chain split, at or below the low end of the 5:1 to 10:1 rope rescue teams aim for. Two details failed and were fixed under Amish's standing instruction: the 8 mm tether quick link did not pass a 6 mm chain link (now a grade 80 connecting link through a 10 mm tether hole), and an independent reviewer showed the cleat web failed if all the chain's pull fell on one slot (now 55 mm deep).
+
+## Concept options
+
+![Three ways to anchor on a palm trunk, side by side at one scale](media/options.png)
+
+Option B, a constricting wrap anchor (score 175), and option A, the self-locking lever collar that is the current design (167), are within 10 % of each other, so both go to Amish without a pick; option C, a screwed stem anchor (140), is not recommended (TKB-OPT-001, TKB-DDR-004). All three are modelled at detail level D3 on the same trunk with the same descender and rope; the repo carries option A until Amish decides.
+
 ## Key components
 
-- Collar frame: 5 mm aluminium spine, two bearing bars in a 120 deg V, eye doubler rings and cleat cheeks, TIG welded 6082-T6
-- Rubber bark pads
+- Collar frame: 5 mm aluminium spine with a 55 mm cleat web, two bearing bars (RHS 50 x 40 x 3) in a 120 deg V, eye doubler rings and cleat cheeks, TIG welded 6082-T6, every weld bead modelled
+- Rubber bark pads, each held by two countersunk screws in stainless rivet nuts
 - Chain cleat keeper and ball-lock pin
-- Chain, 6 mm grade 80, 110 links, with sleeve, master link and tether quick link
-- Auto-locking descender with a brake carabiner
+- Chain, 6 mm grade 80, 110 links, with sleeve, a connecting link and master link on the adjustable end and a connecting link tethering the fixed end through the tether hole
+- Auto-locking descender with a brake carabiner, alone in the spare eye
 - Lowering rope, 30 m of 11 mm semi-static
 - Evacuation triangle, chest sling and victim carabiner
 - Rope and carry bag
@@ -73,7 +83,7 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [d
 
 ## Building the prototype
 
-The prototype is built to a plan, not yet built: [docs/05-build-plan.md](docs/05-build-plan.md) (TKB-BLD-001). The collar frame is profile cut from 5 mm aluminium plate and TIG welded to two short box-section bars, eye rings and cleat cheeks in a fabrication shop with an AC TIG welder; the pads are cut from rubber sheet and the keeper bent from sheet. The chain, rigging and rescue gear are bought to specification. Every component has a making sketch and every assembly step a picture, and nobody is lowered with the kit before a proof test on cut trunk sections and a dummy drill at low height.
+The prototype is built to a plan, not yet built: [docs/05-build-plan.md](docs/05-build-plan.md) (TKB-BLD-001). The collar frame is profile cut from 5 mm aluminium plate and TIG welded to two short box-section bars, eye rings and cleat cheeks in a fabrication shop with an AC TIG welder; the pads are cut from rubber sheet and the keeper bent from sheet. The chain, rigging and rescue gear are bought to specification. Every component has a making sketch and every assembly step a picture, every made and bought part has its own STEP file, and nobody is lowered with the kit before a proof test on cut trunk sections and a dummy drill at low height.
 
 ![The kit pulled apart, in build order](docs/05-build-plan/overview.png)
 
@@ -91,25 +101,27 @@ The prototype is built to a plan, not yet built: [docs/05-build-plan.md](docs/05
 >
 > The collar is not used on a person before it has been proof-tested at 2.5 kN on cut trunk sections and the drill has been run with a dummy at low height.
 >
+> The frame's estimated strength margin is at the low end of rope rescue practice; Amish decided on 2026-10-25 to keep the 2.5 kN design load, raise the TRL 4 proof load to 3.5 kN and test a sample frame to failure, with a stronger frame as the fallback below 5:1 (TKB-DEC-001 O7).
+>
 > This design is published as an open engineering reference. It is not certified equipment. CONCEPT, NOT FOR FABRICATION.
 
 ## Repository layout
 
-| Folder | Contents |
-| --- | --- |
-| `docs/` | Problem, concept, requirements, calculations and design decisions |
-| `cad/src/` | build123d Python source, the source of truth for all geometry |
-| `cad/step/`, `cad/stl/` | Exported models for FreeCAD, other CAD tools and printing |
-| `cad/drawings/` | 2D sketches and dimensioned drawings |
-| `bom/` | Bill of materials |
-| `electronics/` | KiCad schematics and PCB layouts |
-| `firmware/` | Microcontroller code |
-| `media/` | Renders, perspectives and photos |
-| `build-log/` | Dated prototyping notes |
+```
+docs/                 controlled documents (PRB, STM, OPT, PRC, URS, PRS, RTM, CAL, BLD, DEC, REG, FEA, RSK, MKT, PLN, DDR) and REVIEW.md
+docs/04-calcs/        sizing.py (TKB-CAL-001) and stem_check.py (TKB-STM-001)
+cad/src/model.py      parametric model of options A, B and C (kit 1.9, detail level D3), with tkb_parts.py
+cad/src/              sheets.py, build_plan_media.py, concept_media.py, product_model.py, options_preview.py
+cad/step/, cad/stl/   STEP per part of the chosen design and per assembly for every option; STL of the frame and pads
+cad/drawings/         TKB-DWG-001 general arrangement and TKB-DWG-101 to 109 making sketches
+bom/bom.csv           priced bill of materials
+media/                concept media and renders
+.kit/                 shared documentation kit 1.9.1 (do not edit here)
+```
 
 ## Documentation
 
-Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (TKB-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `TKB-PRC-001/v1.0`.
+Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (TKB-PRC-001 for the precis), a version and a revision history. Run `python .kit/render.py --check` to validate them, `python .kit/cad_check.py --export` for the CAD fidelity check, `python docs/04-calcs/sizing.py` for the calculations and `python docs/04-calcs/stem_check.py` for the STEM check. Branded PDFs are built with `python .kit/render.py`.
 
 ## Credits
 

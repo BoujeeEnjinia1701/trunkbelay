@@ -26,7 +26,7 @@ from build123d import Box, Pos, Rot, Compound  # noqa: E402
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-03"
+DATE = "2026-10-25"
 _C = None
 
 COL = {"spine": "#0F766E", "bars": "#64748B", "doublers": "#1D4ED8", "cheeks": "#7C3AED", "pads": "#111827",
@@ -94,7 +94,7 @@ def xs():
 
 def chain_all():
     c = comps()
-    return c["chain_loop"] + c["chain_tail_a"] + c["chain_tail_b"]
+    return Compound([c["chain_loop"], c["chain_tail_a"], c["chain_tail_b"]])   # grouped, not fused: far less memory
 
 
 def trunk(z0=-250, z1=320):
@@ -132,7 +132,8 @@ def chain_sample(n=8):
     out = []
     for k in range(n):
         out.append(m.place(lk, (k * P["pitch"], 0, 0), (1, 0, 0), (0, 0, 1) if k % 2 else (0, 1, 0)))
-    cl = m.place(m.stadium(14.0, 7.5, 4.0), (n * P["pitch"] + 2, 0, 0), (1, 0, 0), (0, 0, 1))
+    cw, cs, cb = P["conn_link"]
+    cl = m.place(m.stadium(cs, cb, cw / 2), (n * P["pitch"] + 2, 0, 0), (1, 0, 0), (0, 0, 1))
     st, ML, MW = P["master"]
     ml = m.place(m.master_template(P), (n * P["pitch"] + 18 + ML / 2, 0, 0), (1, 0, 0), (0, 1, 0))
     return m.fuse_all(out + [cl, ml])
@@ -157,7 +158,7 @@ def overview():
         part("Lock pin, ball-lock 8 mm", c["pin"], COL["pin"], (0, -250, 330)),
         part("Chain, grade 80, 110 links, with master link", chain_all(), COL["chain"], (-450, 0, 250)),
         part("Chain sleeve, tubular webbing", c["sleeve"], COL["sleeve"], (-650, 0, 250)),
-        part("Tether quick link", c["maillon"], COL["maillon"], (0, 250, -250)),
+        part("Tether link (grade 80 connecting link)", c["maillon"], COL["maillon"], (-200, 250, 0)),
         part("Carabiners (load and brake)", c["carab_main"] + c["carab_brake"], COL["carab"], (250, 0, -300)),
         part("Auto-locking descender", c["descender"], COL["descender"], (450, 0, -350)),
         part("Lowering rope, 30 m (top shown)", rope, COL["rope"], (450, 0, -450)),
@@ -193,11 +194,12 @@ def sheets(which=None):
         "spine plate (make 1)", "6082-T6 aluminium plate 5 mm",
         ["One piece of 5 mm 6082-T6 aluminium plate, profile cut.",
          "  Outline from the front edge (the edge toward the trunk):",
-         "  175 long at the bottom, 185 high at the front; 55 high at",
+         "  175 long at the bottom, 205 high at the front; 55 high at",
          "  the back end; the top runs 60 back, then slopes down.",
          "Holes: load eye 22 at 150 back, 28 up; spare eye 22 at 85",
-         "  back, 28 up; lightening hole 36 at 85 back, 90 up.",
-         "Chain slots: two, 7.5 wide, 35 deep from the top edge,"
+         "  back, 28 up; lightening hole 36 at 85 back, 90 up;",
+         "  tether hole 10 at 12 back, 112 up (for the fixed end's link).",
+         "Chain slots: two, 7.5 wide, 55 deep from the top edge,"
          "  centred 15 and 43 back from the front edge. Cut them",
          "  square and file every edge smooth; no burr may touch chain.",
          "Lock pin hole 8.5 at 29 back, 139 up (drill after the cheeks",
@@ -212,7 +214,7 @@ def sheets(which=None):
          "One ring each side of each eye, the bores in line with the",
          "  22 eye hole within 0.5 mm (use a 22 pin to line them up).",
          "TIG weld all round the outside, 3 mm fillet, ER5356 filler;",
-         "  no weld in the bore. Keep 4 mm: the quick link must pass.",
+         "  no weld in the bore. Keep 4 mm (eye 13 thick, as sized).",
          "After welding, round the bore edges to 2 mm radius, so a",
          "  carabiner bears on a smooth curve, never a sharp edge.",
          "Finished eye: 13 thick (4 + 5 + 4)."],
@@ -234,8 +236,8 @@ def sheets(which=None):
         view_shape=bar_flat(), inset=(20, -60))
     S[104] = lambda: sheet(104, c["cheeks"], "Cleat cheek", COL["cheeks"],
         [grey("spine", c["spine"]), grey("keeper", c["keeper"])], "cleat cheek (make 2)", "6082-T6 aluminium plate 8 mm",
-        ["Make two. 8 mm 6082-T6 aluminium plate, 60 long x 55 high.",
-         "Two notches from the top edge, 22 wide and 37 deep, centred",
+        ["Make two. 8 mm 6082-T6 aluminium plate, 60 long x 75 high.",
+         "Two notches from the top edge, 22 wide and 57 deep, centred",
          "  15 and 43 from the front end, so they sit round the two",
          "  chain slots in the spine with 7.25 of web showing each side.",
          "Weld one on each face of the spine, top edges flush with the",
@@ -277,11 +279,11 @@ def sheets(which=None):
         [grey("spine", c["spine"]), grey("cheeks", c["cheeks"]), grey("pin", c["pin"])], "keeper (make 1)",
         "S275 steel sheet 3 mm, zinc plated",
         ["Cut a cross from 3 mm sheet: a bridge 56 long (front to back)",
-         "  x 27 wide, with a leg 6 wide and 53 long at the middle of",
+         "  x 27 wide, with a leg 6 wide and 73 long at the middle of",
          "  each long side.",
          "Bend both legs down 90 deg so they sit 21 apart inside: they",
          "  slide over the two 8 mm cheeks between the notches.",
-         "Drill 8.5 through both legs, 49 below the bridge's top face.",
+         "Drill 8.5 through both legs, 69 below the bridge's top face.",
          "The bridge lies on the cleat top across both slot mouths, so a",
          "  chain link cannot lift out of its slot.",
          "Tie the lock pin's lanyard to one leg."],
@@ -294,8 +296,8 @@ def sheets(which=None):
          "Never weld, heat, grind or bend the chain.",
          "One end (the adjustable end): fit the master link with a",
          "  6 mm grade 80 connecting link and peen its pin.",
-         "Other end (the fixed end): leave plain; it goes into the front",
-         "  slot and a quick link ties its tail to the spare eye.",
+         "Other end (the fixed end): it goes into the front slot; a",
+         "  second connecting link ties its 6th link through the tether hole.",
          "Paint the 56th, 72nd and 100th links from the fixed end: the",
          "  link that drops into the rear slot on 200, 300 and 450 trunks.",
          "Drawn: eight links, the connecting link and the master link."],
@@ -353,13 +355,13 @@ def joints(which=None):
                           W("sleeve", "Chain sleeve", back), W("chain_loop", "Chain", (-200, 40, -175, 175, 120, 200), col="chain")],
                       "the chain sleeve at the back of the trunk",
                       "600 mm of tubular webbing on the chain where it presses hardest on the bark", elev=30, azim=150)
-    spare = (x + 50, x + 125, -40, 60, -60, 70)
-    J[6] = lambda: jt(6, [W("spine", "Spine (spare eye)", spare), W("doublers", "Doubler rings", spare),
-                          K("maillon", "Tether quick link"), W("carab_brake", "Brake carabiner", (x + 55, x + 125, -40, 40, -110, 60), col="carab"),
-                          W("chain_tail_a", "Fixed end tail", (x + 20, x + 125, 0, 60, -60, 160), col="chain")],
-                      "spare eye: tether quick link and brake carabiner",
-                      "The fixed end of the chain is tied to the frame, so it cannot be dropped; the brake carabiner shares the eye",
-                      elev=20, azim=-35)
+    teth = (x - 40, x + 40, -45, 60, 70, 195)
+    J[6] = lambda: jt(6, [W("spine", "Spine (front edge, tether hole)", teth), W("cheeks", "Cheek", teth),
+                          K("maillon", "Tether link (connecting link)"),
+                          W("chain_tail_a", "Fixed end of the chain", teth, col="chain"), W("chain_loop", "Link in the front slot", teth, col="chain")],
+                      "the fixed end's tether at the spine front edge",
+                      "A grade 80 connecting link through the 10 mm tether hole holds the fixed end, so it cannot be dropped; the spare eye stays free for the brake carabiner",
+                      elev=20, azim=35)
     low = (x + 40, x + 290, -60, 60, -330, 60)
     J[7] = lambda: jt(7, [W("spine", "Spine", (x + 40, x + 200, -20, 20, -5, 60)), K("carab_main", "Load carabiner", col="carab"),
                           K("descender", "Auto-locking descender"), K("carab_brake", "Brake carabiner", col="carab"),
@@ -408,9 +410,9 @@ def steps(which=None):
                       "Contact adhesive on both faces, press on, then two countersunk screws each into the rivet nuts",
                       elev=30, azim=-120)
     E[5] = lambda: st(5, frame + [pads], [K("chain_tail_a", "Fixed end of the chain", (0, 150, 120), col="chain"),
-                                          K("maillon", "Tether quick link", (0, 150, -100))],
+                                          K("maillon", "Tether link", (-120, 150, 0))],
                       "fit the fixed end and its tether",
-                      "Fixed end's link down into the front slot; its tail tied to the spare eye with the quick link, gate screwed shut",
+                      "Fixed end's link down into the front slot; its 6th link joined through the tether hole with a connecting link, pin peened",
                       elev=25, azim=40)
     E[6] = lambda: st(6, frame + [pads, K("chain_tail_a", "Fixed end", col="chain")],
                       [K("chain_loop", "Chain round the trunk", (-250, 0, 0), col="chain"), K("sleeve", "Sleeve", (-250, 0, 0))],
@@ -425,7 +427,7 @@ def steps(which=None):
                       context=[part(tr.name, tr.shape, "#E5E7EB")], elev=30, azim=-125, label_done=False)
     collar = frame + [pads, K("chain_loop", "Chain", col="chain"), K("chain_tail_a", "Fixed end", col="chain"),
                       K("chain_tail_b", "Tail", col="chain"), K("sleeve", "Sleeve"), K("keeper", "Keeper"), K("pin", "Pin"),
-                      K("maillon", "Quick link")]
+                      K("maillon", "Tether link")]
     E[8] = lambda: st(8, collar, [K("carab_main", "Load carabiner", (250, 0, 0), col="carab"),
                                   K("descender", "Auto-locking descender", (250, 0, -100))],
                       "clip on the descender",
@@ -436,7 +438,7 @@ def steps(which=None):
                        K("rope_load", "Rope: load strand", (200, 0, -150), col="rope"),
                        K("rope_brake", "Rope: brake strand", (0, 0, -150), col="rope")],
                       "reeve the rope and the brake carabiner",
-                      "As the descender's maker shows; brake strand up over the brake carabiner in the spare eye, then down",
+                      "As the descender's maker shows; brake strand up over the brake carabiner, alone in the spare eye, then down",
                       context=[part(tr.name, tr.shape, "#E5E7EB")], elev=15, azim=-70, label_done=False)
     K_ = kit()
     E[10] = lambda: st(10, [], [part("Victim carabiner", K_["carab_victim"], COL["carab"]),

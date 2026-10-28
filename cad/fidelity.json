@@ -1,0 +1,47 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "bfdde760696da071",
+ "options": {
+  "A": {
+   "title": "Self-locking lever collar",
+   "parts": 64,
+   "made_or_bought": 33,
+   "fasteners": 17,
+   "welds": 14,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 3.8,
+   "step_files": 33
+  },
+  "B": {
+   "title": "Constricting wrap anchor",
+   "parts": 25,
+   "made_or_bought": 16,
+   "fasteners": 9,
+   "welds": 0,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 2.2,
+   "step_files": 0
+  },
+  "C": {
+   "title": "Screwed stem anchor",
+   "parts": 34,
+   "made_or_bought": 15,
+   "fasteners": 17,
+   "welds": 2,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 5.4,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 130.4
+}

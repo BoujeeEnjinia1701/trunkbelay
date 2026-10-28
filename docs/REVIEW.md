@@ -165,3 +165,99 @@ Amish Chadha, 2026-10-03: "i agree with all the 46 recommendations you provided.
 ## 2026-10-04: photoreal renders redone after the round-2 and round-3 decisions
 
 Views: hero, exploded, detail; cards regenerated; image_qc passes and `render.py --check` has no FAIL.
+
+## Session 2026-10-24: kit 1.9.1 upgrade
+
+Run on Amish's instructions of 2026-10-24 ("Kit 1.9.1 rollout - proceed to rollout across the other repos"; "I want detailed TRL3 CAD - and in fact want to ensure the CAD is detailed across all TRLs"; "Detail every option") and his standing fix rule of 2026-10-23. The work was done on 2026-10-25; documents carry that date. Kit 1.9.1 was installed by the coordinator. The repo stays at TRL 3; `stage: P3`.
+
+### What was added
+
+- Pipeline documents: STEM check `docs/01b-stem-check.md` (TKB-STM-001) with `docs/04-calcs/stem_check.py`; concept options `docs/02a-concept-options.md` (TKB-OPT-001) and the selection record `docs/decisions/0004-concept-selection.md` (TKB-DDR-004); users-and-needs and stakeholder tables in `docs/01-problem.md` (v0.4); user requirements `docs/03a-user-requirements.md` (TKB-URS-001, 17 URs); `docs/03-requirements.md` is now the product requirements TKB-PRS-001 v0.4 (R1 to R10 migrated to PR-001 to PR-010, PR-011 to PR-018 added); traceability matrix `docs/03b-traceability.md` (generated, 0 gaps); regulatory register `docs/07-regulatory.md`, feasibility `docs/08-feasibility.md`, risk register with hazard analysis and design FMEA `docs/09-risk.md`, market `docs/10-market.md`, plan `docs/11-plan.md`.
+- CAD: `cad/src/model.py` keeps its parametric engine and checks and gains the kit 1.9 interface (`PARAMS`, `OPTIONS`, `PRINCIPLES`, `CHOSEN = "A"`, `OPTION_VIEWS`, `ALLOWED_CONTACTS = []`, `components(option)`), with repo helpers in `cad/src/tkb_parts.py` (weld beads, detailed carabiners and descender, the lowering set). Every option at D3; STEP per made or bought part of option A in `cad/step/A/` (33 files) and `cad/step/{A,B,C}-assembly.step`; `cad/fidelity.json` passes. The chain's end interlocks are now exact (hook link, connecting links), the sleeve is a tube round the chain, every pad screw and rivet nut has its holes.
+- Updated: CAL v0.3 (`[C1b]` combined bar stresses, `[C4b]` worst chain split, cited 600 g descender), PRC v0.5, BLD v0.3, DEC v0.3, BOM line 14 and line 1, `sizing.py`, `sheets.py` (TKB-DWG-001 Rev P3), `build_plan_media.py`, `concept_media.py`, `product_model.py` (rebuilt from `components(CHOSEN)` with a site scene), README in the house structure (the broken DOI badge, which contained an error message, is replaced by the concept DOI 10.5281/zenodo.23132240).
+- Regenerated: STEP and STL (`python cad/src/model.py`, 0.2 mm tolerance), TKB-DWG-001, build plan pictures and making sketches TKB-DWG-101 to 109, concept media (`media/model.glb` 0.7 MB), and an interim `media/options.png` from `cad/src/options_preview.py`, marked PREVIEW on the picture.
+
+### STEM verdicts and fixes
+
+40 claims: 22 within known science, 17 plausible (to confirm at TRL 4), 1 fails with a fix proposed, 0 fail; `stem_check: open`. Option A: 32 claims, 19 within, 12 plausible, 1 fix proposed (S30). Fixes under the standing instruction (TKB-DEC-001):
+
+- **D-S1** (found by the D3 model): the 8 mm tether quick link cannot pass a 6 mm grade 80 link (7.8 mm opening) and left no place for the hooked chain end beside the brake carabiner. Now a grade 80 connecting link through a new 10 mm tether hole 12 mm behind the spine front edge; the spare eye holds the brake carabiner alone; the fixed end is 6 links, so 15 links remain in the adjustable tail on a 450 mm trunk. BOM +USD 2.
+- **D-S2** (found by the independent review): with all of the chain's pull on one slot the 35 mm cleat web reached factor 0.77. The spine top is raised 185 to 205 mm (55 mm web, factor 1.21); cheeks 75 mm high, keeper legs 73 mm; about 0.05 kg.
+
+### Option scores (TKB-OPT-001)
+
+| Option | Score | Parts (fasteners, welds) | Model mass, `cad/fidelity.json` | Carried |
+| --- | --- | --- | --- | --- |
+| A, self-locking lever collar (current) | 167 | 64 (17, 14) | 3.8 kg | 4.67 kg |
+| B, constricting wrap anchor | 175 | 25 (9, 0) | 2.2 kg | about 3.1 kg |
+| C, screwed stem anchor | 140 | 34 (17, 2) | 5.4 kg | about 7 kg |
+
+A and B are within 10 % (4.6 %): both go to Amish without a pick. Model masses include the descender, carabiners and about 1.5 m of rope stubs, not the bag items.
+
+### Independent review
+
+A headless Claude session saw only the STEM check, CAL, PRS and `sizing.py`. It upheld the loads, lowering, heat, rope, fit and tether fit; weakened S2, S5, S6, S11, S13, S19, S20, S22 to S24 and S30; refuted S9 for an unequal chain split (fixed, D-S2) and S21 as worded; and added a leaning trunk (S31) and the tether hole (S32). All changes are in TKB-STM-001 Table 3.
+
+### Requirements not met or at risk
+
+- PR-002 (upward pull): at risk; drill rule (16A).
+- PR-004 (rigging under 5 minutes): at risk, about 4.5 minutes estimated.
+- PR-001 is met on paper only on an unmeasured friction, settlement is 14 to 18 mm with pad shear against 20, and the strength margin is below rescue practice in the worst case (S30).
+- PR-008: at risk on green wood at the pads' lower edge (S19).
+- PR-010: cannot be shown on paper; PR-013: to verify at TRL 4.
+- BOM total USD 828 against `budget_usd` 900 (value-engineering target) and PR-009's USD 850; a branded descender at the cited USD 421 would take the kit to about USD 969.
+
+### Decisions awaiting Amish (TKB-DEC-001)
+
+- **O5** concept selection: A or B (no pick, within 10 %); C not recommended.
+- **O6** appearance of the kit 1.9 renders: hero in a coconut plantation at drill height (collar foot 1.4 m up, ground at z = 0, soil), both strands carried down to the rope bag on the ground, two more palms behind, a 1.75 m helper standing on the ground, the safe working load label. Recommended: accept.
+- **O7** strength target (safety trade-off): about 5.1:1 (4.5:1 worst split) against the 5:1 to 10:1 of rescue practice; recommended: raise the TRL 4 proof load to 3.5 kN and test a sample frame to failure, with a stronger frame as the fallback.
+- **O8** leaning trunks: lean limit of 20 deg in PR-003 and a drill rule for the frame's side; recommended: both.
+
+### Safety concerns
+
+The lock rests on an unmeasured friction on wet bark; the strength margin is thin by rescue standards; a slack drop of 100 mm (4.3 kN) exceeds the frame. Nobody is lowered with the kit before the friction and proof tests and a dummy drill (TRL 4, on hold).
+
+### Renders and checks
+
+Not run, as the rollout asks: `.kit/options.py` without `--export`, `photoreal.py`, `export_views.py`, `cards.py`. The coordinator renders `media/options.png` (replacing the preview) and the `RENDER_VIEWS` hero, studio, exploded and detail; `media/render-studio.png`, linked from the README, does not exist until then, and `render-hero.png`, `render-exploded.png`, `render-detail.png` and the cards are the renders of 2026-10-04 (before D-S1 and D-S2).
+
+### Kit issues met
+
+1. `stem_check.Check.summary()` counts a Plausible row as closed whenever `closed_by` is not empty, so "Open: ..." text reported the check as pass; worked around by leaving `closed_by` empty on open rows.
+2. `render.py --check` requires `media/options.png`, which only `.kit/options.py` with Blender writes; worked around with the labelled `cad/src/options_preview.py`.
+3. The verdict label "Plausible, to confirm at TRL 3" is fixed in the kit, though in a TRL 3 repo the open rows are confirmed at TRL 4.
+4. `cad_check.is_bare()` counts any three-face solid as bare, so a straight rope strand fails; the load strand is drawn with a kink.
+5. `trace.py` bumps the RTM version on every run while sources change; the matrix was regenerated from scratch at the end.
+6. Repo housekeeping (not kit): two decision records share TKB-DDR-003 (`0003-amish-requirement-decisions.md` and `0003-requirement-decisions-round2.md`); renumbering is left for Amish.
+
+### Recommended next step
+
+Amish decides O5 to O8. The coordinator renders the options picture and product views. TRL 4 stays on hold under the cap; when it opens, the first test is the friction of the pads and sleeved chain on cut, wet trunk sections.
+
+## Session 2026-10-25: decisions
+
+Amish, 2026-10-25 10:19 CT, after a report listing each repo's proposed decisions and recommendations: "i concur with your recommendations". Every decision that carried a recommendation is recorded as decided with the option recommended; every decision without a pick stays open.
+
+### Decided by Amish, 2026-10-25
+
+- **O6, render appearance:** the kit 1.9 departures accepted (site scene at drill height, helper, strands to the rope bag, two more palms, safe working load label). No change.
+- **O7, strength target:** option C. The 2.5 kN design load (PR-001) stays; the TRL 4 proof load is raised to **3.5 kN** and a sample frame is tested to failure, with the stronger frame (option B, about 10:1) as the fallback if it shows less than 5:1. PR-001 verification text; build plan first checks (static hold and proof at 2.5 then 3.5 kN; new "frame to failure" check, pass at 5 kN or more); PLN test rig line; RSK H6; STEM S30 from "fails, fix proposed" to **Plausible, to confirm by the test** (`docs/04-calcs/stem_check.py`). No part, dimension or price changed; the estimated breaking load stays about 5.0 kN (5.1:1; 4.5:1 with all the chain's pull on one slot).
+- **O8, leaning trunks:** option C. PR-003 gains a **20 deg lean limit**, and the drill rule sets the frame on the favourable side of a leaning trunk (build plan table; RSK H12; STEM S31 closing route; FEA). Locking factor on the adverse side stays 1.21 at 20 deg on the assumed friction, to confirm by test.
+- Documents: TKB-DEC-001 v0.4, TKB-PRS-001 v0.5, TKB-STM-001 v0.2 (22 within, 18 plausible, 0 fail across the options; `stem_check` stays open), TKB-BLD-001 v0.4, TKB-RSK-001 v0.2, TKB-PLN-001 v0.2, TKB-FEA-001 v0.2, TKB-OPT-001 v0.2, README.
+
+### Still open (no recommendation to concur with)
+
+- **O5, concept selection:** A (167) and B (175) are within 10 % and went to Amish without a pick; `concept_chosen` stays unset and the repo carries A.
+
+### Checks
+
+Run in this order on 2026-10-25 (no edit to `cad/src/` or `bom/bom.csv` this session):
+
+- `python3 docs/04-calcs/sizing.py`: runs (figures unchanged).
+- `python3 docs/04-calcs/stem_check.py`: open, 22 within, 18 plausible, 0 fail.
+- `python3 .kit/trace.py`: RTM regenerated, 0 gaps.
+- `python3 .kit/cad_check.py --export`: PASS at D3.
+- `python3 .kit/render.py` and `python3 .kit/render.py --check`: pass, no FAIL.
+- `python3 -m reuse lint`: compliant.
+- Em and en dash scan outside `.kit/` and `LICENSES/`: none.
